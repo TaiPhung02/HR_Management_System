@@ -1,0 +1,141 @@
+.login-wrapper {
+    display: flex;
+    /* padding: 100px 0 40px; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo__heading {
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 119.7%;
+    letter-spacing: -1.08px;
+    color: #11181c;
+}
+
+.logo__title {
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 119.7%;
+    letter-spacing: -1.08px;
+    color: #11181c;
+    margin-top: 35px;
+}
+
+.login-form {
+    max-width: 350px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 24px 32px 24px;
+    gap: 10px;
+    border-radius: 12px;
+    background: #fbfcfd;
+    box-shadow: 0px 10px 25px 0px rgba(215, 219, 223, 0.5);
+}
+
+.login__input-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.login__label {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: -0.16px;
+    color: #11181c;
+}
+
+.login__input {
+    width: 300px;
+    height: 46px;
+    padding: 8px 12px;
+    outline: none;
+    border: none;
+    border-radius: 6px;
+    background: #f1f3f5;
+}
+
+.login__input-password {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.toggle-password.disable {
+    display: none;
+}
+
+.login__input.error {
+    border: 1px solid #f3aeaf;
+    background: #ffefef;
+}
+
+.login__message-error {
+    color: #e5484d;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 18px; /* 138.462% */
+    letter-spacing: -0.01px;
+}
+
+.login__btn {
+    margin-top: 16px;
+    width: 300px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: -0.16px;
+    color: #fbfdff;
+    border-radius: 6px;
+    background: #0091ff;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+}
+
+.login__btn:hover {
+    opacity: 0.8;
+}
+
+.login__forgot {
+    margin: 0 auto;
+    color: #0091ff;
+    text-align: center;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+}
+
+.login__forgot:hover {
+    text-decoration: underline;
+}
+
+.login__copyright {
+    color: #687076;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-top: 30px;
+    /* padding-top: 263px; */
+}

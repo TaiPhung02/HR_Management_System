@@ -1,0 +1,120 @@
+.table-wrapper {
+    /* margin-left: 46px; */
+}
+
+.table__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.table__header-heading {
+    color: #11181c;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 119.7%;
+    letter-spacing: -1.08px;
+}
+
+.table__header-search {
+    display: flex;
+    width: 200px;
+    padding: 10px;
+    align-items: center;
+    gap: 10px;
+    border-radius: 8px;
+    border: 1px solid #dfe3e6;
+    background: #fbfcfd;
+}
+
+.table__header-text {
+    width: 150px;
+    color: #687076;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border: none;
+    outline: none;
+}
+
+.employee__table {
+    width: 100%;
+    /* overflow-x: auto; */
+}
+
+.ant-table {
+    width: max-content;
+}
+
+.table__cta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.table__cta-add,
+.table__cta-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: #edf6ff;
+    width: 90px;
+}
+
+.table__cta-add {
+    color: #0091ff;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-right: 12px;
+}
+
+.table__cta-delete {
+    color: #e5484d;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: #ffefef;
+}
+
+.table__cta-delete.disabled {
+    background: #ccc;
+}
+
+.table__line {
+    border-top: 1px solid #dfe3e6;
+    margin-bottom: 10px;
+}
+
+.employee__table-row {
+    height: 80vh;
+    overflow: scroll;
+}
+
+.employee__table-row .ant-table-tbody {
+    width: 100px;
+    background: #f8f9fa;
+}
+
+.employee__table-row .ant-table-cell {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.employee__table-row .ant-table-thead th {
+    white-space: nowrap;
+}
+
+.employee__table-row .ant-table-wrapper {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+}
