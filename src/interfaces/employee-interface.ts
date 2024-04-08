@@ -61,3 +61,25 @@ export interface IEmployee {
     users: string | null;
     allowed_to_view_salary: number;
 }
+
+export interface EmployeeInfo {
+    name?: string;
+    gender?: string;
+    dob?: string;
+    ktp_no?: string;
+    type?: string;
+    contract_start_date?: string;
+    hidden_on_payroll?: string;
+    // 
+    card_number?: number;
+    bank_account_no?: number;
+    family_card_number?: number;
+    marriage_code?: number;
+    mother_name?: string;
+    pob?: string;
+    home_address_1?: string;
+    home_address_2?: string;
+    entitle_ot?: number;
+    meal_allowance_paid?: number;
+    grading?: string;
+}

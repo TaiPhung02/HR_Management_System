@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useFormik } from "formik";
 
 import "./employeeInformation.css";
@@ -7,6 +7,7 @@ import { IMarriage } from "../../interfaces/marriage-interface";
 import { marriageApi } from "../../services/user-services";
 import { employeeInformationValidation } from "../../utils/validate-utils";
 import moment, { Moment } from "moment";
+import { IEmployee } from "../../interfaces/employee-interface";
 
 const initialValues = {
     name: "",
@@ -16,9 +17,25 @@ const initialValues = {
     nc_id: "",
     type: "",
     contract_start_date: "",
+    //
+    card_number: "",
+    bank_account_no: "",
+    family_card_number: "",
+    marriage_code: "",
+    mother_name: "",
+    pob: "",
+    home_address_1: "",
+    home_address_2: "",
+    entitle_ot: "",
+    meal_allowance_paid: "",
+    grade_id: "",
 };
 
-const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
+const EmployeeInformation = ({
+    handleEmployeeInfoChange,
+}: {
+    handleEmployeeInfoChange: (employeeInfo: IEmployee) => void;
+}) => {
     const [marriages, setMarriages] = useState<IMarriage[]>([]);
 
     const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
@@ -30,9 +47,39 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
             },
         });
 
+    console.log(values);
+
+    const employeeInfo = {
+        name: values.name,
+        gender: values.gender,
+        dob: values.dob,
+        ktp_no: values.ktp_no,
+        nc_id: values.nc_id,
+        type: values.type,
+        contract_start_date: values.contract_start_date,
+        //
+        card_number: values.card_number,
+        bank_account_no: values.bank_account_no,
+        family_card_number: values.family_card_number,
+        marriage_code: values.marriage_code,
+        mother_name: values.mother_name,
+        pob: values.pob,
+        home_address_1: values.home_address_1,
+        home_address_2: values.home_address_2,
+        entitle_ot: values.entitle_ot,
+        meal_allowance_paid: values.meal_allowance_paid,
+        grade_id: values.grade_id,
+    };
+
+    const memoizedHandleEmployeeInfoChange = useCallback(
+        handleEmployeeInfoChange,
+        [values]
+    );
+
     useEffect(() => {
-        handleEmployeeInfoChange(values);
-    }, [values, handleEmployeeInfoChange]);
+        memoizedHandleEmployeeInfoChange(employeeInfo);
+        console.log(employeeInfo);
+    }, [values, memoizedHandleEmployeeInfoChange]);
     const fetchMarriage = async () => {
         try {
             const marriagesRes = await marriageApi();
@@ -154,6 +201,8 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
                             name="card_number"
                             type="text"
                             className="addnew__employee-input"
+                            value={values.card_number}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className="addnew__employee-input-box">
@@ -168,6 +217,8 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
                             name="bank_account_no"
                             type="text"
                             className="addnew__employee-input"
+                            value={values.bank_account_no}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className="addnew__employee-input-box">
@@ -182,22 +233,25 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
                             name="family_card_number"
                             type="text"
                             className="addnew__employee-input"
+                            value={values.family_card_number}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className="addnew__employee-input-box">
                         <label
-                            htmlFor="marriage"
+                            htmlFor="marriage_code"
                             className="addnew__employee-label"
                         >
                             Marriage Status
                         </label>
                         <select
-                            id="marriage"
-                            name="marriage"
+                            id="marriage_code"
+                            name="marriage_code"
                             className="addnew__employee-select"
-                            defaultValue={"1"}
+                            value={values.marriage_code}
+                            onChange={handleChange}
                         >
-                            <option value="1" disabled hidden>
+                            <option value="" disabled hidden>
                                 Choose Marriage Status
                             </option>
                             {marriages.map((marriage) => (
@@ -219,6 +273,8 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
                             name="mother_name"
                             type="text"
                             className="addnew__employee-input"
+                            value={values.mother_name}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className="addnew__employee-input-box">
@@ -262,6 +318,8 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
                             name="pob"
                             type="text"
                             className="addnew__employee-input"
+                            value={values.pob}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className="addnew__employee-input-box">
@@ -276,6 +334,8 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
                             name="home_address_1"
                             type="text"
                             className="addnew__employee-input"
+                            value={values.home_address_1}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className="addnew__employee-input-box">
@@ -290,6 +350,8 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
                             name="home_address_2"
                             type="text"
                             className="addnew__employee-input"
+                            value={values.home_address_2}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className="addnew__employee-input-box">
@@ -367,6 +429,35 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
                             htmlFor="contract_start_date"
                             className="addnew__employee-label"
                         >
+                            Date Start
+                        </label>
+                        <div className="addnew__employee-input-wrapper">
+                            <DatePicker
+                                id="contract_start_date"
+                                name="contract_start_date"
+                                className="addnew__employee-date-box"
+                                value={
+                                    values.contract_start_date
+                                        ? moment(values.contract_start_date)
+                                        : null
+                                }
+                                onChange={(date, dateString) =>
+                                    handleDateChange(
+                                        date,
+                                        Array.isArray(dateString)
+                                            ? dateString[0]
+                                            : dateString,
+                                        "contract_start_date"
+                                    )
+                                }
+                            />
+                        </div>
+                    </div>
+                    <div className="addnew__employee-input-box">
+                        <label
+                            htmlFor="contract_start_date"
+                            className="addnew__employee-label"
+                        >
                             Contract Date Start
                             <span className="required">*</span>
                         </label>
@@ -438,7 +529,7 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
                             )}
                         </div>
                     </div>
-                    <div className="addnew__employee-input-box">
+                    {/* <div className="addnew__employee-input-box">
                         <label
                             htmlFor="entitle_ot"
                             className="addnew__employee-label"
@@ -450,22 +541,26 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
                             name="entitle_ot"
                             type="text"
                             className="addnew__employee-input"
+                            value={values.entitle_ot}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className="addnew__employee-input-box">
                         <label
-                            htmlFor="meal_allowance"
+                            htmlFor="meal_allowance_paid"
                             className="addnew__employee-label"
                         >
                             Meal paid
                         </label>
                         <input
-                            id="meal_allowance"
-                            name="meal_allowance"
+                            id="meal_allowance_paid"
+                            name="meal_allowance_paid"
                             type="text"
                             className="addnew__employee-input"
+                            value={values.meal_allowance_paid}
+                            onChange={handleChange}
                         />
-                    </div>
+                    </div> */}
 
                     <div className="addnew__employee-input-box">
                         <label
@@ -479,6 +574,8 @@ const EmployeeInformation = ({ handleEmployeeInfoChange }) => {
                             name="grade_id"
                             type="text"
                             className="addnew__employee-input"
+                            value={values.grade_id}
+                            onChange={handleChange}
                         />
                     </div>
                 </form>

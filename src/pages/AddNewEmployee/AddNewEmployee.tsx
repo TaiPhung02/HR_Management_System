@@ -8,31 +8,55 @@ import SalaryWages from "../../components/SalaryWages/SalaryWages";
 import Others from "../../components/Others/Others";
 import { toast } from "react-toastify";
 import { addNewEmployeeApi } from "../../services/user-services";
+import { useNavigate } from "react-router-dom";
+import { IEmployee } from "../../interfaces/employee-interface";
 
 const AddNewEmployee = () => {
-    const [employeeInfo, setEmployeeInfo] = useState({});
+    const nagivate = useNavigate();
+    const [employeeInfo, setEmployeeInfo] = useState<IEmployee>({});
     const [employmentDetails, setEmploymentDetails] = useState(0);
+
+    const [selectedDepartment, setSelectedDepartment] = useState(null);
+    const [selectedPosition, setSelectedPosition] = useState(null);
 
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
     useEffect(() => {
         setIsButtonDisabled(
-            !(employeeInfo && Object.keys(employeeInfo).length > 0) ||
-                !employmentDetails
+            !(
+                employeeInfo &&
+                employeeInfo.name &&
+                employeeInfo.gender &&
+                employeeInfo.dob &&
+                employeeInfo.ktp_no &&
+                employeeInfo.type &&
+                employeeInfo.contract_start_date &&
+                Object.keys(employeeInfo).length > 0
+            ) || !employmentDetails
         );
     }, [employeeInfo, employmentDetails]);
     const onChange = (key: string) => {
         console.log(key);
     };
 
-    const handleEmployeeInfoChange = (values) => {
+    // EmployeeInformation
+    const handleEmployeeInfoChange = (values: IEmployee) => {
         setEmployeeInfo(values);
     };
-
-    const handleEmploymentDetailsChange = (value) => {
+    // EmployeeDetail
+    const handleEmploymentDetailsChange = (value: number) => {
         setEmploymentDetails(value);
     };
 
+    const handleDepartmentChange = (departmentId) => {
+        setSelectedDepartment(departmentId);
+    };
+
+    const handlePositionChange = (positionId) => {
+        setSelectedPosition(positionId);
+    };
+
+    // Handle Add
     const handleAddNewEmployee = async () => {
         console.log(employeeInfo);
         console.log(employmentDetails);
@@ -46,12 +70,32 @@ const AddNewEmployee = () => {
                 type: employeeInfo?.type,
                 contract_start_date: employeeInfo?.contract_start_date,
                 hidden_on_payroll: employmentDetails,
+                //
+                card_number: employeeInfo?.card_number,
+                bank_account_no: employeeInfo?.bank_account_no,
+                family_card_number: employeeInfo?.family_card_number,
+                marriage_code: employeeInfo?.marriage_code,
+                mother_name: employeeInfo?.mother_name,
+                pob: employeeInfo?.pob,
+                home_address_1: employeeInfo?.home_address_1,
+                home_address_2: employeeInfo?.home_address_2,
+                entitle_ot: employeeInfo?.entitle_ot,
+                meal_allowance_paid: employeeInfo?.meal_allowance_paid,
+                grade_id: employeeInfo?.grade_id,
+                //
+                department_id: selectedDepartment,
+                position_id: selectedPosition,
             });
 
             console.log(res);
 
             if (res && res.result === true) {
                 toast.success("Employee added successfully");
+
+                setEmployeeInfo({});
+                setEmploymentDetails(0);
+
+                nagivate("/employee");
             } else {
                 toast.error("An error occurred, please try again later 1");
             }
@@ -89,6 +133,8 @@ const AddNewEmployee = () => {
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Employment Details" key="3">
                     <EmploymentDetails
+                        handleDepartmentChange={handleDepartmentChange}
+                        handlePositionChange={handlePositionChange}
                         handleEmploymentDetailsChange={
                             handleEmploymentDetailsChange
                         }

@@ -201,6 +201,7 @@ const AdminLayout = () => {
                     }}
                     width={300}
                 >
+                    {/* <h2 className="sider__title">General</h2> */}
                     <Menu
                         className="sider-menu"
                         theme="light"

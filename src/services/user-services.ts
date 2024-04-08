@@ -43,6 +43,23 @@ export const addNewEmployeeApi = (employeeData: IEmployee) => {
         type,
         contract_start_date,
         hidden_on_payroll,
+        //
+        card_number,
+        bank_account_no,
+        family_card_number,
+        marriage_code,
+        mother_name,
+        pob,
+        home_address_1,
+        home_address_2,
+        // 
+        entitle_ot,
+        meal_allowance_paid,
+        // 
+        grade_id,
+        // 
+        department_id,
+        position_id
     } = employeeData;
 
     return pgApi.post("employee", {
@@ -53,9 +70,33 @@ export const addNewEmployeeApi = (employeeData: IEmployee) => {
         type,
         contract_start_date,
         hidden_on_payroll,
+        //
+        card_number,
+        bank_account_no,
+        family_card_number,
+        marriage_code,
+        mother_name,
+        pob,
+        home_address_1,
+        home_address_2,
+        // 
+        entitle_ot,
+        meal_allowance_paid,
+        // 
+        grade_id,
+        // 
+        department_id,
+        position_id
     });
 };
 
+export const deleteEmployeeApi = (recordIds: number[]) => {
+    return pgApi.delete("employee/multiple-delete", {
+        data: {
+            record_ids: recordIds,
+        },
+    });
+};
 export const marriageApi = () => {
     return pgApi.get("marriage");
 };

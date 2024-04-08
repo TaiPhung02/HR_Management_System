@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Pagination } from "antd";
-import { employeeApi } from "../../services/user-services";
+import { useLocation } from "react-router-dom";
+import { Button, Table, Pagination, Modal } from "antd";
+import { deleteEmployeeApi, employeeApi } from "../../services/user-services";
 import { IEmployee } from "../../interfaces/employee-interface";
 import "./employeeTable.css";
 import {
@@ -9,6 +10,7 @@ import {
     SearchOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const columns = [
     {
@@ -22,6 +24,9 @@ const columns = [
     {
         title: "Gender",
         dataIndex: "gender",
+        render: (text: string, employee: IEmployee) => {
+            return employee.gender === 0 ? "Male" : "Female";
+        },
     },
     {
         title: "Card number",
@@ -61,7 +66,7 @@ const columns = [
     },
     {
         title: "Contract Record",
-        dataIndex: "emergency_contract",
+        dataIndex: "contracts",
     },
     {
         title: "Department",
@@ -70,6 +75,18 @@ const columns = [
     {
         title: "Employee Type",
         dataIndex: "type",
+        render: (text: string) => {
+            switch (text) {
+                case "0":
+                    return "Permanent worker";
+                case "1":
+                    return "Part-time worker";
+                case "2":
+                    return "Contract worker";
+                default:
+                    return "Unknown";
+            }
+        },
     },
     {
         title: "Basic Salary",
@@ -81,23 +98,29 @@ const columns = [
     },
     {
         title: "Contract First signed date",
-        dataIndex: "contracts",
+        dataIndex: "contract_date",
     },
-    {
-        title: "Contract Second signed date",
-        dataIndex: "contracts",
-    },
+    // {
+    //     title: "Contract Second signed date",
+    //     dataIndex: "contracts",
+    // },
     {
         title: "Contract End signed date",
         dataIndex: "contracts",
     },
     {
-        title: "OT paid",
+        title: "Entitled OT",
         dataIndex: "entitle_ot",
+        render: (text: string) => {
+            return text === "1" ? "Yes" : "No";
+        },
     },
     {
         title: "Meal paid",
         dataIndex: "meal_allowance_paid",
+        render: (text: string) => {
+            return text === "1" ? "Yes" : "No";
+        },
     },
     {
         title: "Meal allowance",
@@ -110,8 +133,10 @@ const columns = [
 ];
 
 const EmployeeTable = () => {
+    // Location
+    const location = useLocation();
     // Table
-    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+    const [selectedEmployees, setSelectedEmployees] = useState<number[]>([]);
     const [loading, setLoading] = useState(true);
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
@@ -121,18 +146,26 @@ const EmployeeTable = () => {
     // Employee
     const [employees, setEmployees] = useState<IEmployee[]>([]);
 
+    // Modal
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     // Select
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-        console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-        setSelectedRowKeys(newSelectedRowKeys);
+        const selectedEmployeeIds = employees
+            .filter((employee) => newSelectedRowKeys.includes(employee.key))
+            .map((selectedEmployee) => selectedEmployee.id);
+
+        console.log("Selected Employee IDs: ", selectedEmployeeIds);
+
+        setSelectedEmployees(selectedEmployeeIds);
     };
 
     const rowSelection = {
-        selectedRowKeys,
+        selectedEmployees,
         onChange: onSelectChange,
     };
 
-    const hasSelected = selectedRowKeys.length > 0;
+    const hasSelected = selectedEmployees.length > 0;
 
     // Call api
     const fetchData = async (page: number, size: number) => {
@@ -148,9 +181,11 @@ const EmployeeTable = () => {
                     nik: employee.id,
                 })
             );
+
             setEmployees(employeeWithKeys);
         } catch (error) {
             console.error("Error fetching data:", error);
+            toast.error("Error fetching data: " + error);
         } finally {
             setLoading(false);
         }
@@ -160,19 +195,91 @@ const EmployeeTable = () => {
         fetchData(currentPage, pageSize);
     }, [currentPage, pageSize]);
 
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const pageParam = searchParams.get("page");
+        const pageSizeParam = searchParams.get("pageSize");
+        if (pageParam) {
+            setCurrentPage(parseInt(pageParam));
+        }
+        if (pageSizeParam) {
+            setPageSize(parseInt(pageSizeParam));
+        }
+    }, [location.search]);
+
     const handlePageChange = (page: number, pageSize?: number) => {
         setCurrentPage(page);
         if (pageSize) {
             setPageSize(pageSize);
         }
+
+        const searchParams = new URLSearchParams(location.search);
+        searchParams.set("page", page.toString());
+        if (pageSize) {
+            searchParams.set("pageSize", pageSize.toString());
+        }
+
+        window.history.replaceState(
+            {},
+            "",
+            `${location.pathname}?${searchParams}`
+        );
+
+        fetchData(page, pageSize || 20);
     };
 
     const handlePageSizeChange = (size: number) => {
         setPageSize(size);
         setCurrentPage(1);
+
+        fetchData(1, size);
+
+        const searchParams = new URLSearchParams(location.search);
+        searchParams.set("page", "1");
+        searchParams.set("pageSize", size.toString());
+        window.history.replaceState(
+            {},
+            "",
+            `${location.pathname}?${searchParams}`
+        );
     };
 
-    console.log(employees);
+    const handleDeleteEmployee = async () => {
+        setIsModalOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        try {
+            const deleteRes = await deleteEmployeeApi(selectedEmployees);
+            console.log(deleteRes);
+
+            if (deleteRes.result === true) {
+                const updatedEmployees = employees.filter(
+                    (employee) => !selectedEmployees.includes(employee.id)
+                );
+                setEmployees(updatedEmployees);
+                setSelectedEmployees([]);
+                toast.success("Selected employees deleted successfully.");
+
+                setIsModalOpen(false);
+
+                if (updatedEmployees.length === 0 && total > 0) {
+                    setCurrentPage(1);
+                    fetchData(1, pageSize);
+                }
+            } else {
+                toast.error("Failed to delete selected employees.");
+            }
+        } catch (error) {
+            console.error("Error deleting employees:", error);
+            toast.error("An error occurred while deleting employees.");
+        }
+    };
+
+    // Handler for canceling deletion
+    const handleCancelDelete = () => {
+        setIsModalOpen(false);
+    };
 
     return (
         <div className="table-wrapper">
@@ -198,10 +305,21 @@ const EmployeeTable = () => {
                     </Button>
                     <Button
                         className="table__cta-delete"
+                        onClick={handleDeleteEmployee}
                         disabled={!hasSelected}
                     >
                         <DeleteOutlined /> Delete
                     </Button>
+
+                    <Modal
+                        className="employee__table-delete-modal"
+                        title="Delete"
+                        open={isModalOpen}
+                        onOk={handleConfirmDelete}
+                        onCancel={handleCancelDelete}
+                    >
+                        <p>Are you sure you want to delete?</p>
+                    </Modal>
                 </div>
                 <div className="table__line"></div>
                 <Table

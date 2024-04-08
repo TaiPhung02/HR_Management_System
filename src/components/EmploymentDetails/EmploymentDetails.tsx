@@ -8,8 +8,16 @@ import { employmentDetailsSchema } from "../../utils/validate-utils";
 
 const initialValues = {
     hidden_on_payroll: false,
+    entitled_ot: false,
+    meal_allowance_paid: false,
 };
-const EmploymentDetails = ({ handleEmploymentDetailsChange }) => {
+const EmploymentDetails = ({
+    handleDepartmentChange,
+    handlePositionChange,
+    handleEmploymentDetailsChange,
+}: {
+    handleEmploymentDetailsChange: (value: number) => void;
+}) => {
     const [departments, setDepartments] = useState<IDepartment[]>([]);
     const [positions, setPositions] = useState<IPosition[]>([]);
 
@@ -61,15 +69,19 @@ const EmploymentDetails = ({ handleEmploymentDetailsChange }) => {
             <div className="addnew__header-line"></div>
             <div className="addnew__employment">
                 <div className="addnew__employment-input-box">
-                    <label htmlFor="name" className="addnew__employment-label">
+                    <label
+                        htmlFor="department_id"
+                        className="addnew__employment-label"
+                    >
                         Department
                     </label>
                     <select
-                        name="gender"
+                        id="department_id"
+                        name="department_id"
                         className="addnew__employment-select"
-                        defaultValue={"1"}
+                        onChange={(e) => handleDepartmentChange(e.target.value)}
                     >
-                        <option value="1" disabled hidden>
+                        <option value="" disabled hidden>
                             Choose Department
                         </option>
                         {departments.map((department) => (
@@ -80,15 +92,19 @@ const EmploymentDetails = ({ handleEmploymentDetailsChange }) => {
                     </select>
                 </div>
                 <div className="addnew__employment-input-box">
-                    <label htmlFor="name" className="addnew__employment-label">
+                    <label
+                        htmlFor="position_id"
+                        className="addnew__employment-label"
+                    >
                         Position
                     </label>
                     <select
-                        name="gender"
+                        id="position_id"
+                        name="position_id"
                         className="addnew__employment-select"
-                        defaultValue={"1"}
+                        onChange={(e) => handlePositionChange(e.target.value)}
                     >
-                        <option value="1" disabled hidden>
+                        <option value="" disabled hidden>
                             Choose Position
                         </option>
                         {positions.map((position) => (
@@ -122,9 +138,13 @@ const EmploymentDetails = ({ handleEmploymentDetailsChange }) => {
                 )}
                 <div className="addnew__employment-checkbox-box">
                     <input
+                        id="entitled_ot"
+                        name="entitled_ot"
                         type="checkbox"
                         className="addnew__employment-checkbox"
-                        id="entitled_ot"
+                        checked={values.entitled_ot}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                     />
                     <label
                         htmlFor="entitled_ot"
@@ -135,9 +155,13 @@ const EmploymentDetails = ({ handleEmploymentDetailsChange }) => {
                 </div>
                 <div className="addnew__employment-checkbox-box">
                     <input
+                        id="meal_allowance_paid"
+                        name="meal_allowance_paid"
                         type="checkbox"
                         className="addnew__employment-checkbox"
-                        id="meal_allowance_paid"
+                        checked={values.meal_allowance_paid}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                     />
                     <label
                         htmlFor="meal_allowance_paid"
