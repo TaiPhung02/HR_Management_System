@@ -9,7 +9,8 @@ function App() {
     return (
         <>
             <div className="app">
-                <RouterProvider router={router}></RouterProvider>
+                <RouterProvider router={router} />
+
                 <ToastContainer
                     position="top-right"
                     autoClose={5000}

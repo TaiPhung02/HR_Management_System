@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Table, Pagination, Modal } from "antd";
 import { deleteEmployeeApi, employeeApi } from "../../services/user-services";
 import { IEmployee } from "../../interfaces/employee-interface";
@@ -135,6 +135,7 @@ const columns = [
 const EmployeeTable = () => {
     // Location
     const location = useLocation();
+    const navigate = useNavigate();
     // Table
     const [selectedEmployees, setSelectedEmployees] = useState<number[]>([]);
     const [loading, setLoading] = useState(true);
@@ -281,6 +282,10 @@ const EmployeeTable = () => {
         setIsModalOpen(false);
     };
 
+    const handleRowClick = (record: IEmployee) => {
+        navigate(`/employee/create-or-update/${record.id}`);
+    };
+
     return (
         <div className="table-wrapper">
             <div className="table__header">
@@ -329,6 +334,9 @@ const EmployeeTable = () => {
                     loading={loading}
                     pagination={false}
                     className="employee__table-row"
+                    onRow={(record) => ({
+                        onClick: () => handleRowClick(record),
+                    })}
                 />
                 <Pagination
                     current={currentPage}

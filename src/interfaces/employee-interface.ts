@@ -5,10 +5,10 @@ export interface IEmployee {
     staff_id: string;
     name: string;
     gender: number;
-    department_id: number;
+    department_id?: number | null;
     company_id: number;
     marriage_id: number;
-    position_id: number | null;
+    position_id?: number | null;
     type: string;
     mother_name: string;
     dob: string;
@@ -41,7 +41,7 @@ export interface IEmployee {
     operational_allowance_paid: number;
     attendance_allowance_paid: number;
     minimum_salary_used: string;
-    hidden_on_payroll: string;
+    hidden_on_payroll?: number;
     contract_start_date: string;
     resign_reason: string | null;
     resign_effective_date: string | null;
@@ -67,10 +67,10 @@ export interface EmployeeInfo {
     gender?: string;
     dob?: string;
     ktp_no?: string;
+    nc_id: string;
     type?: string;
     contract_start_date?: string;
-    hidden_on_payroll?: string;
-    // 
+    //
     card_number?: number;
     bank_account_no?: number;
     family_card_number?: number;
@@ -79,7 +79,5 @@ export interface EmployeeInfo {
     pob?: string;
     home_address_1?: string;
     home_address_2?: string;
-    entitle_ot?: number;
-    meal_allowance_paid?: number;
     grading?: string;
 }

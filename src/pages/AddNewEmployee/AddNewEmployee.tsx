@@ -10,14 +10,20 @@ import { toast } from "react-toastify";
 import { addNewEmployeeApi } from "../../services/user-services";
 import { useNavigate } from "react-router-dom";
 import { IEmployee } from "../../interfaces/employee-interface";
+import { ISalaryWages } from "../../interfaces/salaryWages-interface";
 
 const AddNewEmployee = () => {
-    const nagivate = useNavigate();
+    const navigate = useNavigate();
     const [employeeInfo, setEmployeeInfo] = useState<IEmployee>({});
     const [employmentDetails, setEmploymentDetails] = useState(0);
+    const [salaryWages, setSalaryWages] = useState<ISalaryWages>({});
 
-    const [selectedDepartment, setSelectedDepartment] = useState(null);
-    const [selectedPosition, setSelectedPosition] = useState(null);
+    const [selectedDepartment, setSelectedDepartment] = useState<number | null>(
+        null
+    );
+    const [selectedPosition, setSelectedPosition] = useState<number | null>(
+        null
+    );
 
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
@@ -35,26 +41,6 @@ const AddNewEmployee = () => {
             ) || !employmentDetails
         );
     }, [employeeInfo, employmentDetails]);
-    const onChange = (key: string) => {
-        console.log(key);
-    };
-
-    // EmployeeInformation
-    const handleEmployeeInfoChange = (values: IEmployee) => {
-        setEmployeeInfo(values);
-    };
-    // EmployeeDetail
-    const handleEmploymentDetailsChange = (value: number) => {
-        setEmploymentDetails(value);
-    };
-
-    const handleDepartmentChange = (departmentId) => {
-        setSelectedDepartment(departmentId);
-    };
-
-    const handlePositionChange = (positionId) => {
-        setSelectedPosition(positionId);
-    };
 
     // Handle Add
     const handleAddNewEmployee = async () => {
@@ -63,28 +49,11 @@ const AddNewEmployee = () => {
 
         try {
             const res = await addNewEmployeeApi({
-                name: employeeInfo?.name,
-                gender: employeeInfo?.gender,
-                dob: employeeInfo?.dob,
-                ktp_no: employeeInfo?.ktp_no,
-                type: employeeInfo?.type,
-                contract_start_date: employeeInfo?.contract_start_date,
-                hidden_on_payroll: employmentDetails,
-                //
-                card_number: employeeInfo?.card_number,
-                bank_account_no: employeeInfo?.bank_account_no,
-                family_card_number: employeeInfo?.family_card_number,
-                marriage_code: employeeInfo?.marriage_code,
-                mother_name: employeeInfo?.mother_name,
-                pob: employeeInfo?.pob,
-                home_address_1: employeeInfo?.home_address_1,
-                home_address_2: employeeInfo?.home_address_2,
-                entitle_ot: employeeInfo?.entitle_ot,
-                meal_allowance_paid: employeeInfo?.meal_allowance_paid,
-                grade_id: employeeInfo?.grade_id,
-                //
+                ...employeeInfo,
                 department_id: selectedDepartment,
                 position_id: selectedPosition,
+                hidden_on_payroll: employmentDetails,
+                ...salaryWages,
             });
 
             console.log(res);
@@ -95,7 +64,7 @@ const AddNewEmployee = () => {
                 setEmployeeInfo({});
                 setEmploymentDetails(0);
 
-                nagivate("/employee");
+                navigate("/employee");
             } else {
                 toast.error("An error occurred, please try again later 1");
             }
@@ -103,6 +72,37 @@ const AddNewEmployee = () => {
             console.error("Error adding employee:", error);
             toast.error("An error occurred, please try again later 2");
         }
+    };
+
+    const onChange = (key: string) => {
+        console.log(key);
+    };
+
+    // EmployeeInformation
+    const handleEmployeeInfoChange = (values: IEmployee) => {
+        console.log(values);
+        setEmployeeInfo(values);
+    };
+    // EmployeeDetail
+    const handleEmploymentDetailsChange = (value: number) => {
+        console.log(value);
+        setEmploymentDetails(value);
+    };
+
+    const handleDepartmentChange = (departmentId: number) => {
+        console.log(departmentId);
+        setSelectedDepartment(departmentId);
+    };
+
+    const handlePositionChange = (positionId: number) => {
+        console.log(positionId);
+        setSelectedPosition(positionId);
+    };
+
+    // SalaryWages
+    const handleSalaryWagesChange = (values: ISalaryWages) => {
+        console.log(values);
+        setSalaryWages(values);
     };
 
     return (
@@ -141,7 +141,9 @@ const AddNewEmployee = () => {
                     />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Salary & Wages" key="4">
-                    <SalaryWages />
+                    <SalaryWages
+                        handleSalaryWagesChange={handleSalaryWagesChange}
+                    />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Others" key="5">
                     <Others />

@@ -91,12 +91,14 @@ const AdminLayout = () => {
     const dispatch = useDispatch();
     // BreadCumb
     const location = useLocation();
+    // BreadCumb
     const crumbs = location.pathname
         .split("/")
         .filter((crumb) => crumb !== "")
         .map((crumb, index, array) => {
             const path = `/${array.slice(0, index + 1).join("/")}`;
             let crumbText = "";
+            let isEditPage = false;
             // Thay đổi text cho từng crumb dựa vào đường dẫn (path)
             switch (path) {
                 case "/employee":
@@ -106,9 +108,22 @@ const AdminLayout = () => {
                     crumbText = "Add new employee";
                     break;
                 default:
-                    crumbText = crumb;
+                    if (path.startsWith("/employee/create-or-update/")) {
+                        // This is an edit page
+                        crumbText = "Edit employee";
+                        isEditPage = true;
+                    } else {
+                        crumbText = crumb;
+                    }
                     break;
             }
+
+            // If this is an edit page, we need to append the ID to the crumb text
+            if (isEditPage && path !== location.pathname) {
+                const id = path.split("/").pop(); // Get the ID from the path
+                crumbText += ` ${id}`;
+            }
+
             const isCurrent = path === location.pathname;
 
             return (

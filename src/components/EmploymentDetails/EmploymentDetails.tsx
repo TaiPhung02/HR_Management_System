@@ -6,17 +6,21 @@ import { IDepartment } from "../../interfaces/department-interface";
 import { departmentApi, positionApi } from "../../services/user-services";
 import { employmentDetailsSchema } from "../../utils/validate-utils";
 
+interface EmploymentDetailsProps {
+    handleDepartmentChange: (departmentId: number) => void;
+    handlePositionChange: (positionId: number) => void;
+    handleEmploymentDetailsChange: (value: number) => void;
+}
+
 const initialValues = {
     hidden_on_payroll: false,
     entitled_ot: false,
     meal_allowance_paid: false,
 };
-const EmploymentDetails = ({
+const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
     handleDepartmentChange,
     handlePositionChange,
     handleEmploymentDetailsChange,
-}: {
-    handleEmploymentDetailsChange: (value: number) => void;
 }) => {
     const [departments, setDepartments] = useState<IDepartment[]>([]);
     const [positions, setPositions] = useState<IPosition[]>([]);
@@ -79,9 +83,12 @@ const EmploymentDetails = ({
                         id="department_id"
                         name="department_id"
                         className="addnew__employment-select"
-                        onChange={(e) => handleDepartmentChange(e.target.value)}
+                        onChange={(e) =>
+                            handleDepartmentChange(parseInt(e.target.value))
+                        }
+                        defaultValue={"1"}
                     >
-                        <option value="" disabled hidden>
+                        <option value="1" disabled hidden>
                             Choose Department
                         </option>
                         {departments.map((department) => (
@@ -102,9 +109,12 @@ const EmploymentDetails = ({
                         id="position_id"
                         name="position_id"
                         className="addnew__employment-select"
-                        onChange={(e) => handlePositionChange(e.target.value)}
+                        onChange={(e) =>
+                            handlePositionChange(parseInt(e.target.value))
+                        }
+                        defaultValue={"1"}
                     >
-                        <option value="" disabled hidden>
+                        <option value="1" disabled hidden>
                             Choose Position
                         </option>
                         {positions.map((position) => (

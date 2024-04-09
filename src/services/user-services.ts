@@ -34,60 +34,34 @@ export const employeeApi = (page: number, size: number) => {
     return pgApi.get(`employee?page=${page}&size=${size}`);
 };
 
-export const addNewEmployeeApi = (employeeData: IEmployee) => {
-    const {
-        name,
-        gender,
-        dob,
-        ktp_no,
-        type,
-        contract_start_date,
-        hidden_on_payroll,
-        //
-        card_number,
-        bank_account_no,
-        family_card_number,
-        marriage_code,
-        mother_name,
-        pob,
-        home_address_1,
-        home_address_2,
-        // 
-        entitle_ot,
-        meal_allowance_paid,
-        // 
-        grade_id,
-        // 
-        department_id,
-        position_id
-    } = employeeData;
-
+export const addNewEmployeeApi = ({
+    department_id,
+    position_id,
+    hidden_on_payroll,
+    //
+    basic_salary,
+    audit_salary,
+    health_insurance,
+    meal_allowance,
+    safety_insurance,
+    ...employeeData
+}: IEmployee) => {
     return pgApi.post("employee", {
-        name,
-        gender,
-        dob,
-        ktp_no,
-        type,
-        contract_start_date,
+        department_id,
+        position_id,
         hidden_on_payroll,
         //
-        card_number,
-        bank_account_no,
-        family_card_number,
-        marriage_code,
-        mother_name,
-        pob,
-        home_address_1,
-        home_address_2,
-        // 
-        entitle_ot,
-        meal_allowance_paid,
-        // 
-        grade_id,
-        // 
-        department_id,
-        position_id
+        basic_salary,
+        audit_salary,
+        health_insurance,
+        meal_allowance,
+        safety_insurance,
+        ...employeeData,
     });
+};
+
+export const editEmployeeApi = (recordId: number) => {
+    return pgApi.put(`employee/${recordId}`);
 };
 
 export const deleteEmployeeApi = (recordIds: number[]) => {

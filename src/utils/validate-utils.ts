@@ -62,16 +62,16 @@ export const salaryWagesValidation = Yup.object().shape({
     basic_salary: Yup.number()
         .min(0, "Please input value min is 0")
         .required("This field is required"),
-    basic_salary_audit: Yup.number()
+    audit_salary: Yup.number()
         .min(0, "Please input value min is 0")
         .required("This field is required"),
-    safety_insurance_amount: Yup.number()
-        .min(0, "Please input value min is 0")
-        .required("This field is required"),
-    health_insurance_amount: Yup.number()
+    health_insurance: Yup.number()
         .min(0, "Please input value min is 0")
         .required("This field is required"),
     meal_allowance: Yup.number()
+        .min(0, "Please input value min is 0")
+        .required("This field is required"),
+    safety_insurance: Yup.number()
         .min(0, "Please input value min is 0")
         .required("This field is required"),
 });

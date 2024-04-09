@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import "./salaryWages.css";
 import { salaryWagesValidation } from "../../utils/validate-utils";
+import { ISalaryWages } from "../../interfaces/salaryWages-interface";
 
 const initialValues = {
     basic_salary: "",
-    basic_salary_audit: "",
-    safety_insurance_amount: "",
-    health_insurance_amount: "",
+    audit_salary: "",
+    health_insurance: "",
     meal_allowance: "",
+    safety_insurance: "",
 };
-const SalaryWages = () => {
+const SalaryWages = ({ handleSalaryWagesChange }: {
+    handleSalaryWagesChange: (values: ISalaryWages) => void;
+}) => {
     const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
         useFormik({
             initialValues: initialValues,
@@ -19,6 +22,11 @@ const SalaryWages = () => {
                 console.log(values);
             },
         });
+
+    useEffect(() => {
+        console.log(values);
+        handleSalaryWagesChange(values);
+    }, [values, handleSalaryWagesChange]);
 
     return (
         <div className="addnew-container">
@@ -63,7 +71,7 @@ const SalaryWages = () => {
                     </div>
                     <div className="addnew__salary-input-box">
                         <label
-                            htmlFor="basic_salary_audit"
+                            htmlFor="audit_salary"
                             className="addnew__salary-label"
                         >
                             Basic Salary (Audit)
@@ -76,64 +84,28 @@ const SalaryWages = () => {
                                 </span>
                                 <input
                                     type="number"
-                                    id="basic_salary_audit"
+                                    id="audit_salary"
                                     className={
-                                        errors.basic_salary_audit &&
-                                        touched.basic_salary_audit
+                                        errors.audit_salary &&
+                                        touched.audit_salary
                                             ? "addnew__salary-number error"
                                             : "addnew__salary-number"
                                     }
-                                    value={values.basic_salary_audit}
+                                    value={values.audit_salary}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
                             </div>
-                            {touched.basic_salary_audit &&
-                                errors.basic_salary_audit && (
-                                    <p className="login__message-error">
-                                        {errors.basic_salary_audit}
-                                    </p>
-                                )}
+                            {touched.audit_salary && errors.audit_salary && (
+                                <p className="login__message-error">
+                                    {errors.audit_salary}
+                                </p>
+                            )}
                         </div>
                     </div>
                     <div className="addnew__salary-input-box">
                         <label
-                            htmlFor="safety_insurance_amount"
-                            className="addnew__salary-label"
-                        >
-                            Safety Insurance Amount
-                            <span className="required">*</span>
-                        </label>
-                        <div>
-                            <div className="addnew__salary-number-box">
-                                <span className="addnew__salary-number-desc">
-                                    RP
-                                </span>
-                                <input
-                                    type="number"
-                                    id="safety_insurance_amount"
-                                    className={
-                                        errors.safety_insurance_amount &&
-                                        touched.safety_insurance_amount
-                                            ? "addnew__salary-number error"
-                                            : "addnew__salary-number"
-                                    }
-                                    value={values.safety_insurance_amount}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                            </div>
-                            {touched.safety_insurance_amount &&
-                                errors.safety_insurance_amount && (
-                                    <p className="login__message-error">
-                                        {errors.safety_insurance_amount}
-                                    </p>
-                                )}
-                        </div>
-                    </div>
-                    <div className="addnew__salary-input-box">
-                        <label
-                            htmlFor="health_insurance_amount"
+                            htmlFor="health_insurance"
                             className="addnew__salary-label"
                         >
                             Health Insurance Amount
@@ -146,22 +118,22 @@ const SalaryWages = () => {
                                 </span>
                                 <input
                                     type="number"
-                                    id="health_insurance_amount"
+                                    id="health_insurance"
                                     className={
-                                        errors.health_insurance_amount &&
-                                        touched.health_insurance_amount
+                                        errors.health_insurance &&
+                                        touched.health_insurance
                                             ? "addnew__salary-number error"
                                             : "addnew__salary-number"
                                     }
-                                    value={values.health_insurance_amount}
+                                    value={values.health_insurance}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
                             </div>
-                            {touched.health_insurance_amount &&
-                                errors.health_insurance_amount && (
+                            {touched.health_insurance &&
+                                errors.health_insurance && (
                                     <p className="login__message-error">
-                                        {errors.health_insurance_amount}
+                                        {errors.health_insurance}
                                     </p>
                                 )}
                         </div>
@@ -171,7 +143,8 @@ const SalaryWages = () => {
                             htmlFor="meal_allowance"
                             className="addnew__salary-label"
                         >
-                            Meal Allowance<span className="required">*</span>
+                            Meal Allowance
+                            <span className="required">*</span>
                         </label>
                         <div>
                             <div className="addnew__salary-number-box">
@@ -196,6 +169,41 @@ const SalaryWages = () => {
                                 errors.meal_allowance && (
                                     <p className="login__message-error">
                                         {errors.meal_allowance}
+                                    </p>
+                                )}
+                        </div>
+                    </div>
+                    <div className="addnew__salary-input-box">
+                        <label
+                            htmlFor="safety_insurance"
+                            className="addnew__salary-label"
+                        >
+                            Safety Insurance Amount
+                            <span className="required">*</span>
+                        </label>
+                        <div>
+                            <div className="addnew__salary-number-box">
+                                <span className="addnew__salary-number-desc">
+                                    RP
+                                </span>
+                                <input
+                                    type="number"
+                                    id="safety_insurance"
+                                    className={
+                                        errors.safety_insurance &&
+                                        touched.safety_insurance
+                                            ? "addnew__salary-number error"
+                                            : "addnew__salary-number"
+                                    }
+                                    value={values.safety_insurance}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                            </div>
+                            {touched.safety_insurance &&
+                                errors.safety_insurance && (
+                                    <p className="login__message-error">
+                                        {errors.safety_insurance}
                                     </p>
                                 )}
                         </div>

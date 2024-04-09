@@ -21,20 +21,18 @@ const initialValues = {
     card_number: "",
     bank_account_no: "",
     family_card_number: "",
-    marriage_code: "",
+    marriage_id: "",
     mother_name: "",
     pob: "",
     home_address_1: "",
     home_address_2: "",
-    entitle_ot: "",
-    meal_allowance_paid: "",
     grade_id: "",
 };
 
 const EmployeeInformation = ({
     handleEmployeeInfoChange,
 }: {
-    handleEmployeeInfoChange: (employeeInfo: IEmployee) => void;
+    handleEmployeeInfoChange: (values: IEmployee) => void;
 }) => {
     const [marriages, setMarriages] = useState<IMarriage[]>([]);
 
@@ -47,39 +45,10 @@ const EmployeeInformation = ({
             },
         });
 
-    console.log(values);
-
-    const employeeInfo = {
-        name: values.name,
-        gender: values.gender,
-        dob: values.dob,
-        ktp_no: values.ktp_no,
-        nc_id: values.nc_id,
-        type: values.type,
-        contract_start_date: values.contract_start_date,
-        //
-        card_number: values.card_number,
-        bank_account_no: values.bank_account_no,
-        family_card_number: values.family_card_number,
-        marriage_code: values.marriage_code,
-        mother_name: values.mother_name,
-        pob: values.pob,
-        home_address_1: values.home_address_1,
-        home_address_2: values.home_address_2,
-        entitle_ot: values.entitle_ot,
-        meal_allowance_paid: values.meal_allowance_paid,
-        grade_id: values.grade_id,
-    };
-
-    const memoizedHandleEmployeeInfoChange = useCallback(
-        handleEmployeeInfoChange,
-        [values]
-    );
-
     useEffect(() => {
-        memoizedHandleEmployeeInfoChange(employeeInfo);
-        console.log(employeeInfo);
-    }, [values, memoizedHandleEmployeeInfoChange]);
+        handleEmployeeInfoChange(values);
+    }, [values, handleEmployeeInfoChange]);
+
     const fetchMarriage = async () => {
         try {
             const marriagesRes = await marriageApi();
@@ -97,15 +66,11 @@ const EmployeeInformation = ({
         fetchMarriage();
     }, []);
 
-    const handleDateChange = (
-        date: Moment | null,
-        dateString: string,
-        field: string
-    ): void => {
+    const handleDateChange = (date: Moment | null, field: string): void => {
         handleChange({
             target: {
                 name: field,
-                value: dateString,
+                value: date ? date.format("YYYY-MM-DD") : "",
             },
         });
     };
@@ -239,16 +204,16 @@ const EmployeeInformation = ({
                     </div>
                     <div className="addnew__employee-input-box">
                         <label
-                            htmlFor="marriage_code"
+                            htmlFor="marriage_id"
                             className="addnew__employee-label"
                         >
                             Marriage Status
                         </label>
                         <select
-                            id="marriage_code"
-                            name="marriage_code"
+                            id="marriage_id"
+                            name="marriage_id"
                             className="addnew__employee-select"
-                            value={values.marriage_code}
+                            value={values.marriage_id}
                             onChange={handleChange}
                         >
                             <option value="" disabled hidden>
@@ -290,15 +255,13 @@ const EmployeeInformation = ({
                                         ? "addnew__employee-date-box error"
                                         : "addnew__employee-date-box"
                                 }
-                                value={values.dob ? moment(values.dob) : null}
-                                onChange={(date, dateString) =>
-                                    handleDateChange(
-                                        date,
-                                        Array.isArray(dateString)
-                                            ? dateString[0]
-                                            : dateString,
-                                        "dob"
-                                    )
+                                value={
+                                    values.dob
+                                        ? moment(values.dob, "YYYY-MM-DD")
+                                        : null
+                                }
+                                onChange={(date) =>
+                                    handleDateChange(date, "dob")
                                 }
                                 onBlur={handleBlur}
                             />
@@ -425,31 +388,14 @@ const EmployeeInformation = ({
                         />
                     </div>
                     <div className="addnew__employee-input-box">
-                        <label
-                            htmlFor="contract_start_date"
-                            className="addnew__employee-label"
-                        >
+                        <label htmlFor="" className="addnew__employee-label">
                             Date Start
                         </label>
                         <div className="addnew__employee-input-wrapper">
                             <DatePicker
-                                id="contract_start_date"
-                                name="contract_start_date"
+                                id=""
+                                name=""
                                 className="addnew__employee-date-box"
-                                value={
-                                    values.contract_start_date
-                                        ? moment(values.contract_start_date)
-                                        : null
-                                }
-                                onChange={(date, dateString) =>
-                                    handleDateChange(
-                                        date,
-                                        Array.isArray(dateString)
-                                            ? dateString[0]
-                                            : dateString,
-                                        "contract_start_date"
-                                    )
-                                }
                             />
                         </div>
                     </div>
@@ -473,15 +419,15 @@ const EmployeeInformation = ({
                                 }
                                 value={
                                     values.contract_start_date
-                                        ? moment(values.contract_start_date)
+                                        ? moment(
+                                              values.contract_start_date,
+                                              "YYYY-MM-DD"
+                                          )
                                         : null
                                 }
-                                onChange={(date, dateString) =>
+                                onChange={(date) =>
                                     handleDateChange(
                                         date,
-                                        Array.isArray(dateString)
-                                            ? dateString[0]
-                                            : dateString,
                                         "contract_start_date"
                                     )
                                 }

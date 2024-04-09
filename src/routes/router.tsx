@@ -8,6 +8,7 @@ import PrivateRouter from "../components/PrivateRouter/PrivateRouter";
 import Employee from "../pages/Employee/Employee";
 import NotFound from "../pages/NotFound/NotFound";
 import AddNewEmployee from "../pages/AddNewEmployee/AddNewEmployee";
+import EditEmployee from "../pages/EditEmployee/EditEmployee";
 const router = createBrowserRouter([
     {
         path: "/login",
@@ -16,14 +17,6 @@ const router = createBrowserRouter([
     {
         path: "/forgot-password",
         element: <ForgotPassWord />,
-    },
-    {
-        path: "/change-password",
-        element: <ChangePassword />,
-    },
-    {
-        path: "/*",
-        element: <NotFound />,
     },
     {
         path: "/",
@@ -50,6 +43,30 @@ const router = createBrowserRouter([
                 element: (
                     <PrivateRouter>
                         <AddNewEmployee />
+                    </PrivateRouter>
+                ),
+            },
+            {
+                path: `/employee/create-or-update/:id`,
+                element: (
+                    <PrivateRouter>
+                        <AddNewEmployee />
+                    </PrivateRouter>
+                ),
+            },
+            {
+                path: "/change-password",
+                element: (
+                    <PrivateRouter>
+                        <ChangePassword />
+                    </PrivateRouter>
+                ),
+            },
+            {
+                path: "/*",
+                element: (
+                    <PrivateRouter>
+                        <NotFound />
                     </PrivateRouter>
                 ),
             },

@@ -11,5 +11,5 @@ export default function PrivateRouter({ children }: PrivateRouterProps) {
     // const token = localStorage.getItem("token");
     const user = useSelector((state: RootState) => state.auth.user);
 
-    return user?.token ? <>{children}</> : <Navigate to="/login" replace />;
+    return user?.token ? <>{children}</> : <Navigate to="/login" />;
 }
