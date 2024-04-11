@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import "./salaryWages.css";
 import { salaryWagesValidation } from "../../utils/validate-utils";
 import { ISalaryWages } from "../../interfaces/salaryWages-interface";
+import { useParams } from "react-router-dom";
+import { getEmployeeByIdApi } from "../../services/user-services";
 
 const initialValues = {
     basic_salary: "",
@@ -11,22 +13,47 @@ const initialValues = {
     meal_allowance: "",
     safety_insurance: "",
 };
-const SalaryWages = ({ handleSalaryWagesChange }: {
+const SalaryWages = ({
+    handleSalaryWagesChange,
+}: {
     handleSalaryWagesChange: (values: ISalaryWages) => void;
 }) => {
-    const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
-        useFormik({
-            initialValues: initialValues,
-            validationSchema: salaryWagesValidation,
-            onSubmit: (values) => {
-                console.log(values);
-            },
-        });
+    // Get params
+    const { id } = useParams<{ id: string }>();
+    // Formik
+    const {
+        values,
+        setValues,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        errors,
+        touched,
+    } = useFormik({
+        initialValues: initialValues,
+        validationSchema: salaryWagesValidation,
+        onSubmit: (values) => {
+            console.log(values);
+        },
+    });
 
     useEffect(() => {
-        console.log(values);
         handleSalaryWagesChange(values);
     }, [values, handleSalaryWagesChange]);
+
+    useEffect(() => {
+        const fetchEmployeeData = async () => {
+            try {
+                const employeeRes = await getEmployeeByIdApi(id);
+                const employeeData = employeeRes.data;
+                setValues(employeeData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchEmployeeData();
+    }, [id, setValues]);
 
     return (
         <div className="addnew-container">

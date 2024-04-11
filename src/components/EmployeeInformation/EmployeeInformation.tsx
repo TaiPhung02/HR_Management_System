@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 
 import "./employeeInformation.css";
 import { DatePicker } from "antd";
 import { IMarriage } from "../../interfaces/marriage-interface";
-import { marriageApi } from "../../services/user-services";
+import { getEmployeeByIdApi, marriageApi } from "../../services/user-services";
 import { employeeInformationValidation } from "../../utils/validate-utils";
 import moment, { Moment } from "moment";
 import { IEmployee } from "../../interfaces/employee-interface";
+import { useParams } from "react-router-dom";
 
 const initialValues = {
     name: "",
@@ -34,38 +35,32 @@ const EmployeeInformation = ({
 }: {
     handleEmployeeInfoChange: (values: IEmployee) => void;
 }) => {
+    // Get params
+    const { id } = useParams<{ id: string }>();
+    // Get marriages
     const [marriages, setMarriages] = useState<IMarriage[]>([]);
-
-    const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
-        useFormik({
-            initialValues: initialValues,
-            validationSchema: employeeInformationValidation,
-            onSubmit: (values) => {
-                console.log(values);
-            },
-        });
-
+    // Formik
+    const {
+        values,
+        setValues,
+        handleBlur,
+        handleChange,
+        handleSubmit,
+        errors,
+        touched,
+    } = useFormik({
+        initialValues: initialValues,
+        validationSchema: employeeInformationValidation,
+        onSubmit: (values) => {
+            console.log(values);
+        },
+    });
+    // handleEmployeeInfoChange
     useEffect(() => {
         handleEmployeeInfoChange(values);
     }, [values, handleEmployeeInfoChange]);
 
-    const fetchMarriage = async () => {
-        try {
-            const marriagesRes = await marriageApi();
-            if (marriagesRes && marriagesRes.data) {
-                setMarriages(marriagesRes.data);
-            } else {
-                console.error("No data returned from marriage API");
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchMarriage();
-    }, []);
-
+    // handleDateChange
     const handleDateChange = (date: Moment | null, field: string): void => {
         handleChange({
             target: {
@@ -74,6 +69,25 @@ const EmployeeInformation = ({
             },
         });
     };
+
+    useEffect(() => {
+        const fetchEmployeeData = async () => {
+            try {
+                const [employeeRes, marriagesRes] = await Promise.all([
+                    getEmployeeByIdApi(id),
+                    marriageApi(),
+                ]);
+                const employeeData = employeeRes.data;
+                const marriagesData = marriagesRes.data;
+                setValues(employeeData);
+                setMarriages(marriagesData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchEmployeeData();
+    }, [id, setValues]);
 
     return (
         <div className="addnew-container">

@@ -34,6 +34,10 @@ export const employeeApi = (page: number, size: number) => {
     return pgApi.get(`employee?page=${page}&size=${size}`);
 };
 
+export const getEmployeeByIdApi = (recordId: number) => {
+    return pgApi.get(`employee/${recordId}`);
+};
+
 export const addNewEmployeeApi = ({
     department_id,
     position_id,
@@ -60,8 +64,15 @@ export const addNewEmployeeApi = ({
     });
 };
 
-export const editEmployeeApi = (recordId: number) => {
-    return pgApi.put(`employee/${recordId}`);
+export const editEmployeeApi = (id: string, employeeData: IEmployee) => {
+    const { department_id, position_id, hidden_on_payroll, ...rest } =
+        employeeData;
+    return pgApi.put(`employee/${id}`, {
+        department_id,
+        position_id,
+        hidden_on_payroll,
+        ...rest,
+    });
 };
 
 export const deleteEmployeeApi = (recordIds: number[]) => {

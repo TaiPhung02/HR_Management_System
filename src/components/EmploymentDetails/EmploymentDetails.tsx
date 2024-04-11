@@ -3,8 +3,13 @@ import { useFormik } from "formik";
 import "./employmentDetail.css";
 import { IPosition } from "../../interfaces/position-interface";
 import { IDepartment } from "../../interfaces/department-interface";
-import { departmentApi, positionApi } from "../../services/user-services";
+import {
+    departmentApi,
+    getEmployeeByIdApi,
+    positionApi,
+} from "../../services/user-services";
 import { employmentDetailsSchema } from "../../utils/validate-utils";
+import { useParams } from "react-router-dom";
 
 interface EmploymentDetailsProps {
     handleDepartmentChange: (departmentId: number) => void;
@@ -22,16 +27,20 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
     handlePositionChange,
     handleEmploymentDetailsChange,
 }) => {
+    // Get params
+    const { id } = useParams<{ id: string }>();
+    // state Departments, Positions
     const [departments, setDepartments] = useState<IDepartment[]>([]);
     const [positions, setPositions] = useState<IPosition[]>([]);
 
-    const { values, handleBlur, handleChange, errors, touched } = useFormik({
-        initialValues: initialValues,
-        validationSchema: employmentDetailsSchema,
-        onSubmit: (values) => {
-            console.log(values);
-        },
-    });
+    const { values, setValues, handleBlur, handleChange, errors, touched } =
+        useFormik({
+            initialValues: initialValues,
+            validationSchema: employmentDetailsSchema,
+            onSubmit: (values) => {
+                console.log(values);
+            },
+        });
 
     useEffect(() => {
         const newValue = values.hidden_on_payroll ? 1 : 0;
@@ -61,6 +70,20 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
     useEffect(() => {
         fetchData();
     }, []);
+
+    useEffect(() => {
+        const fetchEmployeeData = async () => {
+            try {
+                const employeeRes = await getEmployeeByIdApi(id);
+                const employeeData = employeeRes.data;
+                setValues(employeeData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchEmployeeData();
+    }, [id, setValues]);
 
     return (
         <div className="addnew-container">

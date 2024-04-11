@@ -7,24 +7,34 @@ import EmploymentDetails from "../../components/EmploymentDetails/EmploymentDeta
 import SalaryWages from "../../components/SalaryWages/SalaryWages";
 import Others from "../../components/Others/Others";
 import { toast } from "react-toastify";
-import { addNewEmployeeApi } from "../../services/user-services";
-import { useNavigate } from "react-router-dom";
+import {
+    addNewEmployeeApi,
+    editEmployeeApi,
+} from "../../services/user-services";
+import { useNavigate, useParams } from "react-router-dom";
 import { IEmployee } from "../../interfaces/employee-interface";
 import { ISalaryWages } from "../../interfaces/salaryWages-interface";
 
 const AddNewEmployee = () => {
+    // Get params
+    const { id } = useParams<{ id?: string }>();
+    // check id in URL
+    const isEditMode = !!id;
+    // Navigate
     const navigate = useNavigate();
+    // State EmployeeInformation
     const [employeeInfo, setEmployeeInfo] = useState<IEmployee>({});
+    // State EmployeeDetails
     const [employmentDetails, setEmploymentDetails] = useState(0);
-    const [salaryWages, setSalaryWages] = useState<ISalaryWages>({});
-
     const [selectedDepartment, setSelectedDepartment] = useState<number | null>(
         null
     );
     const [selectedPosition, setSelectedPosition] = useState<number | null>(
         null
     );
-
+    // State SalaryWages
+    const [salaryWages, setSalaryWages] = useState<ISalaryWages>({});
+    // State Button
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
     useEffect(() => {
@@ -74,6 +84,30 @@ const AddNewEmployee = () => {
         }
     };
 
+    // HandleEditEmployee
+    const handleEditEmployee = async () => {
+        try {
+            const res = await editEmployeeApi(id, {
+                ...employeeInfo,
+                department_id: selectedDepartment,
+                position_id: selectedPosition,
+                hidden_on_payroll: employmentDetails,
+                ...salaryWages,
+            });
+
+            if (res && res.result === true) {
+                toast.success("Employee edited successfully");
+                window.history.back();
+            } else {
+                toast.error("Failed to edit employee. Please try again later.");
+            }
+        } catch (error) {
+            toast.error(
+                "An error occurred while editing employee. Please try again later."
+            );
+        }
+    };
+
     const onChange = (key: string) => {
         console.log(key);
     };
@@ -109,13 +143,22 @@ const AddNewEmployee = () => {
         <div className="table-wrapper">
             <div className="table__header">
                 <h1 className="table__header-heading">Employee Management</h1>
-                <Button
-                    className="addNew__cta-add"
-                    onClick={handleAddNewEmployee}
-                    disabled={isButtonDisabled}
-                >
-                    Add
-                </Button>
+                {isEditMode ? (
+                    <Button
+                        className="addNew__cta-save"
+                        onClick={handleEditEmployee}
+                    >
+                        Save Changes
+                    </Button>
+                ) : (
+                    <Button
+                        className="addNew__cta-add"
+                        onClick={handleAddNewEmployee}
+                        disabled={isButtonDisabled}
+                    >
+                        Add
+                    </Button>
+                )}
             </div>
             <Tabs
                 size="large"
