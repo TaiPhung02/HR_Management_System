@@ -158,3 +158,10 @@
     height: 48px;
     border-radius: 6px;
 }
+
+/*  */
+
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #30a46c;
+    border-color: #30a46c;
+}

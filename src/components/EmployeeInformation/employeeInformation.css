@@ -135,7 +135,7 @@
 }
 
 .addnew__employee-input.disabled {
-    color: #687076;
+    background: #c1c8cd;
     cursor: not-allowed;
 }
 

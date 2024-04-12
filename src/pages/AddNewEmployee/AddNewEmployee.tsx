@@ -14,6 +14,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { IEmployee } from "../../interfaces/employee-interface";
 import { ISalaryWages } from "../../interfaces/salaryWages-interface";
+import { PiWarningCircle } from "react-icons/pi";
 
 const AddNewEmployee = () => {
     // Get params
@@ -36,6 +37,7 @@ const AddNewEmployee = () => {
     const [salaryWages, setSalaryWages] = useState<ISalaryWages>({});
     // State Button
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    // const [isErrorsField, setIsErrorsField] = useState(false);
 
     useEffect(() => {
         setIsButtonDisabled(
@@ -65,8 +67,6 @@ const AddNewEmployee = () => {
                 hidden_on_payroll: employmentDetails,
                 ...salaryWages,
             });
-
-            console.log(res);
 
             if (res && res.result === true) {
                 toast.success("Employee added successfully");
@@ -166,7 +166,15 @@ const AddNewEmployee = () => {
                 defaultActiveKey="1"
                 onChange={onChange}
             >
-                <Tabs.TabPane tab="Employee Infomation" key="1">
+                <Tabs.TabPane
+                    tab={
+                        <span className="addnew_table">
+                            Employee Information
+                            <PiWarningCircle />
+                        </span>
+                    }
+                    key="1"
+                >
                     <EmployeeInformation
                         handleEmployeeInfoChange={handleEmployeeInfoChange}
                     />

@@ -333,9 +333,10 @@ const EmployeeTable = () => {
                     dataSource={employees}
                     loading={loading}
                     pagination={false}
+                    bordered
                     className="employee__table-row"
                     onRow={(record) => ({
-                        onClick: () => handleRowClick(record),
+                        onDoubleClick: () => handleRowClick(record),
                     })}
                 />
                 <Pagination

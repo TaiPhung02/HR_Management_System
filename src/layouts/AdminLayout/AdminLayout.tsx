@@ -109,6 +109,9 @@ const AdminLayout = () => {
                 case "/employee/create-or-update":
                     crumbText = "Add new employee";
                     break;
+                case "/change-password":
+                    crumbText = "Settings";
+                    break;
                 default:
                     if (path.startsWith("/employee/create-or-update/")) {
                         // This is an edit page
@@ -149,19 +152,29 @@ const AdminLayout = () => {
 
     // Modal
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalSignOutOpen, setIsModalSignOutOpen] = useState(false);
 
     const showModal = () => {
         setIsModalOpen(true);
     };
 
-    const handleOk = () => {
+    const handleCancel = () => {
         setIsModalOpen(false);
+    };
+
+    // Sign Out
+    const handleSignout = () => {
+        setIsModalSignOutOpen(true);
+    };
+
+    const handleSignOut = () => {
+        setIsModalSignOutOpen(false);
         localStorage.clear();
         dispatch(logout());
     };
 
-    const handleCancel = () => {
-        setIsModalOpen(false);
+    const handleSignOutCancel = () => {
+        setIsModalSignOutOpen(false);
     };
 
     return (
@@ -172,26 +185,27 @@ const AdminLayout = () => {
                     <h3 className="header__title">HR Management System</h3>
                 </div>
                 <div className="header__gear">
-                    {/* <img src="" alt="" /> */}
-
                     <Button className="header__profile" onClick={showModal}>
-                        AD
+                        a
                     </Button>
                     <Modal
                         className="profile__modal"
                         open={isModalOpen}
-                        onOk={handleOk}
                         onCancel={handleCancel}
+                        mask={false}
+                        footer={null}
                     >
                         <div className="profile__modal-head">
-                            <div className="header__profile">AD</div>
-                            <h3 className="profile__modal-username">Admin</h3>
+                            <div className="header__profile">a</div>
+                            <h3 className="profile__modal-username">
+                                admin_test1
+                            </h3>
                         </div>
-                        <p className="profile__modal-nik">PGA001</p>
+                        <p className="profile__modal-nik">Staff ID: </p>
 
                         <Button
-                            className="profile__modal-signout"
-                            onClick={handleOk}
+                            className="profile__modal-btn-signout"
+                            onClick={handleSignout}
                         >
                             Sign Out
                         </Button>
@@ -205,6 +219,16 @@ const AdminLayout = () => {
                             </Link>
                         </div>
                     </Modal>
+
+                    <Modal
+                        className="profile__modal-signout"
+                        title="Do you wish to sign out?"
+                        open={isModalSignOutOpen}
+                        onOk={handleSignOut}
+                        onCancel={handleSignOutCancel}
+                        okText="Yes"
+                        cancelText="No"
+                    />
                 </div>
             </Header>
             <Layout style={{ minHeight: "100vh" }}>

@@ -56,9 +56,7 @@ const ChangePasswordForm = () => {
     return (
         <>
             <div className="change-wrapper">
-                <img src={LogoIMG} alt="logo" />
-                <h2 className="logo__heading">HR Management System</h2>
-                <h2 className="logo__title">Sign In</h2>
+                <h2 className="logo__title">Settings</h2>
 
                 <form
                     action=""
@@ -66,7 +64,7 @@ const ChangePasswordForm = () => {
                     onSubmit={handleSubmit}
                     className="change-form"
                 >
-                    <h2 className="change__title">Please input password</h2>
+                    <h2 className="change__title">Change Password</h2>
                     <div className="change__input-box">
                         <label htmlFor="password" className="change__label">
                             New Password

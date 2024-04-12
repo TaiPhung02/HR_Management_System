@@ -38,3 +38,37 @@
     line-height: 150%; /* 24px */
     letter-spacing: -0.16px;
 }
+
+.table-wrapper .ant-tabs-tab {
+    display: flex;
+    min-width: 180px;
+    height: 42px;
+    padding: 8px 12px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    color: #0091ff;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
+    letter-spacing: -0.16px;
+    border-radius: 6px !important;
+    background: #e1f0ff !important;
+}
+
+.table-wrapper .ant-tabs-tab.ant-tabs-tab-active {
+    background: #0091ff !important;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #fbfdff !important;
+}
+
+/*  */
+.addnew_table {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}

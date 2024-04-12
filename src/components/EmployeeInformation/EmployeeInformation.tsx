@@ -11,6 +11,7 @@ import { IEmployee } from "../../interfaces/employee-interface";
 import { useParams } from "react-router-dom";
 
 const initialValues = {
+    staff_id: "",
     name: "",
     gender: "",
     dob: "",
@@ -105,6 +106,26 @@ const EmployeeInformation = ({
                     onSubmit={handleSubmit}
                     className="addnew__employee"
                 >
+                    {id && (
+                        <div className="addnew__employee-input-box">
+                            <label
+                                htmlFor="staff_id"
+                                className="addnew__employee-label"
+                            >
+                                NIK
+                            </label>
+                            <div className="addnew__employee-input-wrapper">
+                                <input
+                                    id="staff_id"
+                                    name="staff_id"
+                                    type="text"
+                                    className="addnew__employee-input disabled"
+                                    value={values.staff_id}
+                                    disabled
+                                />
+                            </div>
+                        </div>
+                    )}
                     <div className="addnew__employee-input-box">
                         <label
                             htmlFor="name"
@@ -364,27 +385,18 @@ const EmployeeInformation = ({
                             htmlFor="nc_id"
                             className="addnew__employee-label"
                         >
-                            National ID<span className="required">*</span>
+                            National ID
                         </label>
                         <div className="addnew__employee-input-wrapper">
                             <input
                                 id="nc_id"
                                 name="nc_id"
                                 type="text"
-                                className={
-                                    errors.nc_id && touched.nc_id
-                                        ? "addnew__employee-input error"
-                                        : "addnew__employee-input"
-                                }
+                                className="addnew__employee-input"
                                 value={values.nc_id}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
-                            {touched.nc_id && errors.nc_id && (
-                                <p className="login__message-error">
-                                    {errors.nc_id}
-                                </p>
-                            )}
                         </div>
                     </div>
                     <div className="addnew__employee-input-box">
