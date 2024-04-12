@@ -44,14 +44,9 @@ export const addNewEmployeeApi = (employeeData: IEmployee) => {
     });
 };
 
-export const editEmployeeApi = (id: string, employeeData: IEmployee) => {
-    const { department_id, position_id, hidden_on_payroll, ...rest } =
-        employeeData;
+export const editEmployeeApi = (id: string | undefined, employeeData: IEmployee) => {
     return pgApi.put(`employee/${id}`, {
-        department_id,
-        position_id,
-        hidden_on_payroll,
-        ...rest,
+        ...employeeData,
     });
 };
 

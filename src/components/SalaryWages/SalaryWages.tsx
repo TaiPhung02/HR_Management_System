@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import "./salaryWages.css";
 import { salaryWagesValidation } from "../../utils/validate-utils";
-import { ISalaryWages } from "../../interfaces/salaryWages-interface";
 import { useParams } from "react-router-dom";
 import { getEmployeeByIdApi } from "../../services/user-services";
+import { IEmployee } from "../../interfaces/employee-interface";
 
 const initialValues = {
     basic_salary: "",
@@ -16,7 +16,7 @@ const initialValues = {
 const SalaryWages = ({
     handleSalaryWagesChange,
 }: {
-    handleSalaryWagesChange: (values: ISalaryWages) => void;
+    handleSalaryWagesChange: (values: IEmployee) => void;
 }) => {
     // Get params
     const { id } = useParams<{ id: string }>();
@@ -37,10 +37,12 @@ const SalaryWages = ({
         },
     });
 
+    // handleSalaryWagesChange
     useEffect(() => {
         handleSalaryWagesChange(values);
     }, [values, handleSalaryWagesChange]);
 
+    // Get employee by id
     useEffect(() => {
         const fetchEmployeeData = async () => {
             try {

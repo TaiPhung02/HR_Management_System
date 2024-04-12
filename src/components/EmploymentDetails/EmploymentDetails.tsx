@@ -41,18 +41,6 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
             },
         });
 
-    const newValues = useMemo(() => ({
-        department_id: values.department_id,
-        position_id: values.position_id,
-        hidden_on_payroll: values.hidden_on_payroll ? 1 : 0,
-        entitle_ot: values.entitle_ot ? 1 : 0,
-        meal_allowance_paid: values.meal_allowance_paid ? 1 : 0,
-    }), [values]);
-    
-    useEffect(() => {
-        handleEmploymentDetailsChange(newValues);
-    }, [newValues, handleEmploymentDetailsChange]);
-
     useEffect(() => {
         fetchData();
     }, []);
@@ -77,14 +65,21 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
         }
     };
 
-    // Edit Employee
+    // Get Employee by id
     useEffect(() => {
         if (id) {
             const fetchEmployeeData = async () => {
                 try {
                     const employeeRes = await getEmployeeByIdApi(id);
                     const employeeData = employeeRes.data;
-                    setValues(employeeData);
+                    const updatedEmployeeData = {
+                        ...employeeData,
+                        hidden_on_payroll: employeeData.hidden_on_payroll === 1,
+                        entitle_ot: employeeData.entitle_ot === 1,
+                        meal_allowance_paid:
+                            employeeData.meal_allowance_paid === 1,
+                    };
+                    setValues(updatedEmployeeData);
                 } catch (error) {
                     console.error("Error fetching data:", error);
                 }
@@ -93,6 +88,22 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
             fetchEmployeeData();
         }
     }, [id, setValues]);
+
+    // handleEmploymentDetailsChange
+    const newValues = useMemo(
+        () => ({
+            department_id: values.department_id,
+            position_id: values.position_id,
+            hidden_on_payroll: values.hidden_on_payroll ? 1 : 0,
+            entitle_ot: values.entitle_ot ? 1 : 0,
+            meal_allowance_paid: values.meal_allowance_paid ? 1 : 0,
+        }),
+        [values]
+    );
+
+    useEffect(() => {
+        handleEmploymentDetailsChange(newValues);
+    }, [newValues, handleEmploymentDetailsChange]);
 
     return (
         <div className="addnew-container">

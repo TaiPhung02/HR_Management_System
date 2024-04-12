@@ -58,7 +58,6 @@ const EmployeeInformation = ({
         },
     });
 
-    console.log(values);
     // handleEmployeeInfoChange
     useEffect(() => {
         handleEmployeeInfoChange(values);
@@ -73,7 +72,7 @@ const EmployeeInformation = ({
             },
         });
     };
-
+    // Get marriages
     useEffect(() => {
         const fetchMarriagesData = async () => {
             try {
@@ -89,21 +88,21 @@ const EmployeeInformation = ({
         };
         fetchMarriagesData();
     }, []);
-
+    // Get employee by id
     useEffect(() => {
-        const fetchEmployeeData = async () => {
-            try {
-                if (id) {
+        if (id) {
+            const fetchEmployeeData = async () => {
+                try {
                     const employeeRes = await getEmployeeByIdApi(id);
                     const employeeData = employeeRes.data;
                     setValues(employeeData);
+                } catch (error) {
+                    console.error("Error fetching data:", error);
                 }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
+            };
 
-        fetchEmployeeData();
+            fetchEmployeeData();
+        }
     }, [id, setValues]);
 
     return (

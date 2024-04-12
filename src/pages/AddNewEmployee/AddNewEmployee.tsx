@@ -10,13 +10,15 @@ import { toast } from "react-toastify";
 import {
     addNewEmployeeApi,
     editEmployeeApi,
+    getEmployeeByIdApi,
 } from "../../services/user-services";
 import { useNavigate, useParams } from "react-router-dom";
 import { IEmployee } from "../../interfaces/employee-interface";
-import { ISalaryWages } from "../../interfaces/salaryWages-interface";
 import { PiWarningCircle } from "react-icons/pi";
 
 const AddNewEmployee = () => {
+    // Check id
+    const [checkId, setCheckId] = useState(false);
     // Get params
     const { id } = useParams<{ id?: string }>();
     // check id in URL
@@ -28,11 +30,14 @@ const AddNewEmployee = () => {
     // State EmployeeDetails
     const [employmentDetails, setEmploymentDetails] = useState<IEmployee>({});
     // State SalaryWages
-    const [salaryWages, setSalaryWages] = useState<ISalaryWages>({});
+    const [salaryWages, setSalaryWages] = useState<IEmployee>({});
+    // State Others
+    const [others, setOthers] = useState<IEmployee>({});
     // State Button
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     // const [isErrorsField, setIsErrorsField] = useState(false);
 
+    // Check button
     useEffect(() => {
         setIsButtonDisabled(
             !(
@@ -43,10 +48,35 @@ const AddNewEmployee = () => {
                 employeeInfo.ktp_no &&
                 employeeInfo.type &&
                 employeeInfo.contract_start_date &&
+                employmentDetails.hidden_on_payroll &&
                 Object.keys(employeeInfo).length > 0
             ) || !employmentDetails
         );
     }, [employeeInfo, employmentDetails]);
+
+    // Check id
+    useEffect(() => {
+        const checkId = async () => {
+            try {
+                const checkIdRes = await getEmployeeByIdApi(id);
+
+                if (
+                    isEditMode &&
+                    checkIdRes &&
+                    checkIdRes.data &&
+                    checkIdRes.data.message === "Data not found"
+                ) {
+                    setCheckId(false);
+                    toast.error(checkIdRes.data.message);
+                } else {
+                    setCheckId(true);
+                }
+            } catch (error) {
+                console.error("Error checking ID:", error);
+            }
+        };
+        checkId();
+    }, [id, isEditMode]);
 
     // Handle Add
     const handleAddNewEmployee = async () => {
@@ -55,11 +85,12 @@ const AddNewEmployee = () => {
                 ...employeeInfo,
                 ...employmentDetails,
                 ...salaryWages,
+                ...others,
             });
 
             if (res && res.result === true) {
                 console.log(res);
-                toast.success("Employee added successfully");
+                toast.success("Record added");
 
                 setEmployeeInfo({});
                 setEmploymentDetails({});
@@ -77,23 +108,28 @@ const AddNewEmployee = () => {
 
     // HandleEditEmployee
     const handleEditEmployee = async () => {
-        try {
-            const res = await editEmployeeApi(id, {
-                ...employeeInfo,
-                ...employmentDetails,
-                ...salaryWages,
-            });
+        if (id) {
+            try {
+                const res = await editEmployeeApi(id, {
+                    ...employeeInfo,
+                    ...employmentDetails,
+                    ...salaryWages,
+                    ...others,
+                });
 
-            if (res && res.result === true) {
-                toast.success("Employee edited successfully");
-                window.history.back();
-            } else {
-                toast.error("Failed to edit employee. Please try again later.");
+                if (res && res.result === true) {
+                    toast.success("Change saved");
+                    window.history.back();
+                } else {
+                    toast.error(
+                        "Failed to edit employee. Please try again later."
+                    );
+                }
+            } catch (error) {
+                toast.error(
+                    "An error occurred while editing employee. Please try again later."
+                );
             }
-        } catch (error) {
-            toast.error(
-                "An error occurred while editing employee. Please try again later."
-            );
         }
     };
 
@@ -103,41 +139,46 @@ const AddNewEmployee = () => {
 
     // EmployeeInformation
     const handleEmployeeInfoChange = (values: IEmployee) => {
-        console.log(values);
+        console.log("EmployeeInfoChange:", values);
         setEmployeeInfo(values);
     };
     // EmployeeDetail
     const handleEmploymentDetailsChange = (values: IEmployee) => {
-        console.log(values);
+        console.log("EmploymentDetailsChange:", values);
         setEmploymentDetails(values);
     };
 
     // SalaryWages
-    const handleSalaryWagesChange = (values: ISalaryWages) => {
-        console.log(values);
+    const handleSalaryWagesChange = (values: IEmployee) => {
+        console.log("SalaryWagesChange:", values);
         setSalaryWages(values);
+    };
+
+    // Other
+    const handleOtherChange = (values: IEmployee) => {
+        console.log("OthersChange:", values);
+        setOthers(values);
     };
 
     return (
         <div className="table-wrapper">
             <div className="table__header">
                 <h1 className="table__header-heading">Employee Management</h1>
-                {isEditMode ? (
-                    <Button
-                        className="addNew__cta-save"
-                        onClick={handleEditEmployee}
-                    >
-                        Save Changes
-                    </Button>
-                ) : (
-                    <Button
-                        className="addNew__cta-add"
-                        onClick={handleAddNewEmployee}
-                        disabled={isButtonDisabled}
-                    >
-                        Add
-                    </Button>
-                )}
+                <Button
+                    className={
+                        isEditMode ? "addNew__cta-save" : "addNew__cta-add"
+                    }
+                    onClick={
+                        isEditMode ? handleEditEmployee : handleAddNewEmployee
+                    }
+                    disabled={
+                        isEditMode
+                            ? !checkId && isButtonDisabled
+                            : isButtonDisabled
+                    }
+                >
+                    {isEditMode ? "Save Changes" : "Add"}
+                </Button>
             </div>
             <Tabs
                 size="large"
@@ -182,7 +223,7 @@ const AddNewEmployee = () => {
                     />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Others" key="5">
-                    <Others />
+                    <Others handleOtherChange={handleOtherChange} />
                 </Tabs.TabPane>
             </Tabs>
         </div>

@@ -322,6 +322,8 @@ const EmployeeTable = () => {
                         open={isModalOpen}
                         onOk={handleConfirmDelete}
                         onCancel={handleCancelDelete}
+                        okText="Yes"
+                        cancelText="No"
                     >
                         <p>Are you sure you want to delete?</p>
                     </Modal>

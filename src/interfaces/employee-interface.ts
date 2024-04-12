@@ -1,6 +1,6 @@
 export interface IEmployee {
-    key?: number;
-    id?: number;
+    key?: number | undefined;
+    id?: number | undefined;
     old_staff_id?: string;
     staff_id?: string;
     name?: string;
@@ -29,13 +29,13 @@ export interface IEmployee {
     emergency_contract?: string | null;
     emergency_relationship?: string | null;
     emergency_name?: string | null;
-    basic_salary?: string | null;
-    audit_salary?: string | null;
-    health_insurance?: string | null;
-    safety_insurance?: string | null;
+    basic_salary?: string;
+    audit_salary?: string;
+    health_insurance?: string;
+    safety_insurance?: string;
     safety_insurance_audit?: string | null;
     health_insurance_audit?: string | null;
-    meal_allowance?: string | null;
+    meal_allowance?: string;
     entitle_ot?: number;
     meal_allowance_paid?: number;
     operational_allowance_paid?: number;
@@ -60,4 +60,8 @@ export interface IEmployee {
     contracts?: string | null;
     users?: string | null;
     allowed_to_view_salary?: number;
+    //
+    selectedGrade?: number;
+    selectedBenefit?: number;
+    benefits?: number;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Button, Table, Upload, message } from "antd";
 import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
@@ -8,8 +8,15 @@ import "./others.css";
 
 import { IGrade } from "../../interfaces/grade-interface";
 import { IBenefit } from "../../interfaces/benefit-interface";
-import { benefitApi, gradeApi, userApi } from "../../services/user-services";
+import {
+    benefitApi,
+    getEmployeeByIdApi,
+    gradeApi,
+    userApi,
+} from "../../services/user-services";
 import { IUser } from "../../interfaces/user-interface";
+import { IEmployee } from "../../interfaces/employee-interface";
+import { useParams } from "react-router-dom";
 
 const props: UploadProps = {
     name: "file",
@@ -95,13 +102,23 @@ const data: DataType[] = [
     },
 ];
 
-const Others = () => {
+const Others = ({
+    handleOtherChange,
+}: {
+    handleOtherChange: (values: IEmployee) => void;
+}) => {
+    // Get params
+    const { id } = useParams<{ id: string }>();
+    // state map
     const [grades, setGrades] = useState<IGrade[]>([]);
     const [benefits, setBenefits] = useState<IBenefit[]>([]);
     const [users, setUsers] = useState<IUser[]>([]);
-
+    // state select
     const [selectedGrade, setSelectedGrade] = useState<string>("");
     const [selectedBenefit, setSelectedBenefit] = useState<string>("");
+    const [remark, setRemark] = useState<string>("");
+
+    console.log(selectedGrade, selectedBenefit, remark);
 
     const fetchData = async () => {
         try {
@@ -131,20 +148,25 @@ const Others = () => {
         fetchData();
     }, []);
 
+    // Delete benefit when grade change
     useEffect(() => {
         setSelectedBenefit("");
     }, [selectedGrade]);
 
+    // Change value
     const handleGradeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedGrade = e.target.value;
-        setSelectedGrade(selectedGrade);
+        setSelectedGrade(e.target.value);
     };
 
     const handleBenefitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedBenefit = e.target.value;
-        setSelectedBenefit(selectedBenefit);
+        setSelectedBenefit(e.target.value);
     };
 
+    const handleRemarkChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setRemark(e.target.value);
+    };
+
+    // Close
     const handleDeleteGrade = () => {
         setSelectedGrade("");
     };
@@ -152,6 +174,40 @@ const Others = () => {
     const handleDeleteBenefit = () => {
         setSelectedBenefit("");
     };
+
+    // Get employee by id
+    useEffect(() => {
+        const fetchEmployeeData = async () => {
+            try {
+                if (id) {
+                    const employeeRes = await getEmployeeByIdApi(id);
+                    const employeeData = employeeRes.data;
+
+                    setSelectedGrade(employeeData.grade_id.toString());
+                    setSelectedBenefit(employeeData.benefits.toString());
+                    setRemark(employeeData.remark);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchEmployeeData();
+    }, [id]);
+
+    // handleOtherChange
+    const newValues = useMemo(
+        () => ({
+            grade_id: parseInt(selectedGrade),
+            benefits: parseInt(selectedBenefit),
+            remark: remark,
+        }),
+        [selectedGrade, selectedBenefit, remark]
+    );
+
+    useEffect(() => {
+        handleOtherChange(newValues);
+    }, [newValues, handleOtherChange]);
 
     return (
         <div className="addnew-container">
@@ -222,21 +278,27 @@ const Others = () => {
                     </div>
                 </div>
                 <div className="addnew__other-input-box">
-                    <label htmlFor="name" className="addnew__other-label">
+                    <label htmlFor="remark" className="addnew__other-label">
                         Remark
                     </label>
-                    <textarea className="addnew__other-textarea" />
+                    <textarea
+                        id="remark"
+                        name="remark"
+                        className="addnew__other-textarea"
+                        value={remark}
+                        onChange={handleRemarkChange}
+                    />
                 </div>
                 <div className="addnew__other-input-box">
-                    <label htmlFor="name" className="addnew__other-label">
+                    <label htmlFor="users" className="addnew__other-label">
                         HRM User Account
                     </label>
                     <select
-                        name="gender"
+                        id="users"
+                        name="users"
                         className="addnew__other-select"
-                        defaultValue={"1"}
                     >
-                        <option value="1" disabled hidden></option>
+                        <option value="" disabled hidden></option>
                         {users.map((user) => (
                             <option key={user.id} value={user.id}>
                                 {user.username}
