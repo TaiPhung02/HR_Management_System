@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useFormik } from "formik";
 import "./employmentDetail.css";
 import { IPosition } from "../../interfaces/position-interface";
@@ -10,21 +10,20 @@ import {
 } from "../../services/user-services";
 import { employmentDetailsSchema } from "../../utils/validate-utils";
 import { useParams } from "react-router-dom";
+import { IEmployee } from "../../interfaces/employee-interface";
 
 interface EmploymentDetailsProps {
-    handleDepartmentChange: (departmentId: number) => void;
-    handlePositionChange: (positionId: number) => void;
-    handleEmploymentDetailsChange: (value: number) => void;
+    handleEmploymentDetailsChange: (values: IEmployee) => void;
 }
 
 const initialValues = {
+    department_id: 0,
+    position_id: 0,
     hidden_on_payroll: false,
-    entitled_ot: false,
+    entitle_ot: false,
     meal_allowance_paid: false,
 };
 const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
-    handleDepartmentChange,
-    handlePositionChange,
     handleEmploymentDetailsChange,
 }) => {
     // Get params
@@ -42,10 +41,21 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
             },
         });
 
+    const newValues = useMemo(() => ({
+        department_id: values.department_id,
+        position_id: values.position_id,
+        hidden_on_payroll: values.hidden_on_payroll ? 1 : 0,
+        entitle_ot: values.entitle_ot ? 1 : 0,
+        meal_allowance_paid: values.meal_allowance_paid ? 1 : 0,
+    }), [values]);
+    
     useEffect(() => {
-        const newValue = values.hidden_on_payroll ? 1 : 0;
-        handleEmploymentDetailsChange(newValue);
-    }, [values, handleEmploymentDetailsChange]);
+        handleEmploymentDetailsChange(newValues);
+    }, [newValues, handleEmploymentDetailsChange]);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     const fetchData = async () => {
         try {
@@ -67,22 +77,21 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
         }
     };
 
+    // Edit Employee
     useEffect(() => {
-        fetchData();
-    }, []);
+        if (id) {
+            const fetchEmployeeData = async () => {
+                try {
+                    const employeeRes = await getEmployeeByIdApi(id);
+                    const employeeData = employeeRes.data;
+                    setValues(employeeData);
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            };
 
-    useEffect(() => {
-        const fetchEmployeeData = async () => {
-            try {
-                const employeeRes = await getEmployeeByIdApi(id);
-                const employeeData = employeeRes.data;
-                setValues(employeeData);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        fetchEmployeeData();
+            fetchEmployeeData();
+        }
     }, [id, setValues]);
 
     return (
@@ -106,12 +115,10 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
                         id="department_id"
                         name="department_id"
                         className="addnew__employment-select"
-                        onChange={(e) =>
-                            handleDepartmentChange(parseInt(e.target.value))
-                        }
-                        defaultValue={"1"}
+                        value={values.department_id}
+                        onChange={handleChange}
                     >
-                        <option value="1" disabled hidden>
+                        <option value="" disabled hidden>
                             Choose Department
                         </option>
                         {departments.map((department) => (
@@ -132,12 +139,10 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
                         id="position_id"
                         name="position_id"
                         className="addnew__employment-select"
-                        onChange={(e) =>
-                            handlePositionChange(parseInt(e.target.value))
-                        }
-                        defaultValue={"1"}
+                        value={values.position_id}
+                        onChange={handleChange}
                     >
-                        <option value="1" disabled hidden>
+                        <option value="" disabled hidden>
                             Choose Position
                         </option>
                         {positions.map((position) => (
@@ -171,16 +176,16 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
                 )}
                 <div className="addnew__employment-checkbox-box">
                     <input
-                        id="entitled_ot"
-                        name="entitled_ot"
+                        id="entitle_ot"
+                        name="entitle_ot"
                         type="checkbox"
                         className="addnew__employment-checkbox"
-                        checked={values.entitled_ot}
+                        checked={values.entitle_ot}
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <label
-                        htmlFor="entitled_ot"
+                        htmlFor="entitle_ot"
                         className="addnew__employment-label"
                     >
                         Entitled OT

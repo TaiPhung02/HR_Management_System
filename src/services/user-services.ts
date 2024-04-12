@@ -34,32 +34,12 @@ export const employeeApi = (page: number, size: number) => {
     return pgApi.get(`employee?page=${page}&size=${size}`);
 };
 
-export const getEmployeeByIdApi = (recordId: number) => {
+export const getEmployeeByIdApi = (recordId: string | undefined) => {
     return pgApi.get(`employee/${recordId}`);
 };
 
-export const addNewEmployeeApi = ({
-    department_id,
-    position_id,
-    hidden_on_payroll,
-    //
-    basic_salary,
-    audit_salary,
-    health_insurance,
-    meal_allowance,
-    safety_insurance,
-    ...employeeData
-}: IEmployee) => {
+export const addNewEmployeeApi = (employeeData: IEmployee) => {
     return pgApi.post("employee", {
-        department_id,
-        position_id,
-        hidden_on_payroll,
-        //
-        basic_salary,
-        audit_salary,
-        health_insurance,
-        meal_allowance,
-        safety_insurance,
         ...employeeData,
     });
 };

@@ -4,7 +4,7 @@ export interface IEmployee {
     old_staff_id?: string;
     staff_id?: string;
     name?: string;
-    gender?: number;
+    gender?: number | string;
     department_id?: number | null;
     company_id?: number;
     marriage_id?: number;
@@ -60,24 +60,4 @@ export interface IEmployee {
     contracts?: string | null;
     users?: string | null;
     allowed_to_view_salary?: number;
-}
-
-export interface EmployeeInfo {
-    name?: string;
-    gender?: string;
-    dob?: string;
-    ktp_no?: string;
-    nc_id: string;
-    type?: string;
-    contract_start_date?: string;
-    //
-    card_number?: number;
-    bank_account_no?: number;
-    family_card_number?: number;
-    marriage_code?: number;
-    mother_name?: string;
-    pob?: string;
-    home_address_1?: string;
-    home_address_2?: string;
-    grading?: string;
 }

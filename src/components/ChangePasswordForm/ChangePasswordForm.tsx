@@ -65,6 +65,7 @@ const ChangePasswordForm = () => {
                     className="change-form"
                 >
                     <h2 className="change__title">Change Password</h2>
+                    <div className="change-line"></div>
                     <div className="change__input-box">
                         <label htmlFor="password" className="change__label">
                             New Password
@@ -166,7 +167,7 @@ const ChangePasswordForm = () => {
                                 }
                             />
                         ) : (
-                            "Submit"
+                            "Confirm"
                         )}
                     </button>
                 </form>

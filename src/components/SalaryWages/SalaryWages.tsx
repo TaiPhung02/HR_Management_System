@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import "./salaryWages.css";
 import { salaryWagesValidation } from "../../utils/validate-utils";
@@ -44,9 +44,11 @@ const SalaryWages = ({
     useEffect(() => {
         const fetchEmployeeData = async () => {
             try {
-                const employeeRes = await getEmployeeByIdApi(id);
-                const employeeData = employeeRes.data;
-                setValues(employeeData);
+                if (id) {
+                    const employeeRes = await getEmployeeByIdApi(id);
+                    const employeeData = employeeRes.data;
+                    setValues(employeeData);
+                }
             } catch (error) {
                 console.error("Error fetching data:", error);
             }

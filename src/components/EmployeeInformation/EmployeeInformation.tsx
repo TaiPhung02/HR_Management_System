@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 
 const initialValues = {
     staff_id: "",
+    // Required
     name: "",
     gender: "",
     dob: "",
@@ -19,16 +20,16 @@ const initialValues = {
     nc_id: "",
     type: "",
     contract_start_date: "",
-    //
+    // Not Required
     card_number: "",
     bank_account_no: "",
     family_card_number: "",
-    marriage_id: "",
+    marriage_id: 0,
     mother_name: "",
     pob: "",
     home_address_1: "",
     home_address_2: "",
-    grade_id: "",
+    grade_id: 0,
 };
 
 const EmployeeInformation = ({
@@ -56,6 +57,8 @@ const EmployeeInformation = ({
             console.log(values);
         },
     });
+
+    console.log(values);
     // handleEmployeeInfoChange
     useEffect(() => {
         handleEmployeeInfoChange(values);
@@ -72,16 +75,29 @@ const EmployeeInformation = ({
     };
 
     useEffect(() => {
+        const fetchMarriagesData = async () => {
+            try {
+                const marriagesRes = await marriageApi();
+                if (marriagesRes && marriagesRes.data) {
+                    setMarriages(marriagesRes.data);
+                } else {
+                    console.error("No data returned from API");
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchMarriagesData();
+    }, []);
+
+    useEffect(() => {
         const fetchEmployeeData = async () => {
             try {
-                const [employeeRes, marriagesRes] = await Promise.all([
-                    getEmployeeByIdApi(id),
-                    marriageApi(),
-                ]);
-                const employeeData = employeeRes.data;
-                const marriagesData = marriagesRes.data;
-                setValues(employeeData);
-                setMarriages(marriagesData);
+                if (id) {
+                    const employeeRes = await getEmployeeByIdApi(id);
+                    const employeeData = employeeRes.data;
+                    setValues(employeeData);
+                }
             } catch (error) {
                 console.error("Error fetching data:", error);
             }

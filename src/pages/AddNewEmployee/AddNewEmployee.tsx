@@ -26,13 +26,7 @@ const AddNewEmployee = () => {
     // State EmployeeInformation
     const [employeeInfo, setEmployeeInfo] = useState<IEmployee>({});
     // State EmployeeDetails
-    const [employmentDetails, setEmploymentDetails] = useState(0);
-    const [selectedDepartment, setSelectedDepartment] = useState<number | null>(
-        null
-    );
-    const [selectedPosition, setSelectedPosition] = useState<number | null>(
-        null
-    );
+    const [employmentDetails, setEmploymentDetails] = useState<IEmployee>({});
     // State SalaryWages
     const [salaryWages, setSalaryWages] = useState<ISalaryWages>({});
     // State Button
@@ -56,23 +50,20 @@ const AddNewEmployee = () => {
 
     // Handle Add
     const handleAddNewEmployee = async () => {
-        console.log(employeeInfo);
-        console.log(employmentDetails);
-
         try {
             const res = await addNewEmployeeApi({
                 ...employeeInfo,
-                department_id: selectedDepartment,
-                position_id: selectedPosition,
-                hidden_on_payroll: employmentDetails,
+                ...employmentDetails,
                 ...salaryWages,
             });
 
             if (res && res.result === true) {
+                console.log(res);
                 toast.success("Employee added successfully");
 
                 setEmployeeInfo({});
-                setEmploymentDetails(0);
+                setEmploymentDetails({});
+                setSalaryWages({});
 
                 navigate("/employee");
             } else {
@@ -89,9 +80,7 @@ const AddNewEmployee = () => {
         try {
             const res = await editEmployeeApi(id, {
                 ...employeeInfo,
-                department_id: selectedDepartment,
-                position_id: selectedPosition,
-                hidden_on_payroll: employmentDetails,
+                ...employmentDetails,
                 ...salaryWages,
             });
 
@@ -118,19 +107,9 @@ const AddNewEmployee = () => {
         setEmployeeInfo(values);
     };
     // EmployeeDetail
-    const handleEmploymentDetailsChange = (value: number) => {
-        console.log(value);
-        setEmploymentDetails(value);
-    };
-
-    const handleDepartmentChange = (departmentId: number) => {
-        console.log(departmentId);
-        setSelectedDepartment(departmentId);
-    };
-
-    const handlePositionChange = (positionId: number) => {
-        console.log(positionId);
-        setSelectedPosition(positionId);
+    const handleEmploymentDetailsChange = (values: IEmployee) => {
+        console.log(values);
+        setEmploymentDetails(values);
     };
 
     // SalaryWages
@@ -168,7 +147,7 @@ const AddNewEmployee = () => {
             >
                 <Tabs.TabPane
                     tab={
-                        <span className="addnew_table">
+                        <span className="addnew__tab">
                             Employee Information
                             <PiWarningCircle />
                         </span>
@@ -179,13 +158,19 @@ const AddNewEmployee = () => {
                         handleEmployeeInfoChange={handleEmployeeInfoChange}
                     />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Contract Information" key="2">
+                <Tabs.TabPane
+                    tab={
+                        <span className="addnew__tab">
+                            Contract Information
+                            <PiWarningCircle />
+                        </span>
+                    }
+                    key="2"
+                >
                     <ContractInformation />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Employment Details" key="3">
                     <EmploymentDetails
-                        handleDepartmentChange={handleDepartmentChange}
-                        handlePositionChange={handlePositionChange}
                         handleEmploymentDetailsChange={
                             handleEmploymentDetailsChange
                         }

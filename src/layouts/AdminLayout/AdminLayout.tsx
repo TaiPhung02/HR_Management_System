@@ -214,6 +214,7 @@ const AdminLayout = () => {
                             <Link
                                 to={"/change-password"}
                                 className="profile__modal-reset"
+                                onClick={handleCancel}
                             >
                                 Reset Password
                             </Link>
@@ -255,7 +256,7 @@ const AdminLayout = () => {
                     <Content style={{ margin: "0 16px" }}>
                         <Breadcrumb style={{ margin: "16px 0" }}>
                             <Breadcrumb.Item>
-                                <Link to="/">Management</Link>
+                                <Link to="/">General</Link>
                             </Breadcrumb.Item>
                             {crumbs}
                         </Breadcrumb>
