@@ -36,7 +36,7 @@ export const changePasswordValidation = Yup.object().shape({
             "Minimum eight characters, at least one letter, one number and one special character"
         ),
     confirmPassword: Yup.string()
-        .required("Required")
+        .required("Confirm password is required")
         .oneOf([Yup.ref("password"), null], "Password must match"),
 });
 

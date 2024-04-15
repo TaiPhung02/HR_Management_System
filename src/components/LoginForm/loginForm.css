@@ -115,6 +115,11 @@
     opacity: 0.8;
 }
 
+.login__btn.disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
 .login__forgot {
     margin: 0 auto;
     color: #0091ff;

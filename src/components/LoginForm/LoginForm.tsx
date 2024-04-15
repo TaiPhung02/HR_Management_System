@@ -15,7 +15,8 @@ import { ICompany } from "../../interfaces/company-interface";
 import { toast } from "react-toastify";
 import LogoIMG from "../../assets/images/logo-login.png";
 import "./loginForm.css";
-import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
+import { EyeInvisibleOutlined, EyeOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 
 const initialValues = {
     username: "",
@@ -26,6 +27,8 @@ const initialValues = {
 const LoginForm = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
+
     const [showPassword, setShowPassword] = useState(false);
 
     const [companies, setCompanies] = useState<ICompany[]>([]);
@@ -34,8 +37,42 @@ const LoginForm = () => {
         useFormik({
             initialValues: initialValues,
             validationSchema: loginValidation,
-            onSubmit: (values) => {
-                console.log(values);
+            onSubmit: async (values) => {
+                setIsLoading(true);
+                dispatch(loginStart());
+
+                try {
+                    const res = await loginPGApi(
+                        values.username,
+                        values.password,
+                        values.factory
+                    );
+                    console.log(res);
+                    if (res && res.data && res.data.token) {
+                        localStorage.setItem("token", res.data.token);
+                        dispatch(loginSuccess(res.data));
+                        toast.success("Logged in successfully");
+                        navigate("/");
+                    } else {
+                        dispatch(
+                            loginFail(
+                                "Incorrect Username, Password or Factory. Please try again!"
+                            )
+                        );
+                        toast.error(
+                            "Incorrect Username, Password or Factory. Please try again!"
+                        );
+                    }
+                } catch (error) {
+                    toast.error("An error occurred during login: " + error);
+                    dispatch(
+                        loginFail(
+                            "Incorrect Username, Password or Factory. Please try again!"
+                        )
+                    );
+                } finally {
+                    setIsLoading(false);
+                }
             },
         });
 
@@ -55,41 +92,6 @@ const LoginForm = () => {
     useEffect(() => {
         fetchCompany();
     }, []);
-
-    const handleLogin = async () => {
-        dispatch(loginStart());
-
-        try {
-            const res = await loginPGApi(
-                values.username,
-                values.password,
-                values.factory
-            );
-            console.log(res);
-            if (res && res.data && res.data.token) {
-                localStorage.setItem("token", res.data.token);
-                dispatch(loginSuccess(res.data));
-                toast.success("Logged in successfully");
-                navigate("/");
-            } else {
-                dispatch(
-                    loginFail(
-                        "Incorrect Username, Password or Factory. Please try again!"
-                    )
-                );
-                toast.error(
-                    "Incorrect Username, Password or Factory. Please try again!"
-                );
-            }
-        } catch (error) {
-            toast.error("An error occurred during login: " + error);
-            dispatch(
-                loginFail(
-                    "Incorrect Username, Password or Factory. Please try again!"
-                )
-            );
-        }
-    };
 
     return (
         <>
@@ -200,12 +202,23 @@ const LoginForm = () => {
 
                     <button
                         type="submit"
-                        className="login__btn"
-                        onClick={() => {
-                            handleLogin();
-                        }}
+                        className={
+                            isLoading ? "login__btn disabled" : "login__btn"
+                        }
+                        disabled={isLoading}
                     >
-                        Submit
+                        {isLoading ? (
+                            <Spin
+                                indicator={
+                                    <LoadingOutlined
+                                        style={{ fontSize: 24 }}
+                                        spin
+                                    />
+                                }
+                            />
+                        ) : (
+                            "Submit"
+                        )}
                     </button>
 
                     <Link to={"/forgot-password"} className="login__forgot">

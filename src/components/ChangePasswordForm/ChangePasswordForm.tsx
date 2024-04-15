@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 
-import LogoIMG from "../../assets/images/logo-login.png";
 import "./changePasswordForm.css";
 import { changePasswordValidation } from "../../utils/validate-utils";
 import { changePasswordPGApi } from "../../services/user-services";

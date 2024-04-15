@@ -111,15 +111,15 @@ const columns = [
     {
         title: "Entitled OT",
         dataIndex: "entitle_ot",
-        render: (text: string) => {
-            return text === "1" ? "Yes" : "No";
+        render: (text: number) => {
+            return text === 1 ? "Yes" : "No";
         },
     },
     {
         title: "Meal paid",
         dataIndex: "meal_allowance_paid",
-        render: (text: string) => {
-            return text === "1" ? "Yes" : "No";
+        render: (text: number) => {
+            return text === 1 ? "Yes" : "No";
         },
     },
     {
@@ -150,7 +150,7 @@ const EmployeeTable = () => {
     // Modal
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Select
+    // Select row
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
         const selectedEmployeeIds = employees
             .filter((employee) => newSelectedRowKeys.includes(employee.key))
@@ -208,6 +208,7 @@ const EmployeeTable = () => {
         }
     }, [location.search]);
 
+    // Pagination
     const handlePageChange = (page: number, pageSize?: number) => {
         setCurrentPage(page);
         if (pageSize) {
@@ -245,6 +246,7 @@ const EmployeeTable = () => {
         );
     };
 
+    // handleDeleteEmployee
     const handleDeleteEmployee = async () => {
         setIsModalOpen(true);
     };
@@ -295,7 +297,7 @@ const EmployeeTable = () => {
                     <input
                         type="text"
                         name="Search"
-                        placeholder="Search"
+                        placeholder="Search..."
                         className="table__header-text"
                     />
                 </div>

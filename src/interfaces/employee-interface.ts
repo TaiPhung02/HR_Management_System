@@ -41,7 +41,7 @@ export interface IEmployee {
     operational_allowance_paid?: number;
     attendance_allowance_paid?: number;
     minimum_salary_used?: string;
-    hidden_on_payroll?: number;
+    hidden_on_payroll?: string;
     contract_start_date?: string;
     resign_reason?: string | null;
     resign_effective_date?: string | null;

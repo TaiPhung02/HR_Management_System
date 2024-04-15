@@ -15,6 +15,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { IEmployee } from "../../interfaces/employee-interface";
 import { PiWarningCircle } from "react-icons/pi";
+import { ISalaryWages } from "../../interfaces/salaryWages-interface";
 
 const AddNewEmployee = () => {
     // Check id
@@ -30,7 +31,7 @@ const AddNewEmployee = () => {
     // State EmployeeDetails
     const [employmentDetails, setEmploymentDetails] = useState<IEmployee>({});
     // State SalaryWages
-    const [salaryWages, setSalaryWages] = useState<IEmployee>({});
+    const [salaryWages, setSalaryWages] = useState<ISalaryWages>({});
     // State Others
     const [others, setOthers] = useState<IEmployee>({});
     // State Button
@@ -149,7 +150,7 @@ const AddNewEmployee = () => {
     };
 
     // SalaryWages
-    const handleSalaryWagesChange = (values: IEmployee) => {
+    const handleSalaryWagesChange = (values: ISalaryWages) => {
         console.log("SalaryWagesChange:", values);
         setSalaryWages(values);
     };

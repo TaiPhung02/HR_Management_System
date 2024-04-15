@@ -118,8 +118,6 @@ const Others = ({
     const [selectedBenefit, setSelectedBenefit] = useState<string>("");
     const [remark, setRemark] = useState<string>("");
 
-    console.log(selectedGrade, selectedBenefit, remark);
-
     const fetchData = async () => {
         try {
             const gradesRes = await gradeApi();
@@ -199,10 +197,10 @@ const Others = ({
     const newValues = useMemo(
         () => ({
             grade_id: parseInt(selectedGrade),
-            benefits: parseInt(selectedBenefit),
+            // benefits: parseInt(selectedBenefit),
             remark: remark,
         }),
-        [selectedGrade, selectedBenefit, remark]
+        [selectedGrade, remark]
     );
 
     useEffect(() => {

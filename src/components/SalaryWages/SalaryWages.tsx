@@ -4,7 +4,8 @@ import "./salaryWages.css";
 import { salaryWagesValidation } from "../../utils/validate-utils";
 import { useParams } from "react-router-dom";
 import { getEmployeeByIdApi } from "../../services/user-services";
-import { IEmployee } from "../../interfaces/employee-interface";
+// import { IEmployee } from "../../interfaces/employee-interface";
+import { ISalaryWages } from "../../interfaces/salaryWages-interface";
 
 const initialValues = {
     basic_salary: "",
@@ -16,7 +17,7 @@ const initialValues = {
 const SalaryWages = ({
     handleSalaryWagesChange,
 }: {
-    handleSalaryWagesChange: (values: IEmployee) => void;
+    handleSalaryWagesChange: (values: ISalaryWages) => void;
 }) => {
     // Get params
     const { id } = useParams<{ id: string }>();
@@ -37,6 +38,8 @@ const SalaryWages = ({
         },
     });
 
+    console.log(values);
+
     // handleSalaryWagesChange
     useEffect(() => {
         handleSalaryWagesChange(values);
@@ -44,19 +47,19 @@ const SalaryWages = ({
 
     // Get employee by id
     useEffect(() => {
-        const fetchEmployeeData = async () => {
-            try {
-                if (id) {
+        if (id) {
+            const fetchEmployeeData = async () => {
+                try {
                     const employeeRes = await getEmployeeByIdApi(id);
                     const employeeData = employeeRes.data;
                     setValues(employeeData);
+                } catch (error) {
+                    console.error("Error fetching data:", error);
                 }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
+            };
 
-        fetchEmployeeData();
+            fetchEmployeeData();
+        }
     }, [id, setValues]);
 
     return (
