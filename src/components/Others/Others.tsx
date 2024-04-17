@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 
-import { Button, Table, Upload, message } from "antd";
+import { Button, Select, Table, Upload, message } from "antd";
 import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 import type { TableColumnsType, UploadProps } from "antd";
-import CrossX from "../../assets/icons/cross.png";
 import "./others.css";
 
 import { IGrade } from "../../interfaces/grade-interface";
@@ -115,7 +114,7 @@ const Others = ({
     const [users, setUsers] = useState<IUser[]>([]);
     // state select
     const [selectedGrade, setSelectedGrade] = useState<string>("");
-    const [selectedBenefit, setSelectedBenefit] = useState<string>("");
+    const [selectedBenefit, setSelectedBenefit] = useState<string[]>([]);
     const [remark, setRemark] = useState<string>("");
 
     const fetchData = async () => {
@@ -123,19 +122,24 @@ const Others = ({
             const gradesRes = await gradeApi();
             const benefitsRes = await benefitApi();
             const usersRes = await userApi();
+
+            // Kiểm tra dữ liệu trả về từ API có hợp lệ không
             if (
                 gradesRes &&
                 gradesRes.data &&
                 benefitsRes &&
                 benefitsRes.data &&
                 usersRes &&
-                usersRes.data
+                usersRes.data &&
+                Array.isArray(gradesRes.data) &&
+                Array.isArray(benefitsRes.data) &&
+                Array.isArray(usersRes.data.data)
             ) {
                 setGrades(gradesRes.data);
                 setBenefits(benefitsRes.data);
                 setUsers(usersRes.data.data);
             } else {
-                console.error("No data returned from API");
+                console.error("No valid data returned from API");
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -146,33 +150,6 @@ const Others = ({
         fetchData();
     }, []);
 
-    // Delete benefit when grade change
-    useEffect(() => {
-        setSelectedBenefit("");
-    }, [selectedGrade]);
-
-    // Change value
-    const handleGradeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedGrade(e.target.value);
-    };
-
-    const handleBenefitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedBenefit(e.target.value);
-    };
-
-    const handleRemarkChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setRemark(e.target.value);
-    };
-
-    // Close
-    const handleDeleteGrade = () => {
-        setSelectedGrade("");
-    };
-
-    const handleDeleteBenefit = () => {
-        setSelectedBenefit("");
-    };
-
     // Get employee by id
     useEffect(() => {
         const fetchEmployeeData = async () => {
@@ -182,7 +159,13 @@ const Others = ({
                     const employeeData = employeeRes.data;
 
                     setSelectedGrade(employeeData.grade_id.toString());
-                    setSelectedBenefit(employeeData.benefits.toString());
+
+                    const benefitNames = employeeData.benefits.map(
+                        (benefit: IEmployee) => benefit.name
+                    );
+                    console.log(benefitNames);
+                    setSelectedBenefit(benefitNames);
+
                     setRemark(employeeData.remark);
                 }
             } catch (error) {
@@ -197,15 +180,33 @@ const Others = ({
     const newValues = useMemo(
         () => ({
             grade_id: parseInt(selectedGrade),
-            // benefits: parseInt(selectedBenefit),
+            benefits: selectedBenefit,
             remark: remark,
         }),
-        [selectedGrade, remark]
+        [selectedGrade, selectedBenefit, remark]
     );
 
     useEffect(() => {
         handleOtherChange(newValues);
     }, [newValues, handleOtherChange]);
+
+    // Change value
+    const handleGradeChange = (value: string) => {
+        setSelectedGrade(value);
+    };
+
+    const handleBenefitChange = (value: string[]) => {
+        setSelectedBenefit(value);
+    };
+
+    const handleRemarkChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setRemark(e.target.value);
+    };
+
+    // Delete benefit when grade change
+    useEffect(() => {
+        setSelectedBenefit([]);
+    }, [selectedGrade]);
 
     return (
         <div className="addnew-container">
@@ -216,64 +217,52 @@ const Others = ({
                 </p>
             </div>
             <div className="addnew__header-line"></div>
+
             <div className="addnew__other">
                 <div className="addnew__other-input-box">
-                    <label htmlFor="name" className="addnew__other-label">
+                    <label htmlFor="grade" className="addnew__other-label">
                         Grade
                     </label>
-                    <select
-                        name="gender"
-                        className="addnew__other-select"
+                    <Select
+                        id="grade"
                         value={selectedGrade}
                         onChange={handleGradeChange}
+                        allowClear
+                        listHeight={320}
+                        size={"large"}
                     >
-                        <option value="" disabled hidden></option>
                         {grades.map((grade) => (
-                            <option key={grade.id} value={grade.id}>
+                            <Select.Option
+                                key={grade.id}
+                                value={grade.id.toString()}
+                            >
                                 {grade.name}
-                            </option>
+                            </Select.Option>
                         ))}
-                    </select>
-                    <div
-                        className={
-                            selectedGrade
-                                ? "addnew__other-delete-button"
-                                : "addnew__other-delete-button disabled"
-                        }
-                    >
-                        <div onClick={() => handleDeleteGrade()}>
-                            <img src={CrossX} alt="" />
-                        </div>
-                    </div>
+                    </Select>
                 </div>
+
                 <div className="addnew__other-input-box">
-                    <label htmlFor="name" className="addnew__other-label">
+                    <label htmlFor="benefits" className="addnew__other-label">
                         Benefit
                     </label>
-                    <select
-                        name="gender"
-                        className="addnew__other-select"
+                    <Select
+                        id="benefits"
                         value={selectedBenefit}
                         onChange={handleBenefitChange}
+                        mode="multiple"
+                        allowClear
+                        size={"large"}
                     >
-                        <option value="" disabled hidden></option>
                         {benefits.map((benefit) => (
-                            <option key={benefit.id} value={benefit.id}>
+                            <Select.Option
+                                key={benefit.id}
+                                value={benefit.id.toString()}
+                            >
                                 {benefit.name}
-                            </option>
+                            </Select.Option>
                         ))}
-                    </select>
-                    <div
-                        className={
-                            selectedBenefit
-                                ? "addnew__other-delete-button"
-                                : "addnew__other-delete-button disabled"
-                        }
-                    >
-                        <div onClick={() => handleDeleteBenefit()}>
-                            <img src={CrossX} alt="" />
-                        </div>
-                    </div>
+                    </Select>
                 </div>
                 <div className="addnew__other-input-box">
                     <label htmlFor="remark" className="addnew__other-label">
@@ -291,18 +280,17 @@ const Others = ({
                     <label htmlFor="users" className="addnew__other-label">
                         HRM User Account
                     </label>
-                    <select
-                        id="users"
-                        name="users"
-                        className="addnew__other-select"
-                    >
-                        <option value="" disabled hidden></option>
+
+                    <Select id="users" size={"large"} listHeight={420}>
                         {users.map((user) => (
-                            <option key={user.id} value={user.id}>
+                            <Select.Option
+                                key={user.id}
+                                value={user.id.toString()}
+                            >
                                 {user.username}
-                            </option>
+                            </Select.Option>
                         ))}
-                    </select>
+                    </Select>
                 </div>
             </div>
             <div className="addnew__other-document">

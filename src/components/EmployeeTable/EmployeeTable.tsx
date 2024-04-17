@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Table, Pagination, Modal } from "antd";
-import { deleteEmployeeApi, employeeApi } from "../../services/user-services";
+import {
+    deleteEmployeeApi,
+    employeeApi,
+    searchEmployeeApi,
+} from "../../services/user-services";
 import { IEmployee } from "../../interfaces/employee-interface";
 import "./employeeTable.css";
 import {
@@ -11,6 +15,7 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { debounce } from "lodash";
 
 const columns = [
     {
@@ -147,6 +152,9 @@ const EmployeeTable = () => {
     // Employee
     const [employees, setEmployees] = useState<IEmployee[]>([]);
 
+    // State Search
+    const [searchText, setSearchText] = useState("");
+
     // Modal
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -174,16 +182,15 @@ const EmployeeTable = () => {
             setLoading(true);
             const employeeRes = await employeeApi(page, size);
             const totalRecords = employeeRes.data.total;
-            setTotal(totalRecords);
             const employeeWithKeys = employeeRes.data.data.map(
                 (employee: IEmployee) => ({
                     ...employee,
                     key: employee.id,
-                    nik: employee.id,
                 })
             );
 
             setEmployees(employeeWithKeys);
+            setTotal(totalRecords);
         } catch (error) {
             console.error("Error fetching data:", error);
             toast.error("Error fetching data: " + error);
@@ -288,6 +295,44 @@ const EmployeeTable = () => {
         navigate(`/employee/create-or-update/${record.id}`);
     };
 
+    // handleSearch
+    const debounceSearch = useMemo(() => {
+        return debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
+            // search by : Name, Department, NIK
+            try {
+                const searchRes = await searchEmployeeApi(
+                    currentPage,
+                    e.target.value
+                );
+                console.log(searchRes);
+                const searchedEmployees = searchRes.data.data.map(
+                    (employee: IEmployee) => ({
+                        ...employee,
+                        key: employee.id,
+                    })
+                );
+                setEmployees(searchedEmployees);
+                setTotal(searchRes.data.total);
+            } catch (error) {
+                console.error("Error searching employees:", error);
+                toast.error("An error occurred while searching employees.");
+            }
+        }, 300);
+    }, [currentPage]);
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setSearchText(value);
+        setCurrentPage(1);
+
+        // const searchParams = new URLSearchParams(location.search);
+        // searchParams.set("page", "1");
+        // searchParams.set("search", value);
+        // navigate(`${location.pathname}?${searchParams}`);
+
+        debounceSearch(e);
+    };
+
     return (
         <div className="table-wrapper">
             <div className="table__header">
@@ -296,9 +341,10 @@ const EmployeeTable = () => {
                     <SearchOutlined className="table__header-icon" />
                     <input
                         type="text"
-                        name="Search"
-                        placeholder="Search..."
                         className="table__header-text"
+                        placeholder="Search..."
+                        value={searchText}
+                        onChange={handleSearch}
                     />
                 </div>
             </div>

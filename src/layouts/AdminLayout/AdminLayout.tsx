@@ -89,10 +89,7 @@ const items: MenuItem[] = [
 
 const AdminLayout = () => {
     const dispatch = useDispatch();
-    // BreadCumb
     const location = useLocation();
-    // BreadCumb
-    // BreadCumb
     // BreadCumb
     const crumbs = location.pathname
         .split("/")
@@ -101,7 +98,6 @@ const AdminLayout = () => {
             const path = `/${array.slice(0, index + 1).join("/")}`;
             let crumbText = "";
             let isEditPage = false;
-            // Thay đổi text cho từng crumb dựa vào đường dẫn (path)
             switch (path) {
                 case "/employee":
                     crumbText = "Employee Management";
@@ -143,8 +139,6 @@ const AdminLayout = () => {
             );
         });
 
-    // Dispath
-    // const user = useSelector((state: RootState) => state.auth.user);
     // Layout
     const [collapsed, setCollapsed] = useState(false);
 

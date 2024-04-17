@@ -34,6 +34,10 @@ export const employeeApi = (page: number, size: number) => {
     return pgApi.get(`employee?page=${page}&size=${size}`);
 };
 
+export const searchEmployeeApi = (page: number, search: string) => {
+    return pgApi.get(`employee?page=${page}&search=${search}`);
+};
+
 export const getEmployeeByIdApi = (recordId: string | undefined) => {
     return pgApi.get(`employee/${recordId}`);
 };

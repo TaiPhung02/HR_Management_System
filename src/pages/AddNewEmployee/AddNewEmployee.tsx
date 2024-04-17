@@ -140,18 +140,18 @@ const AddNewEmployee = () => {
 
     // EmployeeInformation
     const handleEmployeeInfoChange = (values: IEmployee) => {
-        console.log("EmployeeInfoChange:", values);
+        // console.log("EmployeeInfoChange:", values);
         setEmployeeInfo(values);
     };
     // EmployeeDetail
     const handleEmploymentDetailsChange = (values: IEmployee) => {
-        console.log("EmploymentDetailsChange:", values);
+        // console.log("EmploymentDetailsChange:", values);
         setEmploymentDetails(values);
     };
 
     // SalaryWages
     const handleSalaryWagesChange = (values: ISalaryWages) => {
-        console.log("SalaryWagesChange:", values);
+        // console.log("SalaryWagesChange:", values);
         setSalaryWages(values);
     };
 
@@ -178,7 +178,7 @@ const AddNewEmployee = () => {
                             : isButtonDisabled
                     }
                 >
-                    {isEditMode ? "Save Changes" : "Add"}
+                    {isEditMode ? "Save Change" : "Add"}
                 </Button>
             </div>
             <Tabs

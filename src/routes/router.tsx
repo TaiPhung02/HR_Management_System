@@ -8,7 +8,6 @@ import PrivateRouter from "../components/PrivateRouter/PrivateRouter";
 import Employee from "../pages/Employee/Employee";
 import NotFound from "../pages/NotFound/NotFound";
 import AddNewEmployee from "../pages/AddNewEmployee/AddNewEmployee";
-import EditEmployee from "../pages/EditEmployee/EditEmployee";
 const router = createBrowserRouter([
     {
         path: "/login",

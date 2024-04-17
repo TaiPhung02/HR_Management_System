@@ -63,5 +63,6 @@ export interface IEmployee {
     //
     selectedGrade?: number;
     selectedBenefit?: number;
-    benefits?: number;
+    benefits?: string[] | null;
+    benefit?: string;
 }

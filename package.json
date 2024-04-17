@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.6",
     "@reduxjs/toolkit": "^2.2.3",
+    "@types/lodash": "^4.17.0",
     "antd": "^5.16.0",
     "axios": "^1.6.8",
     "formik": "^2.4.5",
