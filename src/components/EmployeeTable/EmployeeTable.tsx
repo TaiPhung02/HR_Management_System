@@ -304,7 +304,6 @@ const EmployeeTable = () => {
                     currentPage,
                     e.target.value
                 );
-                console.log(searchRes);
                 const searchedEmployees = searchRes.data.data.map(
                     (employee: IEmployee) => ({
                         ...employee,
@@ -325,10 +324,10 @@ const EmployeeTable = () => {
         setSearchText(value);
         setCurrentPage(1);
 
-        // const searchParams = new URLSearchParams(location.search);
-        // searchParams.set("page", "1");
-        // searchParams.set("search", value);
-        // navigate(`${location.pathname}?${searchParams}`);
+        const searchParams = new URLSearchParams(location.search);
+        searchParams.set("page", "1");
+        searchParams.set("search", value);
+        navigate(`${location.pathname}?${searchParams}`);
 
         debounceSearch(e);
     };
@@ -377,6 +376,7 @@ const EmployeeTable = () => {
                     </Modal>
                 </div>
                 <div className="table__line"></div>
+
                 <Table
                     rowSelection={rowSelection}
                     columns={columns}
@@ -389,6 +389,7 @@ const EmployeeTable = () => {
                         onDoubleClick: () => handleRowClick(record),
                     })}
                 />
+
                 <Pagination
                     current={currentPage}
                     pageSize={pageSize}

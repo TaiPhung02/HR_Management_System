@@ -8,6 +8,7 @@ import {
     loginFail,
     loginStart,
     loginSuccess,
+    logout,
 } from "../../redux/auth/authSlice";
 import { companyApi, loginPGApi } from "../../services/user-services";
 import { ICompany } from "../../interfaces/company-interface";
@@ -15,7 +16,11 @@ import { ICompany } from "../../interfaces/company-interface";
 import { toast } from "react-toastify";
 import LogoIMG from "../../assets/images/logo-login.png";
 import "./loginForm.css";
-import { EyeInvisibleOutlined, EyeOutlined, LoadingOutlined } from "@ant-design/icons";
+import {
+    EyeInvisibleOutlined,
+    EyeOutlined,
+    LoadingOutlined,
+} from "@ant-design/icons";
 import { Spin } from "antd";
 
 const initialValues = {
@@ -47,12 +52,21 @@ const LoginForm = () => {
                         values.password,
                         values.factory
                     );
-                    console.log(res);
                     if (res && res.data && res.data.token) {
                         localStorage.setItem("token", res.data.token);
                         dispatch(loginSuccess(res.data));
                         toast.success("Logged in successfully");
                         navigate("/");
+
+                        // auto logout
+                        setTimeout(() => {
+                            dispatch(logout());
+                            localStorage.removeItem("token");
+                            toast.info(
+                                "You have been automatically logged out due to inactivity."
+                            );
+                            navigate("/login");
+                        }, 180000);
                     } else {
                         dispatch(
                             loginFail(

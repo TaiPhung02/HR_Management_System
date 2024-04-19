@@ -4,7 +4,7 @@ import { logout } from "../../redux/auth/authSlice";
 
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, Button, Modal } from "antd";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import LogoHeader from "../../assets/images/logo-header.png";
 import CalendatTick from "../../assets/icons/calendar-tick.png";
@@ -90,6 +90,7 @@ const items: MenuItem[] = [
 const AdminLayout = () => {
     const dispatch = useDispatch();
     const location = useLocation();
+    const navigate = useNavigate();
     // BreadCumb
     const crumbs = location.pathname
         .split("/")
@@ -171,10 +172,14 @@ const AdminLayout = () => {
         setIsModalSignOutOpen(false);
     };
 
+    const handleBackToMain = () => {
+        navigate("/")
+    }
+
     return (
         <div>
             <Header className="header">
-                <div className="header__logo">
+                <div className="header__logo" onClick={handleBackToMain}>
                     <img src={LogoHeader} alt="Logo" />
                     <h3 className="header__title">HR Management System</h3>
                 </div>
