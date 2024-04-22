@@ -66,7 +66,7 @@ const LoginForm = () => {
                                 "You have been automatically logged out due to inactivity."
                             );
                             navigate("/login");
-                        }, 180000);
+                        }, 18000000);
                     } else {
                         dispatch(
                             loginFail(

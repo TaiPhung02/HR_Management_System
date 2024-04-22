@@ -65,4 +65,5 @@ export interface IEmployee {
     selectedBenefit?: number;
     benefits?: string[] | null;
     benefit?: string;
+    documents?: FormData | string[];
 }

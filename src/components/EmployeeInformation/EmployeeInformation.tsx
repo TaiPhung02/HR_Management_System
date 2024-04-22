@@ -29,13 +29,15 @@ const initialValues = {
     pob: "",
     home_address_1: "",
     home_address_2: "",
-    grade_id: 0,
+    grade_id: "",
 };
 
 const EmployeeInformation = ({
     handleEmployeeInfoChange,
+    checkIsValidInfor,
 }: {
     handleEmployeeInfoChange: (values: IEmployee) => void;
+    checkIsValidInfor: (isValid: boolean) => void;
 }) => {
     // Get params
     const { id } = useParams<{ id: string }>();
@@ -50,6 +52,7 @@ const EmployeeInformation = ({
         handleSubmit,
         errors,
         touched,
+        isValid,
     } = useFormik({
         initialValues: initialValues,
         validationSchema: employeeInformationValidation,
@@ -61,7 +64,8 @@ const EmployeeInformation = ({
     // handleEmployeeInfoChange
     useEffect(() => {
         handleEmployeeInfoChange(values);
-    }, [values, handleEmployeeInfoChange]);
+        checkIsValidInfor(isValid);
+    }, [values, handleEmployeeInfoChange, isValid, checkIsValidInfor]);
 
     // handleDateChange
     const handleDateChange = (date: Moment | null, field: string): void => {
@@ -266,7 +270,7 @@ const EmployeeInformation = ({
                             value={values.marriage_id}
                             onChange={handleChange}
                         >
-                            <option value="" disabled hidden>
+                            <option value="" hidden>
                                 Choose Marriage Status
                             </option>
                             {marriages.map((marriage) => (

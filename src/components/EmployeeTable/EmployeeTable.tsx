@@ -29,7 +29,7 @@ const columns = [
     {
         title: "Gender",
         dataIndex: "gender",
-        render: (text: string, employee: IEmployee) => {
+        render: (employee: IEmployee) => {
             return employee.gender === 0 ? "Male" : "Female";
         },
     },
@@ -63,7 +63,7 @@ const columns = [
     },
     {
         title: "National ID Card No.",
-        dataIndex: "card_number",
+        dataIndex: "nc_id",
     },
     {
         title: "Date Start",
@@ -71,7 +71,7 @@ const columns = [
     },
     {
         title: "Contract Record",
-        dataIndex: "contracts",
+        // dataIndex: "contracts",
     },
     {
         title: "Department",
@@ -105,14 +105,7 @@ const columns = [
         title: "Contract First signed date",
         dataIndex: "contract_date",
     },
-    // {
-    //     title: "Contract Second signed date",
-    //     dataIndex: "contracts",
-    // },
-    {
-        title: "Contract End signed date",
-        dataIndex: "contracts",
-    },
+
     {
         title: "Entitled OT",
         dataIndex: "entitle_ot",
@@ -378,6 +371,7 @@ const EmployeeTable = () => {
                 <div className="table__line"></div>
 
                 <Table
+                    size="small"
                     rowSelection={rowSelection}
                     columns={columns}
                     dataSource={employees}

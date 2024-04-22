@@ -1,0 +1,42 @@
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="14" height="14" fill="#F3F3F3"/>
+<g id="4. Employee management_ Add Employee_Employee Information">
+<g clip-path="url(#clip0_0_1)">
+<rect x="-899" y="-435" width="1920" height="1080" rx="8" fill="#F8F9FA"/>
+<g id="Employee management">
+<g id="Main">
+<g id="Table" filter="url(#filter0_d_0_1)">
+<rect x="-524" y="-186" width="1170" height="652" rx="12" fill="#FBFCFD" shape-rendering="crispEdges"/>
+<g id="Frame 4">
+<g id="Frame 2">
+<g id="box">
+<g id="input text box">
+<rect x="-316" y="-16" width="342" height="46" rx="6" fill="#F1F3F5"/>
+<g id="Chevron Down">
+<path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M2.927 5.74711C3.10328 5.55908 3.3986 5.54956 3.58662 5.72583L7.00078 8.92661L10.4149 5.72583C10.603 5.54956 10.8983 5.55908 11.0746 5.74711C11.2508 5.93513 11.2413 6.23046 11.0533 6.40673L7.31995 9.90676C7.14045 10.075 6.86112 10.075 6.68161 9.90676L2.94828 6.40673C2.76025 6.23046 2.75073 5.93513 2.927 5.74711Z" fill="#11181C"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_0_1" x="-544" y="-201" width="1210" height="692" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="5"/>
+<feGaussianBlur stdDeviation="10"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.945098 0 0 0 0 0.952941 0 0 0 0 0.960784 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_1"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_1" result="shape"/>
+</filter>
+<clipPath id="clip0_0_1">
+<rect x="-899" y="-435" width="1920" height="1080" rx="8" fill="white"/>
+</clipPath>
+</defs>
+</svg>

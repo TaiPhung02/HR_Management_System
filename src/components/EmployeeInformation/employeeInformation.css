@@ -46,7 +46,6 @@
 .addnew__employee {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 30px;
 }
 
 .addnew__employee-input-box {
@@ -95,24 +94,25 @@
 }
 
 .addnew__employee-select {
-    display: flex;
-    align-items: center;
     color: #687076;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     padding: 8px 12px;
-    gap: 10px;
-    flex: 1 0 0;
-    max-width: 342px;
-    height: 46px;
     border-radius: 6px;
     background: #f1f3f5;
     border: none;
     outline: none;
+    height: 46px;
     width: 100%;
-    max-width: 100%;
+}
+
+.addnew__employee-select:focus {
+    background: #e5e7e9;
+}
+.addnew__employee-select option {
+    background: #fafbfb;
 }
 
 .addnew__employee-date-box {

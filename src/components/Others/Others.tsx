@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { Button, Select, Table, Upload, message } from "antd";
 import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
-import type { TableColumnsType, UploadProps } from "antd";
+import type { TableColumnsType, UploadFile, UploadProps } from "antd";
 import "./others.css";
 
 import { IGrade } from "../../interfaces/grade-interface";
@@ -17,89 +17,11 @@ import { IUser } from "../../interfaces/user-interface";
 import { IEmployee } from "../../interfaces/employee-interface";
 import { useParams } from "react-router-dom";
 
-const props: UploadProps = {
-    name: "file",
-    action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-    headers: {
-        authorization: "authorization-text",
-    },
-    onChange(info) {
-        if (info.file.status !== "uploading") {
-            console.log(info.file, info.fileList);
-        }
-        if (info.file.status === "done") {
-            message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === "error") {
-            message.error(`${info.file.name} file upload failed.`);
-        }
-    },
-};
-
 interface DataType {
-    key: React.Key;
+    id: React.Key;
     name: string;
-    age: number;
-    address: string;
+    created_at: string;
 }
-
-const columns: TableColumnsType<DataType> = [
-    {
-        title: "No",
-        dataIndex: "name",
-        key: "name",
-        className: "addnew__other-column",
-    },
-    {
-        title: "Document Name",
-        dataIndex: "age",
-        key: "age",
-        className: "addnew__other-column",
-    },
-    {
-        title: "Created At",
-        dataIndex: "address",
-        key: "address",
-        className: "addnew__other-column",
-    },
-    {
-        title: "Action",
-        dataIndex: "",
-        key: "x",
-        render: () => (
-            <a className="addnew__other-delete">
-                <DeleteOutlined /> Delete
-            </a>
-        ),
-        className: "addnew__other-column",
-    },
-];
-
-const data: DataType[] = [
-    {
-        key: 1,
-        name: "John Brown",
-        age: 32,
-        address: "New York No. 1 Lake Park",
-    },
-    {
-        key: 2,
-        name: "Jim Green",
-        age: 42,
-        address: "London No. 1 Lake Park",
-    },
-    {
-        key: 3,
-        name: "Not Expandable",
-        age: 29,
-        address: "Jiangsu No. 1 Lake Park",
-    },
-    {
-        key: 4,
-        name: "Joe Black",
-        age: 32,
-        address: "Sydney No. 1 Lake Park",
-    },
-];
 
 const Others = ({
     handleOtherChange,
@@ -123,7 +45,6 @@ const Others = ({
             const benefitsRes = await benefitApi();
             const usersRes = await userApi();
 
-            // Kiểm tra dữ liệu trả về từ API có hợp lệ không
             if (
                 gradesRes &&
                 gradesRes.data &&
@@ -158,15 +79,16 @@ const Others = ({
                     const employeeRes = await getEmployeeByIdApi(id);
                     const employeeData = employeeRes.data;
 
-                    setSelectedGrade(employeeData.grade_id.toString());
+                    setSelectedGrade(employeeData?.grade_id?.toString());
 
-                    const benefitNames = employeeData.benefits.map(
+                    const benefitNames = employeeData?.benefits.map(
                         (benefit: IEmployee) => benefit.name
                     );
-                    console.log(benefitNames);
                     setSelectedBenefit(benefitNames);
 
-                    setRemark(employeeData.remark);
+                    setRemark(employeeData?.remark);
+                    console.log(employeeData?.documents);
+                    setTableData(employeeData?.documents);
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -175,20 +97,6 @@ const Others = ({
 
         fetchEmployeeData();
     }, [id]);
-
-    // handleOtherChange
-    const newValues = useMemo(
-        () => ({
-            grade_id: parseInt(selectedGrade),
-            benefits: selectedBenefit,
-            remark: remark,
-        }),
-        [selectedGrade, selectedBenefit, remark]
-    );
-
-    useEffect(() => {
-        handleOtherChange(newValues);
-    }, [newValues, handleOtherChange]);
 
     // Change value
     const handleGradeChange = (value: string) => {
@@ -207,6 +115,98 @@ const Others = ({
     useEffect(() => {
         setSelectedBenefit([]);
     }, [selectedGrade]);
+
+    // Upload Files
+    const [tableData, setTableData] = useState<DataType[]>([]);
+    const [fileData, setFileData] = useState([]);
+
+    const columns: TableColumnsType<DataType> = [
+        {
+            title: "No",
+            dataIndex: "id",
+            key: "id",
+            className: "addnew__other-column",
+            render: (_, __, index) => (
+                <span style={{ textAlign: "center" }}>{++index}</span>
+            ),
+        },
+        {
+            title: "Document Name",
+            dataIndex: "name",
+            key: "name",
+            className: "addnew__other-column",
+        },
+        {
+            title: "Created At",
+            dataIndex: "created_at",
+            key: "created_at",
+            className: "addnew__other-column",
+        },
+        {
+            title: "Action",
+            dataIndex: "",
+            key: "x",
+            render: (record) => (
+                <a
+                    className="addnew__other-delete"
+                    onClick={() => handleDeleteRow(record)}
+                >
+                    <DeleteOutlined /> Delete
+                </a>
+            ),
+            className: "addnew__other-column",
+        },
+    ];
+
+    const handleUploadDocument = (file: UploadFile<File>) => {
+        const newData: DataType = {
+            id: file.uid,
+            name: file.name,
+            created_at: new Date().toLocaleString(),
+        };
+
+        setTableData([...tableData, newData]);
+        setFileData([...fileData, file.originFileObj]);
+    };
+
+    const handleDeleteRow = (record: DataType) => {
+        const newData = tableData.filter((item) => item.id !== record.id);
+        setTableData(newData);
+    };
+
+    const props: UploadProps = {
+        name: "file",
+        accept: "image/*,.pdf,.csv,.xlsx,.docx",
+        multiple: true,
+        action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+        headers: {
+            authorization: "authorization-text",
+        },
+        showUploadList: false,
+        onChange(info) {
+            if (info.file && info.file.status === "done") {
+                message.success(`${info.file.name} file uploaded successfully`);
+                handleUploadDocument(info.file);
+            } else if (info.file.status === "error") {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+    };
+
+    // handleOtherChange
+    const newValues = useMemo(
+        () => ({
+            grade_id: parseInt(selectedGrade),
+            benefits: selectedBenefit,
+            remark: remark,
+            documents: fileData,
+        }),
+        [selectedGrade, selectedBenefit, remark, fileData]
+    );
+
+    useEffect(() => {
+        handleOtherChange(newValues);
+    }, [newValues, handleOtherChange]);
 
     return (
         <div className="addnew-container">
@@ -307,7 +307,7 @@ const Others = ({
                 </div>
                 <Table
                     columns={columns}
-                    dataSource={data}
+                    dataSource={tableData}
                     pagination={false}
                     className="addnew__other-table"
                 />

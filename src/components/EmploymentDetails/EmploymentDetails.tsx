@@ -91,7 +91,8 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
                     const employeeData = employeeRes.data;
                     const updatedEmployeeData = {
                         ...employeeData,
-                        hidden_on_payroll: employeeData.hidden_on_payroll === "1",
+                        hidden_on_payroll:
+                            employeeData.hidden_on_payroll === "1",
                         entitle_ot: employeeData.entitle_ot === 1,
                         meal_allowance_paid:
                             employeeData.meal_allowance_paid === 1,
@@ -130,7 +131,7 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
                         value={values.department_id}
                         onChange={handleChange}
                     >
-                        <option value="" disabled hidden>
+                        <option value="" hidden>
                             Choose Department
                         </option>
                         {departments.map((department) => (
@@ -154,7 +155,7 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
                         value={values.position_id}
                         onChange={handleChange}
                     >
-                        <option value="" disabled hidden>
+                        <option value="" hidden>
                             Choose Position
                         </option>
                         {positions.map((position) => (

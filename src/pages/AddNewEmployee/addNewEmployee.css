@@ -59,6 +59,8 @@
 
 .table-wrapper .ant-tabs-tab.ant-tabs-tab-active {
     background: #0091ff !important;
+    /* background: #ef6165 !important;
+    color: #ffefef !important; */
 }
 
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -72,3 +74,12 @@
     justify-content: space-between;
     gap: 6px;
 }
+
+/* .addnew__tab.error {
+    color: #ef6165;
+    background: #ffefef;
+}
+
+.addnew__tab.error .ant-tabs-tab.ant-tabs-tab-active {
+    background: #ef6165;
+} */

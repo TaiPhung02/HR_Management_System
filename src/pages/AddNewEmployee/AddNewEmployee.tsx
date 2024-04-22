@@ -10,7 +10,9 @@ import { toast } from "react-toastify";
 import {
     addNewEmployeeApi,
     editEmployeeApi,
+    FormDataProps,
     getEmployeeByIdApi,
+    uploadDocumentApi,
 } from "../../services/user-services";
 import { useNavigate, useParams } from "react-router-dom";
 import { IEmployee } from "../../interfaces/employee-interface";
@@ -37,6 +39,7 @@ const AddNewEmployee = () => {
     // State Button
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     // const [isErrorsField, setIsErrorsField] = useState(false);
+    const [isValidInfor, setIsValidInfor] = useState(false);
 
     // Check button
     useEffect(() => {
@@ -79,6 +82,25 @@ const AddNewEmployee = () => {
         checkId();
     }, [id, isEditMode]);
 
+    // handleUpload
+    const handleDocumentUpload = async (
+        employeeId: string,
+        documentFormData: FormData
+    ) => {
+        console.log(employeeId, documentFormData);
+        const data: FormDataProps = {
+            employee_id: employeeId,
+            documents: documentFormData,
+        };
+        try {
+            const response = await uploadDocumentApi(data);
+
+            console.log("Upload document response:", response);
+        } catch (error) {
+            console.error("Error uploading document:", error);
+        }
+    };
+
     // Handle Add
     const handleAddNewEmployee = async () => {
         try {
@@ -91,11 +113,13 @@ const AddNewEmployee = () => {
 
             if (res && res.result === true) {
                 console.log(res);
+
                 toast.success("Record added");
 
                 setEmployeeInfo({});
                 setEmploymentDetails({});
                 setSalaryWages({});
+                setOthers({});
 
                 navigate("/employee");
             } else {
@@ -119,8 +143,10 @@ const AddNewEmployee = () => {
                 });
 
                 if (res && res.result === true) {
-                    toast.success("Change saved");
+                    handleDocumentUpload(id, others.documents);
+
                     window.history.back();
+                    toast.success("Change saved");
                 } else {
                     toast.error(
                         "Failed to edit employee. Please try again later."
@@ -134,13 +160,14 @@ const AddNewEmployee = () => {
         }
     };
 
+    // change tabs
     const onChange = (key: string) => {
         console.log(key);
     };
 
     // EmployeeInformation
     const handleEmployeeInfoChange = (values: IEmployee) => {
-        // console.log("EmployeeInfoChange:", values);
+        console.log("EmployeeInfoChange:", values);
         setEmployeeInfo(values);
     };
     // EmployeeDetail
@@ -159,6 +186,14 @@ const AddNewEmployee = () => {
     const handleOtherChange = (values: IEmployee) => {
         console.log("OthersChange:", values);
         setOthers(values);
+    };
+
+    const checkIsValidInfor = (isValidInfor: boolean) => {
+        if (isValidInfor) {
+            setIsValidInfor(true);
+        } else {
+            setIsValidInfor(false);
+        }
     };
 
     return (
@@ -189,29 +224,42 @@ const AddNewEmployee = () => {
             >
                 <Tabs.TabPane
                     tab={
-                        <span className="addnew__tab">
-                            Employee Information
-                            <PiWarningCircle />
-                        </span>
+                        !isValidInfor ? (
+                            <span className="addnew__tab error">
+                                Employee Information
+                                <PiWarningCircle />
+                            </span>
+                        ) : (
+                            <span className="addnew__tab">
+                                Employee Information
+                            </span>
+                        )
                     }
                     key="1"
                 >
                     <EmployeeInformation
                         handleEmployeeInfoChange={handleEmployeeInfoChange}
+                        checkIsValidInfor={checkIsValidInfor}
                     />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Contract Information" key="2">
+                    <ContractInformation />
                 </Tabs.TabPane>
                 <Tabs.TabPane
                     tab={
-                        <span className="addnew__tab">
-                            Contract Information
-                            <PiWarningCircle />
-                        </span>
+                        !isValidInfor ? (
+                            <span className="addnew__tab">
+                                Employment Details
+                                <PiWarningCircle />
+                            </span>
+                        ) : (
+                            <span className="addnew__tab">
+                                Employment Details
+                            </span>
+                        )
                     }
-                    key="2"
+                    key="3"
                 >
-                    <ContractInformation />
-                </Tabs.TabPane>
-                <Tabs.TabPane tab="Employment Details" key="3">
                     <EmploymentDetails
                         handleEmploymentDetailsChange={
                             handleEmploymentDetailsChange

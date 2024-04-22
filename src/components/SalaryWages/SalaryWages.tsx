@@ -38,8 +38,6 @@ const SalaryWages = ({
         },
     });
 
-    console.log(values);
-
     // handleSalaryWagesChange
     useEffect(() => {
         handleSalaryWagesChange(values);

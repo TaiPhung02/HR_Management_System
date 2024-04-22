@@ -48,7 +48,10 @@ export const addNewEmployeeApi = (employeeData: IEmployee) => {
     });
 };
 
-export const editEmployeeApi = (id: string | undefined, employeeData: IEmployee) => {
+export const editEmployeeApi = (
+    id: string | undefined,
+    employeeData: IEmployee
+) => {
     return pgApi.put(`employee/${id}`, {
         ...employeeData,
     });
@@ -61,6 +64,20 @@ export const deleteEmployeeApi = (recordIds: number[]) => {
         },
     });
 };
+
+export interface FormDataProps {
+    employee_id: string;
+    documents: FormData;
+}
+
+export const uploadDocumentApi = (data: FormDataProps) => {
+    return pgApi.post(`employee-document/upload`, data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+};
+
 export const marriageApi = () => {
     return pgApi.get("marriage");
 };
