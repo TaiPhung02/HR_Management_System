@@ -11,6 +11,7 @@ import {
 import { employmentDetailsSchema } from "../../utils/validate-utils";
 import { useParams } from "react-router-dom";
 import { IEmployee } from "../../interfaces/employee-interface";
+import { Checkbox } from "antd";
 
 interface EmploymentDetailsProps {
     handleEmploymentDetailsChange: (values: IEmployee) => void;
@@ -166,14 +167,13 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
                     </select>
                 </div>
                 <div className="addnew__employment-checkbox-box">
-                    <input
+                    <Checkbox
                         id="hidden_on_payroll"
                         name="hidden_on_payroll"
                         type="checkbox"
                         className="addnew__employment-checkbox"
                         checked={values.hidden_on_payroll}
                         onChange={handleChange}
-                        onBlur={handleBlur}
                     />
                     <label
                         htmlFor="hidden_on_payroll"
@@ -188,14 +188,13 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
                     </p>
                 )}
                 <div className="addnew__employment-checkbox-box">
-                    <input
+                    <Checkbox
                         id="entitle_ot"
                         name="entitle_ot"
                         type="checkbox"
                         className="addnew__employment-checkbox"
                         checked={values.entitle_ot}
                         onChange={handleChange}
-                        onBlur={handleBlur}
                     />
                     <label
                         htmlFor="entitle_ot"
@@ -205,14 +204,13 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
                     </label>
                 </div>
                 <div className="addnew__employment-checkbox-box">
-                    <input
+                    <Checkbox
                         id="meal_allowance_paid"
                         name="meal_allowance_paid"
                         type="checkbox"
                         className="addnew__employment-checkbox"
                         checked={values.meal_allowance_paid}
                         onChange={handleChange}
-                        onBlur={handleBlur}
                     />
                     <label
                         htmlFor="meal_allowance_paid"

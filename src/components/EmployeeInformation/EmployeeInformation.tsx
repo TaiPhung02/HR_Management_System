@@ -6,9 +6,9 @@ import { DatePicker } from "antd";
 import { IMarriage } from "../../interfaces/marriage-interface";
 import { getEmployeeByIdApi, marriageApi } from "../../services/user-services";
 import { employeeInformationValidation } from "../../utils/validate-utils";
-import moment, { Moment } from "moment";
 import { IEmployee } from "../../interfaces/employee-interface";
 import { useParams } from "react-router-dom";
+import dayjs, { Dayjs } from "dayjs";
 
 const initialValues = {
     staff_id: "",
@@ -29,7 +29,7 @@ const initialValues = {
     pob: "",
     home_address_1: "",
     home_address_2: "",
-    grade_id: "",
+    grade_id: 0,
 };
 
 const EmployeeInformation = ({
@@ -68,11 +68,12 @@ const EmployeeInformation = ({
     }, [values, handleEmployeeInfoChange, isValid, checkIsValidInfor]);
 
     // handleDateChange
-    const handleDateChange = (date: Moment | null, field: string): void => {
+    const handleDateChange = (date: Dayjs | null, field: string): void => {
+        const formattedDate = date ? date.format("YYYY-MM-DD") : "";
         handleChange({
             target: {
                 name: field,
-                value: date ? date.format("YYYY-MM-DD") : "",
+                value: formattedDate,
             },
         });
     };
@@ -311,7 +312,7 @@ const EmployeeInformation = ({
                                 }
                                 value={
                                     values.dob
-                                        ? moment(values.dob, "YYYY-MM-DD")
+                                        ? dayjs(values.dob, "YYYY-MM-DD")
                                         : null
                                 }
                                 onChange={(date) =>
@@ -433,23 +434,11 @@ const EmployeeInformation = ({
                         />
                     </div>
                     <div className="addnew__employee-input-box">
-                        <label htmlFor="" className="addnew__employee-label">
-                            Date Start
-                        </label>
-                        <div className="addnew__employee-input-wrapper">
-                            <DatePicker
-                                id=""
-                                name=""
-                                className="addnew__employee-date-box"
-                            />
-                        </div>
-                    </div>
-                    <div className="addnew__employee-input-box">
                         <label
                             htmlFor="contract_start_date"
                             className="addnew__employee-label"
                         >
-                            Contract Date Start
+                            Date Start
                             <span className="required">*</span>
                         </label>
                         <div className="addnew__employee-input-wrapper">
@@ -464,7 +453,7 @@ const EmployeeInformation = ({
                                 }
                                 value={
                                     values.contract_start_date
-                                        ? moment(
+                                        ? dayjs(
                                               values.contract_start_date,
                                               "YYYY-MM-DD"
                                           )
@@ -486,6 +475,7 @@ const EmployeeInformation = ({
                                 )}
                         </div>
                     </div>
+
                     <div className="addnew__employee-input-box">
                         <label
                             htmlFor="type"

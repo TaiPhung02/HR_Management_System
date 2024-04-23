@@ -73,6 +73,7 @@
     border-radius: 6px;
     border: 1px solid #dfe3e6;
     width: 100%;
+    padding: 0 20px 20px;
 }
 
 .ant-table {
@@ -109,7 +110,8 @@
 }
 
 .addnew__other-table {
-    margin: 0 20px;
+    height: 300px;
+    overflow: scroll;
 }
 
 .addnew__other-button {
@@ -158,4 +160,21 @@
 
 .addnew__other-delete-button.disabled {
     display: none;
+}
+
+.addnew-container .ant-table-thead .ant-table-cell {
+    text-align: center;
+    background: #eceef0 !important;
+}
+
+.addnew-container .ant-table-cell:first-child {
+    text-align: center;
+}
+
+.ant-table-row .ant-table-cell {
+    background: #f8f9fa;
+}
+
+.ant-table-row:hover .ant-table-cell {
+    background: #edf6ff !important;
 }

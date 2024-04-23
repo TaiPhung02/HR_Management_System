@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { Button, Select, Table, Upload, message } from "antd";
 import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
-import type { TableColumnsType, UploadFile, UploadProps } from "antd";
+import type { TableColumnsType, UploadProps } from "antd";
 import "./others.css";
 
 import { IGrade } from "../../interfaces/grade-interface";
@@ -18,15 +18,19 @@ import { IEmployee } from "../../interfaces/employee-interface";
 import { useParams } from "react-router-dom";
 
 interface DataType {
-    id: React.Key;
+    id: string | number;
     name: string;
     created_at: string;
 }
 
 const Others = ({
     handleOtherChange,
+    deleteIds,
+    setDeleteIds,
 }: {
     handleOtherChange: (values: IEmployee) => void;
+    deleteIds: string[];
+    setDeleteIds: any;
 }) => {
     // Get params
     const { id } = useParams<{ id: string }>();
@@ -87,7 +91,7 @@ const Others = ({
                     setSelectedBenefit(benefitNames);
 
                     setRemark(employeeData?.remark);
-                    console.log(employeeData?.documents);
+
                     setTableData(employeeData?.documents);
                 }
             } catch (error) {
@@ -111,14 +115,12 @@ const Others = ({
         setRemark(e.target.value);
     };
 
-    // Delete benefit when grade change
-    useEffect(() => {
-        setSelectedBenefit([]);
-    }, [selectedGrade]);
-
     // Upload Files
     const [tableData, setTableData] = useState<DataType[]>([]);
     const [fileData, setFileData] = useState([]);
+
+    console.log("tableData:", tableData);
+    console.log("fileData:", fileData);
 
     const columns: TableColumnsType<DataType> = [
         {
@@ -158,7 +160,7 @@ const Others = ({
         },
     ];
 
-    const handleUploadDocument = (file: UploadFile<File>) => {
+    const handleUploadDocument = (file) => {
         const newData: DataType = {
             id: file.uid,
             name: file.name,
@@ -172,6 +174,9 @@ const Others = ({
     const handleDeleteRow = (record: DataType) => {
         const newData = tableData.filter((item) => item.id !== record.id);
         setTableData(newData);
+
+        const index = tableData.map((item) => item.id);
+        setDeleteIds(index);
     };
 
     const props: UploadProps = {
@@ -207,6 +212,11 @@ const Others = ({
     useEffect(() => {
         handleOtherChange(newValues);
     }, [newValues, handleOtherChange]);
+
+    // Delete benefit when grade change
+    // useEffect(() => {
+    //     setSelectedBenefit([]);
+    // }, [selectedGrade]);
 
     return (
         <div className="addnew-container">
@@ -306,6 +316,7 @@ const Others = ({
                     </Upload>
                 </div>
                 <Table
+                    size="small"
                     columns={columns}
                     dataSource={tableData}
                     pagination={false}

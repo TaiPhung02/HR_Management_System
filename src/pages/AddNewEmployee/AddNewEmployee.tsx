@@ -41,6 +41,11 @@ const AddNewEmployee = () => {
     // const [isErrorsField, setIsErrorsField] = useState(false);
     const [isValidInfor, setIsValidInfor] = useState(false);
 
+    //
+    const [deleteIds, setDeleteIds] = useState([]);
+
+    // console.log(deleteIds);
+
     // Check button
     useEffect(() => {
         setIsButtonDisabled(
@@ -54,7 +59,7 @@ const AddNewEmployee = () => {
                 employeeInfo.contract_start_date &&
                 employmentDetails.hidden_on_payroll &&
                 Object.keys(employeeInfo).length > 0
-            ) || !employmentDetails
+            )
         );
     }, [employeeInfo, employmentDetails]);
 
@@ -87,10 +92,10 @@ const AddNewEmployee = () => {
         employeeId: string,
         documentFormData: FormData
     ) => {
-        console.log(employeeId, documentFormData);
         const data: FormDataProps = {
             employee_id: employeeId,
             documents: documentFormData,
+            delete_ids: deleteIds,
         };
         try {
             const response = await uploadDocumentApi(data);
@@ -144,6 +149,7 @@ const AddNewEmployee = () => {
 
                 if (res && res.result === true) {
                     handleDocumentUpload(id, others.documents);
+                    setDeleteIds([]);
 
                     window.history.back();
                     toast.success("Change saved");
@@ -167,7 +173,7 @@ const AddNewEmployee = () => {
 
     // EmployeeInformation
     const handleEmployeeInfoChange = (values: IEmployee) => {
-        console.log("EmployeeInfoChange:", values);
+        // console.log("EmployeeInfoChange:", values);
         setEmployeeInfo(values);
     };
     // EmployeeDetail
@@ -185,6 +191,7 @@ const AddNewEmployee = () => {
     // Other
     const handleOtherChange = (values: IEmployee) => {
         console.log("OthersChange:", values);
+        console.log(deleteIds);
         setOthers(values);
     };
 
@@ -247,16 +254,7 @@ const AddNewEmployee = () => {
                 </Tabs.TabPane>
                 <Tabs.TabPane
                     tab={
-                        !isValidInfor ? (
-                            <span className="addnew__tab">
-                                Employment Details
-                                <PiWarningCircle />
-                            </span>
-                        ) : (
-                            <span className="addnew__tab">
-                                Employment Details
-                            </span>
-                        )
+                        <span className="addnew__tab">Employment Details</span>
                     }
                     key="3"
                 >
@@ -272,7 +270,11 @@ const AddNewEmployee = () => {
                     />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Others" key="5">
-                    <Others handleOtherChange={handleOtherChange} />
+                    <Others
+                        handleOtherChange={handleOtherChange}
+                        deleteIds={deleteIds}
+                        setDeleteIds={setDeleteIds}
+                    />
                 </Tabs.TabPane>
             </Tabs>
         </div>

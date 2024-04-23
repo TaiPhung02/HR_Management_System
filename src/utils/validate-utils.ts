@@ -45,8 +45,8 @@ export const employeeInformationValidation = Yup.object().shape({
         .required("Name is required")
         .max(30, "Name must be at most 30 characters")
         .matches(
-            /^[A-Za-z0-9 .]+$/,
-            "Name can only contain letters, numbers, and periods"
+            /^[a-zA-Z0-9\sÀ-ÿ.]+$/u,
+            "Username can only contain letters, numbers, periods, and spaces"
         ),
     gender: Yup.string().required("Gender is required"),
     dob: Yup.string().required("Date of birthday is required"),

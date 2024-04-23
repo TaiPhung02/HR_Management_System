@@ -17,119 +17,6 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
 
-const columns = [
-    {
-        title: "NIK",
-        dataIndex: "staff_id",
-    },
-    {
-        title: "Name",
-        dataIndex: "name",
-    },
-    {
-        title: "Gender",
-        dataIndex: "gender",
-        render: (employee: IEmployee) => {
-            return employee.gender === 0 ? "Male" : "Female";
-        },
-    },
-    {
-        title: "Card number",
-        dataIndex: "card_number",
-    },
-    {
-        title: "Account Number",
-        dataIndex: "bank_account_no",
-    },
-    {
-        title: "Family Card Number",
-        dataIndex: "family_card_number",
-    },
-    {
-        title: "Marriage Status",
-        dataIndex: "marriage_code",
-    },
-    {
-        title: "Mother Name",
-        dataIndex: "mother_name",
-    },
-    {
-        title: "Place & Date of Birth",
-        dataIndex: "dob",
-    },
-    {
-        title: "Home Address",
-        dataIndex: "home_address_1",
-    },
-    {
-        title: "National ID Card No.",
-        dataIndex: "nc_id",
-    },
-    {
-        title: "Date Start",
-        dataIndex: "contract_start_date",
-    },
-    {
-        title: "Contract Record",
-        // dataIndex: "contracts",
-    },
-    {
-        title: "Department",
-        dataIndex: "department_name",
-    },
-    {
-        title: "Employee Type",
-        dataIndex: "type",
-        render: (text: string) => {
-            switch (text) {
-                case "0":
-                    return "Permanent worker";
-                case "1":
-                    return "Part-time worker";
-                case "2":
-                    return "Contract worker";
-                default:
-                    return "Unknown";
-            }
-        },
-    },
-    {
-        title: "Basic Salary",
-        dataIndex: "basic_salary",
-    },
-    {
-        title: "Position",
-        dataIndex: "position_name",
-    },
-    {
-        title: "Contract First signed date",
-        dataIndex: "contract_date",
-    },
-
-    {
-        title: "Entitled OT",
-        dataIndex: "entitle_ot",
-        render: (text: number) => {
-            return text === 1 ? "Yes" : "No";
-        },
-    },
-    {
-        title: "Meal paid",
-        dataIndex: "meal_allowance_paid",
-        render: (text: number) => {
-            return text === 1 ? "Yes" : "No";
-        },
-    },
-    {
-        title: "Meal allowance",
-        dataIndex: "meal_allowance",
-    },
-    {
-        title: "Grading",
-        dataIndex: "grade_name",
-    },
-];
-
 const EmployeeTable = () => {
     // Location
     const location = useLocation();
@@ -150,6 +37,120 @@ const EmployeeTable = () => {
 
     // Modal
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Column
+    const columns = [
+        {
+            title: "NIK",
+            dataIndex: "staff_id",
+        },
+        {
+            title: "Name",
+            dataIndex: "name",
+        },
+        {
+            title: "Gender",
+            dataIndex: "gender",
+            render: (text: string, employee: IEmployee) => {
+                return employee?.gender == 0 ? "Male" : "Female";
+            },
+        },
+        {
+            title: "Card number",
+            dataIndex: "card_number",
+        },
+        {
+            title: "Account Number",
+            dataIndex: "bank_account_no",
+        },
+        {
+            title: "Family Card Number",
+            dataIndex: "family_card_number",
+        },
+        {
+            title: "Marriage Status",
+            dataIndex: "marriage_code",
+        },
+        {
+            title: "Mother Name",
+            dataIndex: "mother_name",
+        },
+        {
+            title: "Place & Date of Birth",
+            dataIndex: "dob",
+        },
+        {
+            title: "Home Address",
+            dataIndex: "home_address_1",
+        },
+        {
+            title: "National ID Card No.",
+            dataIndex: "nc_id",
+        },
+        {
+            title: "Date Start",
+            dataIndex: "contract_start_date",
+        },
+        {
+            title: "Contract Record",
+            // dataIndex: "contracts",
+        },
+        {
+            title: "Department",
+            dataIndex: "department_name",
+        },
+        {
+            title: "Employee Type",
+            dataIndex: "type",
+            render: (text: string) => {
+                switch (text) {
+                    case "0":
+                        return "Permanent worker";
+                    case "1":
+                        return "Part-time worker";
+                    case "2":
+                        return "Contract worker";
+                    default:
+                        return "Unknown";
+                }
+            },
+        },
+        {
+            title: "Basic Salary",
+            dataIndex: "basic_salary",
+        },
+        {
+            title: "Position",
+            dataIndex: "position_name",
+        },
+        {
+            title: "Contract First signed date",
+            dataIndex: "contract_date",
+        },
+
+        {
+            title: "Entitled OT",
+            dataIndex: "entitle_ot",
+            render: (text: number) => {
+                return text === 1 ? "Yes" : "No";
+            },
+        },
+        {
+            title: "Meal paid",
+            dataIndex: "meal_allowance_paid",
+            render: (text: number) => {
+                return text === 1 ? "Yes" : "No";
+            },
+        },
+        {
+            title: "Meal allowance",
+            dataIndex: "meal_allowance",
+        },
+        {
+            title: "Grading",
+            dataIndex: "grade_name",
+        },
+    ];
 
     // Select row
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
