@@ -47,7 +47,7 @@
     gap: 10px;
 }
 
-.addnew__employment-checkbox {
-    width: 20px;
-    height: 20px;
+.addnew__employment-checkbox-box .ant-checkbox-inner {
+    padding: 10px;
 }
+

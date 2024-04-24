@@ -67,7 +67,7 @@ export const deleteEmployeeApi = (recordIds: number[]) => {
 
 export interface FormDataProps {
     employee_id: string;
-    documents: FormData;
+    documents: string[] | FormData | undefined;
     delete_ids: string[];
 }
 

@@ -42,6 +42,7 @@ const Others = ({
     const [selectedGrade, setSelectedGrade] = useState<string>("");
     const [selectedBenefit, setSelectedBenefit] = useState<string[]>([]);
     const [remark, setRemark] = useState<string>("");
+    // Total file
 
     const fetchData = async () => {
         try {
@@ -188,6 +189,14 @@ const Others = ({
             authorization: "authorization-text",
         },
         showUploadList: false,
+        beforeUpload(file, fileList) {
+            const totalFiles = fileList.length + tableData.length;
+            if (totalFiles > 10) {
+                message.error("The total number of files cannot exceed 10!");
+                return false;
+            }
+            return true;
+        },
         onChange(info) {
             if (info.file && info.file.status === "done") {
                 message.success(`${info.file.name} file uploaded successfully`);
@@ -310,6 +319,7 @@ const Others = ({
                         <Button
                             icon={<UploadOutlined />}
                             className="addnew__other-button"
+                            disabled={tableData.length > 9}
                         >
                             Upload
                         </Button>

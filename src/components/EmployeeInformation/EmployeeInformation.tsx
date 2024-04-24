@@ -29,7 +29,7 @@ const initialValues = {
     pob: "",
     home_address_1: "",
     home_address_2: "",
-    grade_id: 0,
+    grade_id: "",
 };
 
 const EmployeeInformation = ({
@@ -415,7 +415,6 @@ const EmployeeInformation = ({
                                 className="addnew__employee-input"
                                 value={values.nc_id}
                                 onChange={handleChange}
-                                onBlur={handleBlur}
                             />
                         </div>
                     </div>
@@ -496,7 +495,7 @@ const EmployeeInformation = ({
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             >
-                                <option value="" disabled hidden>
+                                <option value="" hidden>
                                     Choose Employee Type
                                 </option>
                                 <option value="0">Permanent worker</option>

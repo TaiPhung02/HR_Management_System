@@ -23,7 +23,7 @@ const AddNewEmployee = () => {
     // Check id
     const [checkId, setCheckId] = useState(false);
     // Get params
-    const { id } = useParams<{ id?: string }>();
+    const { id } = useParams<{ id?: string | undefined }>();
     // check id in URL
     const isEditMode = !!id;
     // Navigate
@@ -57,8 +57,7 @@ const AddNewEmployee = () => {
                 employeeInfo.ktp_no &&
                 employeeInfo.type &&
                 employeeInfo.contract_start_date &&
-                employmentDetails.hidden_on_payroll &&
-                Object.keys(employeeInfo).length > 0
+                employmentDetails.hidden_on_payroll === "1"
             )
         );
     }, [employeeInfo, employmentDetails]);
@@ -90,7 +89,8 @@ const AddNewEmployee = () => {
     // handleUpload
     const handleDocumentUpload = async (
         employeeId: string,
-        documentFormData: FormData
+        documentFormData: string[] | FormData | undefined,
+        deleteIds: string[]
     ) => {
         const data: FormDataProps = {
             employee_id: employeeId,
@@ -118,6 +118,8 @@ const AddNewEmployee = () => {
 
             if (res && res.result === true) {
                 console.log(res);
+
+                handleDocumentUpload(id, others.documents, deleteIds);
 
                 toast.success("Record added");
 
@@ -148,7 +150,7 @@ const AddNewEmployee = () => {
                 });
 
                 if (res && res.result === true) {
-                    handleDocumentUpload(id, others.documents);
+                    handleDocumentUpload(id, others.documents, deleteIds);
                     setDeleteIds([]);
 
                     window.history.back();
@@ -159,6 +161,7 @@ const AddNewEmployee = () => {
                     );
                 }
             } catch (error) {
+                console.log(error);
                 toast.error(
                     "An error occurred while editing employee. Please try again later."
                 );
@@ -190,7 +193,7 @@ const AddNewEmployee = () => {
 
     // Other
     const handleOtherChange = (values: IEmployee) => {
-        console.log("OthersChange:", values);
+        // console.log("OthersChange:", values);
         console.log(deleteIds);
         setOthers(values);
     };
@@ -231,16 +234,14 @@ const AddNewEmployee = () => {
             >
                 <Tabs.TabPane
                     tab={
-                        !isValidInfor ? (
-                            <span className="addnew__tab error">
-                                Employee Information
-                                <PiWarningCircle />
-                            </span>
-                        ) : (
-                            <span className="addnew__tab">
-                                Employee Information
-                            </span>
-                        )
+                        <span
+                            className={`addnew__tab ${
+                                !isValidInfor ? "error" : ""
+                            }`}
+                        >
+                            Employee Information
+                            {!isValidInfor && <PiWarningCircle />}
+                        </span>
                     }
                     key="1"
                 >
@@ -249,7 +250,7 @@ const AddNewEmployee = () => {
                         checkIsValidInfor={checkIsValidInfor}
                     />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Contract Information" key="2">
+                <Tabs.TabPane tab={<span>Contract Information</span>} key="2">
                     <ContractInformation />
                 </Tabs.TabPane>
                 <Tabs.TabPane

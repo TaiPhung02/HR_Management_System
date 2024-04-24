@@ -153,3 +153,9 @@
     border: 1px solid #f3aeaf;
     background: #ffefef;
 }
+
+@media screen and (max-width: 1024px) {
+    .addnew__employee {
+        grid-template-columns: 1fr;
+    }
+}

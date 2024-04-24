@@ -47,7 +47,7 @@ export interface IEmployee {
     resign_effective_date?: string | null;
     resign_date?: string | null;
     shift?: string;
-    grade_id?: number | null;
+    grade_id?: number | null | string;
     remark?: string | null;
     created_at?: string;
     updated_at?: string;

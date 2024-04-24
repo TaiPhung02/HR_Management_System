@@ -2,8 +2,17 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/auth/authSlice";
 
-import type { MenuProps } from "antd";
-import { Breadcrumb, Layout, Menu, Button, Modal } from "antd";
+import type { MenuProps, UploadProps } from "antd";
+import {
+    Breadcrumb,
+    Layout,
+    Menu,
+    Button,
+    Modal,
+    Select,
+    Upload,
+    message,
+} from "antd";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import LogoHeader from "../../assets/images/logo-header.png";
@@ -14,7 +23,9 @@ import NoteRemove from "../../assets/icons/note-remove.png";
 import ReceiptItem from "../../assets/icons/receipt-item.png";
 import BrifecaseTick from "../../assets/icons/brifecase-tick.png";
 import UserEdit from "../../assets/icons/user-edit.png";
+import EN from "../../assets/icons/english.png";
 import "./adminLayout.css";
+import { UploadOutlined } from "@ant-design/icons";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -173,8 +184,26 @@ const AdminLayout = () => {
     };
 
     const handleBackToMain = () => {
-        navigate("/")
-    }
+        navigate("/");
+    };
+
+    const props: UploadProps = {
+        name: "file",
+        accept: ".xlsx",
+        multiple: true,
+        action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+        headers: {
+            authorization: "authorization-text",
+        },
+        showUploadList: false,
+        onChange(info) {
+            if (info.file && info.file.status === "done") {
+                message.success(`${info.file.name} file uploaded successfully`);
+            } else if (info.file.status === "error") {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+    };
 
     return (
         <div>
@@ -183,52 +212,70 @@ const AdminLayout = () => {
                     <img src={LogoHeader} alt="Logo" />
                     <h3 className="header__title">HR Management System</h3>
                 </div>
-                <div className="header__gear">
-                    <Button className="header__profile" onClick={showModal}>
-                        a
-                    </Button>
-                    <Modal
-                        className="profile__modal"
-                        open={isModalOpen}
-                        onCancel={handleCancel}
-                        mask={false}
-                        footer={null}
-                    >
-                        <div className="profile__modal-head">
-                            <div className="header__profile">a</div>
-                            <h3 className="profile__modal-username">
-                                admin_test1
-                            </h3>
-                        </div>
-                        <p className="profile__modal-nik">Staff ID: </p>
-
+                <div className="header__right">
+                    <Upload {...props}>
                         <Button
-                            className="profile__modal-btn-signout"
-                            onClick={handleSignout}
+                            className="header__import-button"
+                            icon={<UploadOutlined />}
                         >
-                            Sign Out
+                            Import Employee
                         </Button>
+                    </Upload>
+                    <Select className="header__right-lang" defaultValue="en">
+                        <option value="en">
+                            <img src={EN} alt="" /> <span>EN</span>
+                        </option>
+                        <option value="ba">
+                            <img src={EN} alt="" /> <span>BA</span>
+                        </option>
+                    </Select>
+                    <div className="header__gear">
+                        <Button className="header__profile" onClick={showModal}>
+                            a
+                        </Button>
+                        <Modal
+                            className="profile__modal"
+                            open={isModalOpen}
+                            onCancel={handleCancel}
+                            mask={false}
+                            footer={null}
+                        >
+                            <div className="profile__modal-head">
+                                <div className="header__profile">a</div>
+                                <h3 className="profile__modal-username">
+                                    admin_test1
+                                </h3>
+                            </div>
+                            <p className="profile__modal-nik">Staff ID: </p>
 
-                        <div>
-                            <Link
-                                to={"/change-password"}
-                                className="profile__modal-reset"
-                                onClick={handleCancel}
+                            <Button
+                                className="profile__modal-btn-signout"
+                                onClick={handleSignout}
                             >
-                                Reset Password
-                            </Link>
-                        </div>
-                    </Modal>
+                                Sign Out
+                            </Button>
 
-                    <Modal
-                        className="profile__modal-signout"
-                        title="Do you wish to sign out?"
-                        open={isModalSignOutOpen}
-                        onOk={handleSignOut}
-                        onCancel={handleSignOutCancel}
-                        okText="Yes"
-                        cancelText="No"
-                    />
+                            <div>
+                                <Link
+                                    to={"/change-password"}
+                                    className="profile__modal-reset"
+                                    onClick={handleCancel}
+                                >
+                                    Reset Password
+                                </Link>
+                            </div>
+                        </Modal>
+
+                        <Modal
+                            className="profile__modal-signout"
+                            title="Do you wish to sign out?"
+                            open={isModalSignOutOpen}
+                            onOk={handleSignOut}
+                            onCancel={handleSignOutCancel}
+                            okText="Yes"
+                            cancelText="No"
+                        />
+                    </div>
                 </div>
             </Header>
             <Layout style={{ minHeight: "100vh" }}>

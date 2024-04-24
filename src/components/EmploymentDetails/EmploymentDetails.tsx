@@ -33,7 +33,7 @@ const EmploymentDetails: React.FC<EmploymentDetailsProps> = ({
     const [departments, setDepartments] = useState<IDepartment[]>([]);
     const [positions, setPositions] = useState<IPosition[]>([]);
 
-    const { values, setValues, handleBlur, handleChange, errors, touched } =
+    const { values, setValues, handleChange, errors, touched } =
         useFormik({
             initialValues: initialValues,
             validationSchema: employmentDetailsSchema,

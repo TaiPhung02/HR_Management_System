@@ -155,12 +155,12 @@ const EmployeeTable = () => {
     // Select row
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
         const selectedEmployeeIds = employees
-            .filter((employee) => newSelectedRowKeys.includes(employee.key))
+            .filter((employee) => newSelectedRowKeys.includes(employee.key as React.Key))
             .map((selectedEmployee) => selectedEmployee.id);
 
         console.log("Selected Employee IDs: ", selectedEmployeeIds);
 
-        setSelectedEmployees(selectedEmployeeIds);
+        setSelectedEmployees(selectedEmployeeIds.filter((id): id is number => id !== undefined));
     };
 
     const rowSelection = {

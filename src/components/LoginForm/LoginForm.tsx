@@ -56,6 +56,7 @@ const LoginForm = () => {
                         localStorage.setItem("token", res.data.token);
                         dispatch(loginSuccess(res.data));
                         toast.success("Logged in successfully");
+
                         navigate("/");
 
                         // auto logout
@@ -63,7 +64,7 @@ const LoginForm = () => {
                             dispatch(logout());
                             localStorage.removeItem("token");
                             toast.info(
-                                "You have been automatically logged out due to inactivity."
+                                "You have been automatically logged out"
                             );
                             navigate("/login");
                         }, 18000000);
