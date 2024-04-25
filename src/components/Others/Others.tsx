@@ -176,8 +176,8 @@ const Others = ({
         const newData = tableData.filter((item) => item.id !== record.id);
         setTableData(newData);
 
-        const index = tableData.map((item) => item.id);
-        setDeleteIds(index);
+        const recordId = record.id;
+        setDeleteIds([...deleteIds, recordId]);
     };
 
     const props: UploadProps = {

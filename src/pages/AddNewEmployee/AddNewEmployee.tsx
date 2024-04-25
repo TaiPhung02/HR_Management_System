@@ -119,7 +119,7 @@ const AddNewEmployee = () => {
             if (res && res.result === true) {
                 console.log(res);
 
-                handleDocumentUpload(id, others.documents, deleteIds);
+                handleDocumentUpload(res.data.id, others.documents, deleteIds);
 
                 toast.success("Record added");
 

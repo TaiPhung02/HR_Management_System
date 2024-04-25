@@ -43,19 +43,20 @@ export const changePasswordValidation = Yup.object().shape({
 export const employeeInformationValidation = Yup.object().shape({
     name: Yup.string()
         .required("Name is required")
-        .max(30, "Name must be at most 30 characters")
-        .matches(
-            /^[a-zA-Z0-9\sÀ-ÿ.]+$/u,
-            "Username can only contain letters, numbers, periods, and spaces"
-        ),
+        .max(30, "Name must be at most 30 characters"),
     gender: Yup.string().required("Gender is required"),
     dob: Yup.string().required("Date of birthday is required"),
     ktp_no: Yup.string().required("KTP No. is required"),
-    nc_id: Yup.string().required("National ID is required"),
     type: Yup.string().required("Type Employee is required"),
     contract_start_date: Yup.string().required(
         "Contract Start Date is required"
     ),
+});
+
+export const employmentDetailsSchema = Yup.object().shape({
+    hidden_on_payroll: Yup.boolean()
+        .oneOf([true], "You must accept the Hidden On Payroll")
+        .required("You must accept the Hidden On Payroll"),
 });
 
 export const salaryWagesValidation = Yup.object().shape({
@@ -74,10 +75,4 @@ export const salaryWagesValidation = Yup.object().shape({
     safety_insurance: Yup.number()
         .min(0, "Please input value min is 0")
         .required("This field is required"),
-});
-
-export const employmentDetailsSchema = Yup.object().shape({
-    hidden_on_payroll: Yup.boolean()
-        .oneOf([true], "You must accept the Hidden On Payroll")
-        .required("You must accept the Hidden On Payroll"),
 });

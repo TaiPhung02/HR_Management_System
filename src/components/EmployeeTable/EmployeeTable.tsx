@@ -155,12 +155,16 @@ const EmployeeTable = () => {
     // Select row
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
         const selectedEmployeeIds = employees
-            .filter((employee) => newSelectedRowKeys.includes(employee.key as React.Key))
+            .filter((employee) =>
+                newSelectedRowKeys.includes(employee.key as React.Key)
+            )
             .map((selectedEmployee) => selectedEmployee.id);
 
         console.log("Selected Employee IDs: ", selectedEmployeeIds);
 
-        setSelectedEmployees(selectedEmployeeIds.filter((id): id is number => id !== undefined));
+        setSelectedEmployees(
+            selectedEmployeeIds.filter((id): id is number => id !== undefined)
+        );
     };
 
     const rowSelection = {
@@ -257,9 +261,11 @@ const EmployeeTable = () => {
             const deleteRes = await deleteEmployeeApi(selectedEmployees);
             console.log(deleteRes);
 
-            if (deleteRes.result === true) {
+            if (deleteRes && deleteRes.result === true) {
                 const updatedEmployees = employees.filter(
-                    (employee) => !selectedEmployees.includes(employee.id)
+                    (employee) =>
+                        employee.id !== undefined &&
+                        !selectedEmployees.includes(employee.id)
                 );
                 setEmployees(updatedEmployees);
                 setSelectedEmployees([]);
