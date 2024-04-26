@@ -6,15 +6,15 @@ import { RootState } from "../../redux/store";
 import { Navigate } from "react-router-dom";
 
 const ForgotPassWord = () => {
-    const isAuthenticated = useSelector(
-        (state: RootState) => state.auth.isAuthenticated
-    );
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
 
-    return (
-        <div className="forgotPassword">
-            {isAuthenticated ? <Navigate to="/" /> : <ForgotPasswordForm />}
-        </div>
-    );
+  return (
+    <div className="forgotPassword">
+      {isAuthenticated ? <Navigate to="/" /> : <ForgotPasswordForm />}
+    </div>
+  );
 };
 
 export default ForgotPassWord;

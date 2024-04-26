@@ -6,15 +6,15 @@ import { RootState } from "../../redux/store";
 import "./loginPage.css";
 
 const LoginPage = () => {
-    const isAuthenticated = useSelector(
-        (state: RootState) => state.auth.isAuthenticated
-    );
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
 
-    return (
-        <div className="login-page">
-            {isAuthenticated ? <Navigate to="/" /> : <LoginForm />}
-        </div>
-    );
+  return (
+    <div className="login-page">
+      {isAuthenticated ? <Navigate to="/" /> : <LoginForm />}
+    </div>
+  );
 };
 
 export default LoginPage;

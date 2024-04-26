@@ -1,219 +1,232 @@
 .table-wrapper {
-    margin: 0 32px;
+  margin: 0 32px;
 }
 
 .table__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
 }
 
 .table__header-heading {
-    color: #11181c;
-    font-size: 36px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 119.7%;
-    letter-spacing: -1.08px;
+  color: #11181c;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 119.7%;
+  letter-spacing: -1.08px;
 }
 
 .table__header-search {
-    display: flex;
-    width: 200px;
-    padding: 10px;
-    align-items: center;
-    gap: 10px;
-    border-radius: 8px;
-    border: 1px solid #dfe3e6;
-    background: #fbfcfd;
+  display: flex;
+  width: 200px;
+  padding: 10px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  border: 1px solid #dfe3e6;
+  background: #fbfcfd;
 }
 
 .table__header-text {
-    width: 150px;
-    color: #687076;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    border: none;
-    outline: none;
+  width: 150px;
+  color: #687076;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border: none;
+  outline: none;
 }
 
 /* employee__table */
 .employee__table {
-    /* overflow-x: auto; */
-    width: 100%;
-    color: rgb(17, 24, 28);
-    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    box-shadow: rgb(241, 243, 245) 0px 5px 20px;
-    border-radius: 12px;
-    padding: 10px;
-    background-color: rgb(251, 252, 253);
-    margin-bottom: 10px;
+  /* overflow-x: auto; */
+  width: 100%;
+  color: rgb(17, 24, 28);
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  box-shadow: rgb(241, 243, 245) 0px 5px 20px;
+  border-radius: 12px;
+  padding: 10px;
+  background-color: rgb(251, 252, 253);
+  margin-bottom: 10px;
 }
 
 .ant-table {
-    width: max-content;
+  width: max-content;
 }
 
 .ant-table td,
 .ant-table th {
-    border: 2px solid #fff;
-    border-color: #fff;
+  border: 2px solid #fff;
+  border-color: #fff;
 }
 
 .table__cta {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+  gap: 4px;
 }
 
 .table__cta-add,
 .table__cta-delete {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 12px;
-    border-radius: 6px;
-    background: #edf6ff;
-    width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 12px;
+  border-radius: 6px;
+  width: 90px;
+  border: none;
+  background: #edf6ff;
 }
 
 .table__cta-add {
-    color: #0091ff;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    margin-right: 12px;
+  color: #0091ff;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.table__cta-add:hover {
+  color: rgb(0, 145, 255) !important;
+  background-color: rgb(237, 246, 255) !important;
 }
 
 .table__cta-delete {
-    color: #e5484d;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    background: #ffefef;
+  color: #e5484d;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  background: #ffefef;
 }
 
-.table__cta-delete.disabled {
-    background: #ccc;
+.table__cta-delete.disable {
+  color: rgba(0, 0, 0, 0.25) !important;
+  background-color: rgb(241, 243, 245) !important;
+  cursor: not-allowed;
+}
+
+.table__cta-delete:hover.disable {
+  color: rgba(0, 0, 0, 0.25) !important;
+  background-color: rgb(241, 243, 245) !important;
 }
 
 .table__line {
-    border-top: 1px solid #dfe3e6;
-    margin-bottom: 10px;
+  border-top: 1px solid #dfe3e6;
+  margin-bottom: 10px;
 }
 
 .employee__table-row {
-    height: 80vh;
-    overflow: scroll;
+  height: 80vh;
+  overflow: scroll;
 }
 
 .employee__table-row .ant-table-tbody {
-    width: 100px;
-    background: #f8f9fa;
+  width: 100px;
+  background: #f8f9fa;
 }
 
 .employee__table-row .ant-table-cell {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    background: #f8f9fa;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  background: #f8f9fa;
 }
 
 .employee__table-row .ant-table-thead th {
-    background: #eceef0 !important;
-    white-space: nowrap;
+  background: #eceef0 !important;
+  white-space: nowrap;
 }
 
 .employee__table-row .ant-table-wrapper {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
 }
 
 .employee__table-delete-modal .ant-modal-content {
-    margin: 150px auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 355px;
-    padding: 20px 24px 30px 24px;
-    gap: 4px;
-    border-radius: 8px;
-    border: 1px solid #dfe3e6;
-    background: #fff;
-    box-shadow: 0px 5px 15px 0px #eceef0;
+  margin: 150px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 355px;
+  padding: 20px 24px 30px 24px;
+  gap: 4px;
+  border-radius: 8px;
+  border: 1px solid #dfe3e6;
+  background: #fff;
+  box-shadow: 0px 5px 15px 0px #eceef0;
 }
 
 .employee__table-delete-modal .ant-modal-title {
-    color: #11181c;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    letter-spacing: -0.72px;
+  color: #11181c;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.72px;
 }
 
 .employee__table-delete-modal p {
-    color: #687076;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%; /* 24px */
-    letter-spacing: -0.16px;
+  color: #687076;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+  letter-spacing: -0.16px;
 }
 
 .employee__table-delete-modal button {
-    width: 148.5px;
-    height: 48px;
-    border-radius: 6px;
+  width: 148.5px;
+  height: 48px;
+  border-radius: 6px;
 }
 
 /*  */
 
 .ant-table-thead {
-    position: sticky;
-    top: 0;
-    z-index: 900;
+  position: sticky;
+  top: 0;
+  z-index: 900;
 }
 
 td.ant-table-cell {
-    color: #687076;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+  color: #687076;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .ant-checkbox-checked .ant-checkbox-inner {
-    background-color: #30a46c;
-    border-color: #30a46c;
+  background-color: #30a46c;
+  border-color: #30a46c;
 }
 
 .ant-table-row-selected .ant-table-cell {
-    color: #11181c;
+  color: #11181c;
 }
 
 .ant-table-row-selected .ant-table-cell {
-    background: rgb(233, 249, 238) !important;
+  background: rgb(233, 249, 238) !important;
 }
 
 .ant-table-wrapper::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
+  width: 12px;
+  height: 12px;
 }
 
 .ant-table-wrapper::-webkit-scrollbar-thumb {
-    background-color: rgb(215, 219, 223);
-    border-radius: 32px;
-    border: 2px solid rgb(241, 243, 245);
+  background-color: rgb(215, 219, 223);
+  border-radius: 32px;
+  border: 2px solid rgb(241, 243, 245);
 }
 
 .ant-table-wrapper::-webkit-scrollbar-track {
-    background-color: rgb(241, 243, 245);
-    border-radius: 32px;
+  background-color: rgb(241, 243, 245);
+  border-radius: 32px;
 }

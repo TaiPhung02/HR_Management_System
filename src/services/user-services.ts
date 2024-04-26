@@ -2,103 +2,103 @@ import { IEmployee } from "../interfaces/employee-interface";
 import { pgApi } from "./customize-axios";
 
 export const loginPGApi = (
-    username: string,
-    password: string,
-    company_id: string
+  username: string,
+  password: string,
+  company_id: string
 ) => {
-    return pgApi.post("login", { username, password, company_id });
+  return pgApi.post("login", { username, password, company_id });
 };
 export const forgotPGApi = (email: string) => {
-    return pgApi.post("forgot-password", { email });
+  return pgApi.post("forgot-password", { email });
 };
 
 export const changePasswordPGApi = (
-    email: string,
-    company_id: number,
-    password: string,
-    password_confirmation: string
+  email: string,
+  company_id: number,
+  password: string,
+  password_confirmation: string
 ) => {
-    return pgApi.post("change-password", {
-        email,
-        company_id,
-        password,
-        password_confirmation,
-    });
+  return pgApi.post("change-password", {
+    email,
+    company_id,
+    password,
+    password_confirmation,
+  });
 };
 
 export const companyApi = () => {
-    return pgApi.get("company");
+  return pgApi.get("company");
 };
 
 export const employeeApi = (page: number, size: number) => {
-    return pgApi.get(`employee?page=${page}&size=${size}`);
+  return pgApi.get(`employee?page=${page}&size=${size}`);
 };
 
 export const searchEmployeeApi = (page: number, search: string) => {
-    return pgApi.get(`employee?page=${page}&search=${search}`);
+  return pgApi.get(`employee?page=${page}&search=${search}`);
 };
 
 export const getEmployeeByIdApi = (recordId: string | undefined) => {
-    return pgApi.get(`employee/${recordId}`);
+  return pgApi.get(`employee/${recordId}`);
 };
 
 export const addNewEmployeeApi = (employeeData: IEmployee) => {
-    return pgApi.post("employee", {
-        ...employeeData,
-    });
+  return pgApi.post("employee", {
+    ...employeeData,
+  });
 };
 
 export const editEmployeeApi = (
-    id: string | undefined,
-    employeeData: IEmployee
+  id: string | undefined,
+  employeeData: IEmployee
 ) => {
-    return pgApi.put(`employee/${id}`, {
-        ...employeeData,
-    });
+  return pgApi.put(`employee/${id}`, {
+    ...employeeData,
+  });
 };
 
 export const deleteEmployeeApi = (recordIds: number[]) => {
-    return pgApi.delete("employee/multiple-delete", {
-        data: {
-            record_ids: recordIds,
-        },
-    });
+  return pgApi.delete("employee/multiple-delete", {
+    data: {
+      record_ids: recordIds,
+    },
+  });
 };
 
 export interface FormDataProps {
-    employee_id: string;
-    documents: string[] | FormData | undefined;
-    delete_ids: string[];
+  employee_id: string;
+  documents: string[] | FormData | undefined;
+  delete_ids: string[];
 }
 
 export const uploadDocumentApi = (data: FormDataProps) => {
-    return pgApi.post(`employee-document/upload`, data, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
-    });
+  return pgApi.post(`employee-document/upload`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 export const marriageApi = () => {
-    return pgApi.get("marriage");
+  return pgApi.get("marriage");
 };
 
 export const departmentApi = () => {
-    return pgApi.get("department");
+  return pgApi.get("department");
 };
 
 export const positionApi = () => {
-    return pgApi.get("position");
+  return pgApi.get("position");
 };
 
 export const gradeApi = () => {
-    return pgApi.get("grade");
+  return pgApi.get("grade");
 };
 
 export const benefitApi = () => {
-    return pgApi.get("benefit");
+  return pgApi.get("benefit");
 };
 
 export const userApi = () => {
-    return pgApi.get("user");
+  return pgApi.get("user");
 };

@@ -1,53 +1,52 @@
 .addnew__employment {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    flex-direction: column;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .addnew__employment-input-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-left: 20px;
-    border-radius: 12px;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+  border-radius: 12px;
+  margin-bottom: 10px;
 }
 
 .addnew__employment-label {
-    color: #11181c;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%; /* 24px */
-    letter-spacing: -0.16px;
-    min-width: 162px;
+  color: #11181c;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+  letter-spacing: -0.16px;
+  min-width: 162px;
 }
 
 .addnew__employment-select {
-    color: #687076;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    padding: 8px 12px;
-    min-width: 362px;
-    height: 46px;
-    border-radius: 6px;
-    background: #f1f3f5;
-    border: none;
-    outline: none;
+  color: #687076;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 8px 12px;
+  min-width: 362px;
+  height: 46px;
+  border-radius: 6px;
+  background: #f1f3f5;
+  border: none;
+  outline: none;
 }
 
 .addnew__employment-checkbox-box {
-    display: flex;
-    align-items: center;
-    min-height: 46px;
-    padding-left: 20px;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  padding-left: 20px;
+  gap: 10px;
 }
 
 .addnew__employment-checkbox-box .ant-checkbox-inner {
-    padding: 10px;
+  padding: 10px;
 }
-
