@@ -1,7 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useMemo, useState } from "react";
 
 import { Button, Select, Table, Upload, message } from "antd";
-import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  DownloadOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import type { TableColumnsType, UploadProps } from "antd";
 import "./others.css";
 
@@ -15,7 +20,7 @@ import {
 } from "../../services/user-services";
 import { IUser } from "../../interfaces/user-interface";
 import { IEmployee } from "../../interfaces/employee-interface";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 interface DataType {
   id: string | number;
@@ -138,34 +143,68 @@ const Others = ({
       dataIndex: "name",
       key: "name",
       className: "addnew__other-column",
+      render: (text: string, record: any) => {
+        if (record && "name" in record) {
+          console.log(text);
+          return record.name;
+        } else {
+          const fileName = record?.document
+            ? record?.document.split("/").pop()
+            : "";
+          return fileName;
+        }
+      },
     },
     {
       title: "Created At",
       dataIndex: "created_at",
       key: "created_at",
       className: "addnew__other-column",
+      render: (created_at: string) => {
+        const dateParts = created_at.split("T");
+        const date = dateParts[0];
+        return date;
+      },
     },
     {
       title: "Action",
       dataIndex: "",
       key: "x",
       render: (record) => (
-        <a
-          className="addnew__other-delete"
-          onClick={() => handleDeleteRow(record)}
-        >
-          <DeleteOutlined /> Delete
-        </a>
+        <div className="addnew__other-action">
+          {!record.name && (
+            <Link
+              to={record?.document}
+              className="addnew__other-download"
+              target="_blank"
+            >
+              <DownloadOutlined />
+            </Link>
+          )}
+          <a
+            className="addnew__other-delete"
+            onClick={() => handleDeleteRow(record)}
+          >
+            <DeleteOutlined /> Delete
+          </a>
+        </div>
       ),
       className: "addnew__other-column",
     },
   ];
 
   const handleUploadDocument = (file) => {
+    // Convert date
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const day = currentDate.getDate().toString().padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}`;
+
     const newData: DataType = {
       id: file.uid,
       name: file.name,
-      created_at: new Date().toLocaleString(),
+      created_at: formattedDate,
     };
 
     setTableData([...tableData, newData]);

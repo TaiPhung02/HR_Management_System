@@ -32,21 +32,6 @@
   min-width: 162px;
 }
 
-.addnew__other-select {
-  color: #687076;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  padding: 8px 12px;
-  min-width: 362px;
-  height: 46px;
-  border-radius: 6px;
-  background: #f1f3f5;
-  border: none;
-  outline: none;
-}
-
 .addnew__other-textarea {
   color: #11181c;
   font-size: 16px;
@@ -131,37 +116,40 @@
   background: #edf6ff;
 }
 
+.addnew__other-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.addnew__other-download {
+  font-size: 14px;
+  color: #30a46c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+  padding: 4px 10px;
+  gap: 4px;
+  border-radius: 6px;
+  background: #e9f9ee;
+}
+
 .addnew__other-delete {
-  width: 100px;
+  font-size: 14px;
   color: #e5484d;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 24px;
-  padding: 8px 12px;
-  gap: 10px;
+  padding: 4px 10px;
+  gap: 4px;
   border-radius: 6px;
   background: #ffefef;
 }
 
-.addnew__other-delete-button {
-  position: relative;
-  display: inline-block;
-  margin-left: 5px;
-}
-
-.addnew__other-delete-button img {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 25px;
-  cursor: pointer;
-}
-
-.addnew__other-delete-button.disabled {
-  display: none;
-}
-
+/* Table */
 .addnew-container .ant-table-thead .ant-table-cell {
   text-align: center;
   background: #eceef0 !important;

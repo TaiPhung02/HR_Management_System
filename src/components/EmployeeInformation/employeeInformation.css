@@ -94,7 +94,7 @@
 }
 
 .addnew__employee-select {
-  color: #687076;
+  color: #11181c;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -118,12 +118,6 @@
 .addnew__employee-date-box {
   font-size: 20px;
   width: 100%;
-  display: flex;
-  padding: 8px 12px;
-  justify-content: space-between;
-  align-items: center;
-  align-self: stretch;
-  border-radius: 6px;
   background: #f1f3f5;
   height: 46px;
   border: none;
@@ -134,8 +128,18 @@
   background: #f1f3f5;
 }
 
+.addnew__employee-date-box .ant-picker-input {
+  color: #11181c;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+  letter-spacing: -0.16px;
+}
+
 .addnew__employee-input.disabled {
-  background: #c1c8cd;
+  color: rgb(104, 112, 118);
+  background: #dadadb;
   cursor: not-allowed;
 }
 
