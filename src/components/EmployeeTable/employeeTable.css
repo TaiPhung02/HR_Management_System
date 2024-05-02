@@ -100,9 +100,14 @@
   color: #e5484d;
   font-size: 14px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   line-height: normal;
   background: #ffefef;
+}
+
+.table__cta-delete:hover {
+  color: rgb(229, 72, 77) !important;
+  background-color: rgb(255, 239, 239) !important;
 }
 
 .table__cta-delete.disable {

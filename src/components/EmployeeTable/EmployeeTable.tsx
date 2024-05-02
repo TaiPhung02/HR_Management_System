@@ -175,10 +175,15 @@ const EmployeeTable = () => {
   const hasSelected = selectedEmployees.length > 0;
 
   // Call api
-  const fetchData = async (page: number, size: number) => {
+  const fetchData = async (page: number, size: number, searchText?: string) => {
     try {
       setLoading(true);
-      const employeeRes = await employeeApi(page, size);
+      let employeeRes;
+      if (searchText) {
+        employeeRes = await searchEmployeeApi(page, size, searchText);
+      } else {
+        employeeRes = await employeeApi(page, size);
+      }
       const totalRecords = employeeRes.data.total;
       const employeeWithKeys = employeeRes.data.data.map(
         (employee: IEmployee) => ({
@@ -198,8 +203,8 @@ const EmployeeTable = () => {
   };
 
   useEffect(() => {
-    fetchData(currentPage, pageSize);
-  }, [currentPage, pageSize]);
+    fetchData(currentPage, pageSize, searchText);
+  }, [currentPage, pageSize, searchText]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -220,27 +225,78 @@ const EmployeeTable = () => {
       setPageSize(pageSize);
     }
 
+    console.log(page, pageSize, searchText);
+
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("page", page.toString());
+
     if (pageSize) {
       searchParams.set("pageSize", pageSize.toString());
     }
 
+    if (searchText) {
+      searchParams.set("search", searchText);
+    }
+
     window.history.replaceState({}, "", `${location.pathname}?${searchParams}`);
 
-    fetchData(page, pageSize || 20);
+    fetchData(page, pageSize || 20, searchText);
   };
 
   const handlePageSizeChange = (size: number) => {
     setPageSize(size);
     setCurrentPage(1);
 
-    fetchData(1, size);
-
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("page", "1");
     searchParams.set("pageSize", size.toString());
+
+    if (searchText) {
+      searchParams.set("search", searchText);
+    }
+
     window.history.replaceState({}, "", `${location.pathname}?${searchParams}`);
+
+    fetchData(1, size, searchText);
+  };
+
+  // handleSearch
+  const debounceSearch = useMemo(() => {
+    return debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
+      // search by : Name, Department, NIK
+      try {
+        const searchRes = await searchEmployeeApi(
+          currentPage,
+          pageSize,
+          e.target.value
+        );
+        const searchedEmployees = searchRes.data.data.map(
+          (employee: IEmployee) => ({
+            ...employee,
+            key: employee.id,
+          })
+        );
+        setEmployees(searchedEmployees);
+        setTotal(searchRes.data.total);
+      } catch (error) {
+        console.error("Error searching employees:", error);
+        toast.error("An error occurred while searching employees.");
+      }
+    }, 300);
+  }, [currentPage, pageSize]);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchText(value);
+    setCurrentPage(1);
+
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("page", "1");
+    searchParams.set("pageSize", pageSize.toString());
+    searchParams.set("search", value);
+    navigate(`${location.pathname}?${searchParams}`);
+
+    debounceSearch(e);
   };
 
   // handleDeleteEmployee
@@ -285,40 +341,6 @@ const EmployeeTable = () => {
 
   const handleRowClick = (record: IEmployee) => {
     navigate(`/employee/create-or-update/${record.id}`);
-  };
-
-  // handleSearch
-  const debounceSearch = useMemo(() => {
-    return debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
-      // search by : Name, Department, NIK
-      try {
-        const searchRes = await searchEmployeeApi(currentPage, e.target.value);
-        const searchedEmployees = searchRes.data.data.map(
-          (employee: IEmployee) => ({
-            ...employee,
-            key: employee.id,
-          })
-        );
-        setEmployees(searchedEmployees);
-        setTotal(searchRes.data.total);
-      } catch (error) {
-        console.error("Error searching employees:", error);
-        toast.error("An error occurred while searching employees.");
-      }
-    }, 300);
-  }, [currentPage]);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchText(value);
-    setCurrentPage(1);
-
-    const searchParams = new URLSearchParams(location.search);
-    searchParams.set("page", "1");
-    searchParams.set("search", value);
-    navigate(`${location.pathname}?${searchParams}`);
-
-    debounceSearch(e);
   };
 
   return (
