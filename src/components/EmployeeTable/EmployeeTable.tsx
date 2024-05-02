@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Table, Pagination, Modal } from "antd";
 import {
   deleteEmployeeApi,
-  employeeApi,
   searchEmployeeApi,
 } from "../../services/user-services";
 import { IEmployee } from "../../interfaces/employee-interface";
@@ -175,15 +174,15 @@ const EmployeeTable = () => {
   const hasSelected = selectedEmployees.length > 0;
 
   // Call api
-  const fetchData = async (page: number, size: number, searchText?: string) => {
+  const fetchData = async (
+    page: number,
+    size: number,
+    searchText?: string | undefined
+  ) => {
     try {
       setLoading(true);
-      let employeeRes;
-      if (searchText) {
-        employeeRes = await searchEmployeeApi(page, size, searchText);
-      } else {
-        employeeRes = await employeeApi(page, size);
-      }
+      const employeeRes = await searchEmployeeApi(page, size, searchText);
+
       const totalRecords = employeeRes.data.total;
       const employeeWithKeys = employeeRes.data.data.map(
         (employee: IEmployee) => ({
@@ -202,9 +201,15 @@ const EmployeeTable = () => {
     }
   };
 
+  const debounceFetchData = useMemo(() => {
+    return debounce(async (page: number, size: number, searchText: string) => {
+      fetchData(page, size, searchText);
+    }, 300);
+  }, []);
+
   useEffect(() => {
-    fetchData(currentPage, pageSize, searchText);
-  }, [currentPage, pageSize, searchText]);
+    debounceFetchData(currentPage, pageSize, searchText);
+  }, [currentPage, pageSize, searchText, debounceFetchData]);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -261,30 +266,6 @@ const EmployeeTable = () => {
   };
 
   // handleSearch
-  const debounceSearch = useMemo(() => {
-    return debounce(async (e: React.ChangeEvent<HTMLInputElement>) => {
-      // search by : Name, Department, NIK
-      try {
-        const searchRes = await searchEmployeeApi(
-          currentPage,
-          pageSize,
-          e.target.value
-        );
-        const searchedEmployees = searchRes.data.data.map(
-          (employee: IEmployee) => ({
-            ...employee,
-            key: employee.id,
-          })
-        );
-        setEmployees(searchedEmployees);
-        setTotal(searchRes.data.total);
-      } catch (error) {
-        console.error("Error searching employees:", error);
-        toast.error("An error occurred while searching employees.");
-      }
-    }, 300);
-  }, [currentPage, pageSize]);
-
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchText(value);
@@ -296,7 +277,8 @@ const EmployeeTable = () => {
     searchParams.set("search", value);
     navigate(`${location.pathname}?${searchParams}`);
 
-    debounceSearch(e);
+    // debounceSearch(e);
+    debounceFetchData(1, pageSize, value);
   };
 
   // handleDeleteEmployee

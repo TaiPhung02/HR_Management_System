@@ -37,7 +37,7 @@ export const employeeApi = (page: number, size: number) => {
 export const searchEmployeeApi = (
   page: number,
   size: number,
-  search: string
+  search: string | undefined
 ) => {
   return pgApi.get(`employee?page=${page}&size=${size}&search=${search}`);
 };
