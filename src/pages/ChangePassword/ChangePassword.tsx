@@ -1,4 +1,3 @@
-import React from "react";
 import "./changePassword.css";
 import ChangePasswordForm from "../../components/ChangePasswordForm/ChangePasswordForm";
 

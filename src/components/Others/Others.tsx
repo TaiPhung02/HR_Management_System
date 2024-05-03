@@ -253,6 +253,7 @@ const Others = ({
       const totalFiles = fileList.length + tableData.length;
       if (totalFiles > 10) {
         message.error("The total number of files cannot exceed 10!");
+        console.log(file);
         return false;
       }
       return true;

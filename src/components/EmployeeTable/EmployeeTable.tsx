@@ -51,6 +51,7 @@ const EmployeeTable = () => {
       title: "Gender",
       dataIndex: "gender",
       render: (text: string, employee: IEmployee) => {
+        console.log(text);
         return employee?.gender == 0 ? "Male" : "Female";
       },
     },

@@ -1,4 +1,4 @@
-import React from "react";
+
 import "./forgotPassword.css";
 import ForgotPasswordForm from "../../components/ForgotPasswordForm/ForgotPasswordForm";
 import { useSelector } from "react-redux";

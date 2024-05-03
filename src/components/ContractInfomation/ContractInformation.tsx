@@ -1,4 +1,3 @@
-import React from "react";
 import "./contractInformation.css";
 import {
   Button,

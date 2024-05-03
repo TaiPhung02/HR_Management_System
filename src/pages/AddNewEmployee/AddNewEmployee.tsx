@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Tabs } from "antd";
 import "./addNewEmployee.css";
 import EmployeeInformation from "../../components/EmployeeInformation/EmployeeInformation";
@@ -16,7 +16,7 @@ import {
 } from "../../services/user-services";
 import { useNavigate, useParams } from "react-router-dom";
 import { IEmployee } from "../../interfaces/employee-interface";
-import { PiWarningCircle } from "react-icons/pi";
+// import { PiWarningCircle } from "react-icons/pi";
 import { ISalaryWages } from "../../interfaces/salaryWages-interface";
 
 const AddNewEmployee = () => {
@@ -222,7 +222,9 @@ const AddNewEmployee = () => {
         onChange={onChange}
         items={[
           {
-            label: "Employee Information",
+            label: !isValidInfor
+              ? "Employee Information "
+              : "Employee Information",
             key: "1",
             children: (
               <EmployeeInformation
