@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
 export const pgApi = axios.create({
@@ -22,6 +23,12 @@ pgApi.interceptors.request.use(
   }
 );
 
+interface ErrorResponse {
+  data?: any;
+  status?: number;
+  headers?: any;
+}
+
 pgApi.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
@@ -29,7 +36,8 @@ pgApi.interceptors.response.use(
     return response.data;
   },
   function (error) {
-    const res = {};
+    const res: ErrorResponse = {};
+    
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx

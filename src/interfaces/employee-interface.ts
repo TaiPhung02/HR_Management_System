@@ -1,3 +1,5 @@
+import { RcFile } from "antd/es/upload";
+
 export interface IEmployee {
   key?: number | undefined;
   id?: number | undefined;
@@ -65,5 +67,5 @@ export interface IEmployee {
   selectedBenefit?: number;
   benefits?: string[] | null;
   benefit?: string;
-  documents?: FormData | string[];
+  documents?: FormData | string[] | RcFile[] | undefined;
 }

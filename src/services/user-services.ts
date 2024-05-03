@@ -1,3 +1,4 @@
+import { RcFile } from "antd/es/upload";
 import { IEmployee } from "../interfaces/employee-interface";
 import { pgApi } from "./customize-axios";
 
@@ -71,7 +72,7 @@ export const deleteEmployeeApi = (recordIds: number[]) => {
 
 export interface FormDataProps {
   employee_id: string;
-  documents: string[] | FormData | undefined;
+  documents: FormData | string[] | RcFile[] | undefined;
   deleted_ids: number[];
 }
 

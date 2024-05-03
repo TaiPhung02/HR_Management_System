@@ -290,7 +290,8 @@ const EmployeeTable = () => {
       const deleteRes = await deleteEmployeeApi(selectedEmployees);
       console.log(deleteRes);
 
-      if (deleteRes && deleteRes.result === true) {
+      // if (deleteRes && deleteRes.result === true) {
+      if (deleteRes) {
         const updatedEmployees = employees.filter(
           (employee) =>
             employee.id !== undefined &&

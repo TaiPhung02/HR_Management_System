@@ -18,6 +18,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { IEmployee } from "../../interfaces/employee-interface";
 // import { PiWarningCircle } from "react-icons/pi";
 import { ISalaryWages } from "../../interfaces/salaryWages-interface";
+import { RcFile } from "antd/es/upload";
 
 const AddNewEmployee = () => {
   // Check id
@@ -88,7 +89,7 @@ const AddNewEmployee = () => {
   // handleUpload
   const handleDocumentUpload = async (
     employeeId: string,
-    documentFormData: string[] | FormData | undefined,
+    documentFormData: FormData | string[] | RcFile[] | undefined,
     deleteIds: number[]
   ) => {
     const data: FormDataProps = {
@@ -115,7 +116,8 @@ const AddNewEmployee = () => {
         ...others,
       });
 
-      if (res && res.result === true) {
+      // if (res && res.result === true) {
+      if (res) {
         handleDocumentUpload(res.data.id, others.documents, deleteIds);
 
         toast.success("Record added");
@@ -146,7 +148,8 @@ const AddNewEmployee = () => {
           ...others,
         });
 
-        if (res && res.result === true) {
+        // if (res && res.result === true) {
+        if (res) {
           handleDocumentUpload(id, others.documents, deleteIds);
           setDeleteIds([]);
 

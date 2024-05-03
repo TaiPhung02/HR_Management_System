@@ -23,7 +23,7 @@ export const forgotPasswordValidation = Yup.object().shape({
   email: Yup.string()
     .required("Email is required")
     .matches(
-      /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+      /^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/,
       "Please enter a valid email address"
     ),
 });
@@ -37,7 +37,7 @@ export const changePasswordValidation = Yup.object().shape({
     ),
   confirmPassword: Yup.string()
     .required("Confirm password is required")
-    .oneOf([Yup.ref("password"), null], "Password must match"),
+    .oneOf([Yup.ref("password")], "Password must match"),
 });
 
 export const employeeInformationValidation = Yup.object().shape({

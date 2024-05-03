@@ -21,6 +21,7 @@ import {
 import { IUser } from "../../interfaces/user-interface";
 import { IEmployee } from "../../interfaces/employee-interface";
 import { Link, useParams } from "react-router-dom";
+import { RcFile } from "antd/es/upload";
 
 interface DataType {
   id: string | number;
@@ -124,7 +125,7 @@ const Others = ({
 
   // Upload Files
   const [tableData, setTableData] = useState<DataType[]>([]);
-  const [fileData, setFileData] = useState([]);
+  const [fileData, setFileData] = useState<RcFile[]>([]);
 
   const columns: TableColumnsType<DataType> = [
     {
@@ -143,6 +144,7 @@ const Others = ({
       className: "addnew__other-column",
       render: (text: string, record: any) => {
         if (record && "name" in record) {
+          console.log(text);
           return record.name;
         } else {
           const fileName = record?.document
@@ -205,11 +207,13 @@ const Others = ({
       key: file.uid,
     };
 
-    // Sau đó cập nhật state
+    // update state
     setTableData([...tableData, newData]);
 
     setTableData([...tableData, newData]);
-    setFileData([...fileData, file?.originFileObj]);
+    if (file?.originFileObj) {
+      setFileData([...fileData, file.originFileObj as RcFile]);
+    }
   };
 
   const handleDeleteRow = (record: DataType) => {
