@@ -102,7 +102,7 @@ const AdminLayout = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  // BreadCumb
+  // BreadCrumb
   const crumbs = location.pathname
     .split("/")
     .filter((crumb) => crumb !== "")
@@ -131,7 +131,7 @@ const AdminLayout = () => {
           break;
       }
 
-      // If this is an edit page, we need to append the ID to the crumb text
+      // Add the ID to the crumb text if it's an edit page
       if (isEditPage && path !== location.pathname) {
         const id = path.split("/").pop(); // Get the ID from the path
         crumbText += ` ${id}`;
@@ -166,7 +166,7 @@ const AdminLayout = () => {
   };
 
   // Sign Out
-  const handleSignout = () => {
+  const handleOpenSignOut = () => {
     setIsModalSignOutOpen(true);
   };
 
@@ -242,7 +242,7 @@ const AdminLayout = () => {
 
               <Button
                 className="profile__modal-btn-signout"
-                onClick={handleSignout}
+                onClick={handleOpenSignOut}
               >
                 Sign Out
               </Button>

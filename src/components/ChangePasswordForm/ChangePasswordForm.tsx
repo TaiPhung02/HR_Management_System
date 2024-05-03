@@ -148,10 +148,6 @@ const ChangePasswordForm = () => {
             )}
           </button>
         </form>
-
-        <p className="change__copyright">
-          Copyright © 2022. All Rights Reserved
-        </p>
       </div>
     </>
   );

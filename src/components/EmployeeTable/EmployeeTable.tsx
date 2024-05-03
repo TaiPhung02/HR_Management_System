@@ -230,8 +230,6 @@ const EmployeeTable = () => {
       setPageSize(pageSize);
     }
 
-    console.log(page, pageSize, searchText);
-
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("page", page.toString());
 

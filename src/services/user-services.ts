@@ -72,7 +72,7 @@ export const deleteEmployeeApi = (recordIds: number[]) => {
 export interface FormDataProps {
   employee_id: string;
   documents: string[] | FormData | undefined;
-  delete_ids: string[];
+  deleted_ids: number[];
 }
 
 export const uploadDocumentApi = (data: FormDataProps) => {

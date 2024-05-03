@@ -89,12 +89,12 @@ const AddNewEmployee = () => {
   const handleDocumentUpload = async (
     employeeId: string,
     documentFormData: string[] | FormData | undefined,
-    deleteIds: string[]
+    deleteIds: number[]
   ) => {
     const data: FormDataProps = {
       employee_id: employeeId,
       documents: documentFormData,
-      delete_ids: deleteIds,
+      deleted_ids: deleteIds,
     };
     try {
       const response = await uploadDocumentApi(data);
@@ -148,6 +148,10 @@ const AddNewEmployee = () => {
           ...others,
         });
 
+        console.log(id);
+        console.log(others.documents);
+        console.log(deleteIds);
+
         if (res && res.result === true) {
           handleDocumentUpload(id, others.documents, deleteIds);
           setDeleteIds([]);
@@ -190,8 +194,8 @@ const AddNewEmployee = () => {
 
   // Other
   const handleOtherChange = (values: IEmployee) => {
-    // console.log("OthersChange:", values);
-    console.log(deleteIds);
+    console.log("OthersChange:", values);
+    // console.log(deleteIds);
     setOthers(values);
   };
 

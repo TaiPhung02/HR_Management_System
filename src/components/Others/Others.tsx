@@ -7,7 +7,7 @@ import {
   DownloadOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
-import type { TableColumnsType, UploadProps } from "antd";
+import type { TableColumnsType, UploadFile, UploadProps } from "antd";
 import "./others.css";
 
 import { IGrade } from "../../interfaces/grade-interface";
@@ -145,7 +145,6 @@ const Others = ({
       className: "addnew__other-column",
       render: (text: string, record: any) => {
         if (record && "name" in record) {
-          console.log(text);
           return record.name;
         } else {
           const fileName = record?.document
@@ -193,7 +192,7 @@ const Others = ({
     },
   ];
 
-  const handleUploadDocument = (file) => {
+  const handleUploadDocument = (file: UploadFile<any>) => {
     // Convert date
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -208,7 +207,7 @@ const Others = ({
     };
 
     setTableData([...tableData, newData]);
-    setFileData([...fileData, file.originFileObj]);
+    setFileData([...fileData, file?.originFileObj]);
   };
 
   const handleDeleteRow = (record: DataType) => {
@@ -218,6 +217,26 @@ const Others = ({
     const recordId = record.id;
     setDeleteIds([...deleteIds, recordId]);
   };
+
+  // handleOtherChange
+  const newValues = useMemo(
+    () => ({
+      grade_id: parseInt(selectedGrade),
+      benefits: selectedBenefit,
+      remark: remark,
+      documents: fileData,
+    }),
+    [selectedGrade, selectedBenefit, remark, fileData]
+  );
+
+  useEffect(() => {
+    handleOtherChange(newValues);
+  }, [newValues, handleOtherChange]);
+
+  // Delete benefit when grade change
+  // useEffect(() => {
+  //     setSelectedBenefit([]);
+  // }, [selectedGrade]);
 
   const props: UploadProps = {
     name: "file",
@@ -245,26 +264,6 @@ const Others = ({
       }
     },
   };
-
-  // handleOtherChange
-  const newValues = useMemo(
-    () => ({
-      grade_id: parseInt(selectedGrade),
-      benefits: selectedBenefit,
-      remark: remark,
-      documents: fileData,
-    }),
-    [selectedGrade, selectedBenefit, remark, fileData]
-  );
-
-  useEffect(() => {
-    handleOtherChange(newValues);
-  }, [newValues, handleOtherChange]);
-
-  // Delete benefit when grade change
-  // useEffect(() => {
-  //     setSelectedBenefit([]);
-  // }, [selectedGrade]);
 
   return (
     <div className="addnew-container">
