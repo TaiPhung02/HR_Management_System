@@ -26,6 +26,7 @@ interface DataType {
   id: string | number;
   name: string;
   created_at: string;
+  key: string | number;
 }
 
 const Others = ({
@@ -125,9 +126,6 @@ const Others = ({
   const [tableData, setTableData] = useState<DataType[]>([]);
   const [fileData, setFileData] = useState([]);
 
-  console.log("tableData:", tableData);
-  console.log("fileData:", fileData);
-
   const columns: TableColumnsType<DataType> = [
     {
       title: "No",
@@ -204,7 +202,11 @@ const Others = ({
       id: file.uid,
       name: file.name,
       created_at: formattedDate,
+      key: file.uid,
     };
+
+    // Sau đó cập nhật state
+    setTableData([...tableData, newData]);
 
     setTableData([...tableData, newData]);
     setFileData([...fileData, file?.originFileObj]);

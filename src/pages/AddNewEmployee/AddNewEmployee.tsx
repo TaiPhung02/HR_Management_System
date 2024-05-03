@@ -116,8 +116,6 @@ const AddNewEmployee = () => {
       });
 
       if (res && res.result === true) {
-        console.log(res);
-
         handleDocumentUpload(res.data.id, others.documents, deleteIds);
 
         toast.success("Record added");
@@ -147,10 +145,6 @@ const AddNewEmployee = () => {
           ...salaryWages,
           ...others,
         });
-
-        console.log(id);
-        console.log(others.documents);
-        console.log(deleteIds);
 
         if (res && res.result === true) {
           handleDocumentUpload(id, others.documents, deleteIds);
@@ -194,7 +188,7 @@ const AddNewEmployee = () => {
 
   // Other
   const handleOtherChange = (values: IEmployee) => {
-    console.log("OthersChange:", values);
+    // console.log("OthersChange:", values);
     // console.log(deleteIds);
     setOthers(values);
   };
@@ -221,43 +215,56 @@ const AddNewEmployee = () => {
           {isEditMode ? "Save Change" : "Add"}
         </Button>
       </div>
-      <Tabs size="large" type="card" defaultActiveKey="1" onChange={onChange}>
-        <Tabs.TabPane
-          tab={
-            <span className={`addnew__tab ${!isValidInfor ? "error" : ""}`}>
-              Employee Information
-              {!isValidInfor && <PiWarningCircle />}
-            </span>
-          }
-          key="1"
-        >
-          <EmployeeInformation
-            handleEmployeeInfoChange={handleEmployeeInfoChange}
-            checkIsValidInfor={checkIsValidInfor}
-          />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab={<span>Contract Information</span>} key="2">
-          <ContractInformation />
-        </Tabs.TabPane>
-        <Tabs.TabPane
-          tab={<span className="addnew__tab">Employment Details</span>}
-          key="3"
-        >
-          <EmploymentDetails
-            handleEmploymentDetailsChange={handleEmploymentDetailsChange}
-          />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Salary & Wages" key="4">
-          <SalaryWages handleSalaryWagesChange={handleSalaryWagesChange} />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Others" key="5">
-          <Others
-            handleOtherChange={handleOtherChange}
-            deleteIds={deleteIds}
-            setDeleteIds={setDeleteIds}
-          />
-        </Tabs.TabPane>
-      </Tabs>
+      <Tabs
+        size="large"
+        type="card"
+        defaultActiveKey="1"
+        onChange={onChange}
+        items={[
+          {
+            label: "Employee Information",
+            key: "1",
+            children: (
+              <EmployeeInformation
+                handleEmployeeInfoChange={handleEmployeeInfoChange}
+                checkIsValidInfor={checkIsValidInfor}
+              />
+            ),
+          },
+          {
+            label: "Contract Information",
+            key: "2",
+            children: <ContractInformation />,
+          },
+          {
+            label: "Employment Details",
+            key: "3",
+            children: (
+              <EmploymentDetails
+                handleEmploymentDetailsChange={handleEmploymentDetailsChange}
+              />
+            ),
+          },
+          {
+            label: "Salary & Wages",
+            key: "4",
+            children: (
+              <SalaryWages handleSalaryWagesChange={handleSalaryWagesChange} />
+            ),
+          },
+          {
+            label: "Others",
+            key: "5",
+            children: (
+              <Others
+                handleOtherChange={handleOtherChange}
+                deleteIds={deleteIds}
+                setDeleteIds={setDeleteIds}
+              />
+            ),
+          },
+        ]}
+      />
     </div>
   );
 };
