@@ -31,7 +31,6 @@ const ForgotPasswordForm = () => {
           toast.success("Email sent successfully!");
           navigate("/change-password");
         } catch (error) {
-          console.log("Error sending email: " + error);
           toast.error("Error sending email: " + error);
         } finally {
           setIsLoading(false);

@@ -121,7 +121,7 @@ const LoginForm = () => {
         >
           <div className="login__input-box">
             <label htmlFor="username" className="login__label">
-              Username:
+              Username
             </label>
             <input
               name="username"
@@ -142,7 +142,7 @@ const LoginForm = () => {
 
           <div className="login__input-box">
             <label htmlFor="password" className="login__label">
-              Password:
+              Password
             </label>
             <div className="login__input-password">
               <input
@@ -176,7 +176,7 @@ const LoginForm = () => {
 
           <div className="login__input-box">
             <label htmlFor="factory" className="login__label">
-              Factory:
+              Factory
             </label>
             <select
               name="factory"
@@ -190,7 +190,7 @@ const LoginForm = () => {
               onBlur={handleBlur}
             >
               <option value="" disabled hidden>
-                -- Select Factory --
+                Select Factory
               </option>
               {companies.map((company) => (
                 <option key={company.id} value={company.id}>

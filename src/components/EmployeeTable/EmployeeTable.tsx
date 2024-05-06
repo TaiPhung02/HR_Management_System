@@ -51,7 +51,7 @@ const EmployeeTable = () => {
       title: "Gender",
       dataIndex: "gender",
       render: (text: string, employee: IEmployee) => {
-        console.log(text);
+        // console.log(text);
         return employee?.gender == 0 ? "Male" : "Female";
       },
     },
@@ -279,6 +279,14 @@ const EmployeeTable = () => {
     // debounceSearch(e);
     debounceFetchData(1, pageSize, value);
   };
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const searchQuery = searchParams.get("search");
+    if (searchQuery !== null) {
+      setSearchText(searchQuery);
+    }
+  }, [location.search]);
 
   // handleDeleteEmployee
   const handleDeleteEmployee = async () => {

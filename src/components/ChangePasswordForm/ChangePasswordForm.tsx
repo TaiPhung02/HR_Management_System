@@ -125,7 +125,11 @@ const ChangePasswordForm = () => {
                 }
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
-                {showConfirmPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                {showConfirmPassword ? (
+                  <EyeOutlined />
+                ) : (
+                  <EyeInvisibleOutlined />
+                )}
               </span>
             </div>
 
