@@ -86,7 +86,7 @@ const AddNewEmployee = () => {
     checkId();
   }, [id, isEditMode]);
 
-  // handleUpload
+  // handleUpload in OthersTab
   const handleDocumentUpload = async (
     employeeId: string,
     documentFormData: FormData | string[] | RcFile[] | undefined,

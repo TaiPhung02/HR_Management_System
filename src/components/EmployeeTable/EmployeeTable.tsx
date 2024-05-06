@@ -329,6 +329,7 @@ const EmployeeTable = () => {
     setIsModalOpen(false);
   };
 
+  // handleRowClick
   const handleRowClick = (record: IEmployee) => {
     navigate(`/employee/create-or-update/${record.id}`);
   };
